@@ -13,7 +13,7 @@ public class Reservationdetail {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id; //貸し出しカートID
+	private Integer id; //予約カートID
 
 	@Column(name = "reservation_status")
 	private Boolean reservationStatus; //t:貸し出し可 f:返却待ち
