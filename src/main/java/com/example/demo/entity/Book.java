@@ -35,6 +35,22 @@ public class Book {
 	@JoinColumn(name = "category_id") //カテゴリid
 	private Category category;
 
+	public Book() {
+
+	}
+
+	public Book(Integer id, String title, String publisher, String summary, boolean loans, LocalDate date,
+			Writer writer, Category category) {
+		this.id = id;
+		this.title = title;
+		this.publisher = publisher;
+		this.summary = summary;
+		this.loans = loans;
+		this.date = date;
+		this.writer = writer;
+		this.category = category;
+	}
+
 	public Integer getId() {
 		return id;
 	}
