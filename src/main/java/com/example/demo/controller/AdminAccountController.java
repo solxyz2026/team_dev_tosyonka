@@ -62,7 +62,7 @@ public class AdminAccountController {
 			return "AdminLogin";
 		}
 
-		List<User> userList = userRepository.findByEmailAndPasswordAndAdmin(email, password, "Admin");
+		List<User> userList = userRepository.findByEmailAndPasswordAndRole(email, password, "Admin");
 
 		//メールアドレスとパスワードが一致しない
 		if (userList.size() == 0) {
