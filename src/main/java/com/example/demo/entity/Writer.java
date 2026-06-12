@@ -7,8 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import org.springframework.stereotype.Component;
+
 @Entity
 @Table(name = "writers")
+@Component
 public class Writer {
 
 	@Id

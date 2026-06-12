@@ -7,8 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import org.springframework.stereotype.Component;
+
 @Entity
 @Table(name = "categories")
+@Component
 public class Category {
 
 	@Id
