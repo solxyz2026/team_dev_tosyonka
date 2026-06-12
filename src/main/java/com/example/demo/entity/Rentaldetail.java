@@ -1,8 +1,5 @@
 package com.example.demo.entity;
 
-import java.time.LocalDate;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,22 +14,15 @@ import org.springframework.stereotype.Component;
 @Entity
 @Table(name = "rentaldetails")
 public class Rentaldetail {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
-	@Column(name = "rental_date")
-	private LocalDate rentalDate;
-
-	@Column(name = "drop_date")
-	private LocalDate dropDate;
-
-	@Column(name = "return_date")
-	private LocalDate returnDate;
+	private Integer id;//貸出ID
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "rental_id") //貸出伝票ID
+	private Rental rental;
 
+	@ManyToOne
+	@JoinColumn(name = "book_id") //本ID
+	private Book book;
 }
