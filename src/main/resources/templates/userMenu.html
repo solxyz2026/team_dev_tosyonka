@@ -21,8 +21,8 @@
 		<tr th:each="">
 			<th>お知らせ</th>
 		</tr>
-		<tr>
-			<td>[[${}]]</td>
+		<tr th:each="news:${newsList}">
+			<td>[[${news.content}]]</td>
 		</tr>
 	</table>
 	

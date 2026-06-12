@@ -1,4 +1,4 @@
-INSERT INTO announcements (content)
+INSERT INTO announcements(content)
 VALUES
 ('【イベント情報】8月3日開催「初心者向けプログラミング講座」の参加者を募集しています。'),
 
