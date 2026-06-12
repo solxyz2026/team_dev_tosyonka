@@ -25,4 +25,39 @@ public class Rentaldetail {
 	@ManyToOne
 	@JoinColumn(name = "book_id") //本ID
 	private Book book;
+
+	public Rentaldetail() {
+
+	}
+
+	public Rentaldetail(Integer id, Rental rental, Book book) {
+		this.id = id;
+		this.rental = rental;
+		this.book = book;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Rental getRental() {
+		return rental;
+	}
+
+	public void setRental(Rental rental) {
+		this.rental = rental;
+	}
+
+	public Book getBook() {
+		return book;
+	}
+
+	public void setBook(Book book) {
+		this.book = book;
+	}
+
 }
