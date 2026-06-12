@@ -84,7 +84,7 @@
 	('library01@example.com', '図書管理者A', 'admin123', '09000000002', '1985-02-15','Admin'),
 	('library02@example.com', '図書管理者B', 'admin123', '09000000003', '1988-06-20','Admin');
 	
-	INSERT INTO categoris (category_name)
+	INSERT INTO categories (category_name)
 	VALUES
 	('IT・プログラミング'),
 	('歴史'),
