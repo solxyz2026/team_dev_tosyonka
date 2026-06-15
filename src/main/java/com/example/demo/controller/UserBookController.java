@@ -36,11 +36,11 @@ public class UserBookController {
 		return "UserSearch";
 	}
 
-	// ✅ POST：検索処理
+	
 	@PostMapping("/user/search")
 	public String search(@RequestParam(value = "keyword", required = false) String keyword,
 			HttpSession session, Model model) {
-		// ✅ Integer でキャストに修正
+		
 		Integer userId = (Integer) session.getAttribute("userId");
 
 		if (userId == null) {
@@ -58,7 +58,7 @@ public class UserBookController {
 			System.out.println("📚 検索結果: " + books.size() + "冊");
 			model.addAttribute("keyword", keyword);
 		} else {
-			// すべての本を取得
+	
 			books = bookRepository.findAll();
 			System.out.println("📚 全本取得: " + books.size() + "冊");
 		}
