@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>新規会員登録</title>
+</head>
+<body>
+<h1>新規会員登録</h1>
+
+<ul>
+		<li th:each="data:${con}" style="color:red;">[[${data}]]</li>
+	</ul>
+	
+	<form action="/users/add" method="post">
+		
+
+		名前<input type="text" name="name"th:value="${name}"><br>
+		生年月日<input type="date" name="birthday" th:value="${birthday}"><br>
+		電話番号<input type="text" name="tel_number" th:value=${tel_number}><br>
+		メールアドレス<input type="text" name="email"th:value="${email}"><br>
+		パスワード<input type="text" name="password"th:value="${password}"><br>
+		
+			<button>登録</button>
+	</form>
+</body>
+</html>
