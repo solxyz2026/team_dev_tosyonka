@@ -19,9 +19,6 @@ import com.example.demo.repository.UserRepository;
 @Controller
 @RequestMapping("/admin")
 public class AdminAccountController {
-	/*
-	 * test
-	 */
 
 	private final HttpSession session;
 	private UserRepository userRepository;

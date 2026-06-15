@@ -9,13 +9,11 @@
 
 <li th:each="data:${con}" style="color:red;">[[${data}]]</li>
 <span th:text="${message}" style="color:red;"></span>
-<form action="/user/login" method="post">
+<form action="/admin/login" method="post">
 		メールアドレス<input type="text" name="email" th:value="${email}"><br>
 		パスワード<input type="text" name="password"  th:value="${password}"><br>
 		<button>ログイン</button>
 	</form>
-	
-	<a href="/user/register">新規会員登録はこちら</a>
 	
 </body>
 </html>
