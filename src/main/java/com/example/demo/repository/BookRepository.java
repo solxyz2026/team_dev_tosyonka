@@ -11,7 +11,7 @@ import com.example.demo.entity.Book;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    
+    //作成　北嶋
     //タイトルで本を検索（大文字小文字区別なし）
     
     List<Book> findByTitleContainingIgnoreCase(String title);

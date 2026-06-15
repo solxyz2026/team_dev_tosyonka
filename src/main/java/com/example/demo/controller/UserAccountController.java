@@ -73,7 +73,7 @@ public class UserAccountController {
 			return "UserLogin";
 		}
 
-		return "UserHome";
+		return "userMenu";
 	}
 
 	//ログアウト
@@ -138,7 +138,7 @@ public class UserAccountController {
 
 		User user = new User(name, birthday, telNumber, email, password, "User");
 		userRepository.save(user);
-		return "userMenu";
+		return "redirect:/user/login";
 	}
 
 }
