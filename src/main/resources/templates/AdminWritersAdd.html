@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>著者の追加</title>
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+	<main>
+		<h1>著者の追加</h1>
+				<p th:each="error:${errors}" id="error">[[${error}]]</p>
+				
+				
+		<form action="/admin/writers" method="post">
+			著者<input type="text" name="writer_name"><br>
+			著者紹介文<input type="text" name="writer_description">
+			<button>登録</button>
+		</form>
+	</main>
+</body>
+
+</html>
