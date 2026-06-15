@@ -38,6 +38,12 @@ public class AdminAccountController {
 		return "AdminLogin";
 	}
 
+	@GetMapping("/logout")
+	public String logout() {
+
+		return "AdminLogin";
+	}
+
 	//ログイン処理
 	@PostMapping("/login")
 	public String login(
@@ -73,13 +79,6 @@ public class AdminAccountController {
 		}
 
 		return "AdminHome";
-	}
-
-	//ログアウト
-	@GetMapping("/logout")
-	public String logout() {
-
-		return "AdminLogin";
 	}
 
 }

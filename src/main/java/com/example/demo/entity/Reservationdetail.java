@@ -75,4 +75,11 @@ public class Reservationdetail {
 		this.reservationStatus = reservationStatus;
 	}
 
+	public String getStatus() {
+		if (reservationStatus) {
+			return "貸し出し可";
+		}
+		return "返却待ち";
+	}
+
 }
