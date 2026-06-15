@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+=======
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.demo.entity.Book;
+import com.example.demo.repository.BookRepository;
+>>>>>>> branch 'main' of https://github.com/solxyz2026/team_dev_tosyonka.git
 
 @Controller
 @RequestMapping("/admin")
 public class AdminBookController {
 
+<<<<<<< HEAD
 	@GetMapping("/books/add")
 	public String addForm() {
 		return "AdminBooksAdd";
@@ -50,4 +59,14 @@ public class AdminBookController {
 		}
 		return "redirect:/admin/books/add";
 	}
+=======
+	private final Book book;
+	private final BookRepository bookrepository;
+
+	public AdminBookController(Book book, BookRepository bookrepository) {
+		this.book = book;
+		this.bookrepository = bookrepository;
+	}
+
+>>>>>>> branch 'main' of https://github.com/solxyz2026/team_dev_tosyonka.git
 }
