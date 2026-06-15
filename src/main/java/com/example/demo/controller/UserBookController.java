@@ -13,36 +13,38 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Book;
 import com.example.demo.repository.BookRepository;
-//作成　北嶋
+
 @Controller
 public class UserBookController {
 	@Autowired
 	private BookRepository bookRepository;
 
-	// GET：初期表示（空の検索フォーム）
+	
 	@GetMapping("/user/search")
 	public String searchGet(HttpSession session, Model model) {
-		Long userId = (Long) session.getAttribute("userId");
+		
+		Integer userId = (Integer) session.getAttribute("userId");
 
 		if (userId == null) {
-			return "redirect:/login";
+			return "redirect:/user/login";  
 		}
 
 		String userName = (String) session.getAttribute("userName");
 		model.addAttribute("userName", userName);
-		model.addAttribute("books", new java.util.ArrayList<>()); // 空のリスト
+		model.addAttribute("books", new java.util.ArrayList<>()); 
 
-		return "user/search";
+		return "UserSearch";
 	}
 
 	// ✅ POST：検索処理
 	@PostMapping("/user/search")
 	public String search(@RequestParam(value = "keyword", required = false) String keyword,
 			HttpSession session, Model model) {
-		Long userId = (Long) session.getAttribute("userId");
+		// ✅ Integer でキャストに修正
+		Integer userId = (Integer) session.getAttribute("userId");
 
 		if (userId == null) {
-			return "redirect:/login";
+			return "redirect:/user/login";  // 
 		}
 
 		String userName = (String) session.getAttribute("userName");
@@ -50,18 +52,18 @@ public class UserBookController {
 
 		List<Book> books;
 		if (keyword != null && !keyword.trim().isEmpty()) {
-			//タイトルと著者名 両方で検索
+			// タイトルと著者名 両方で検索
 			books = bookRepository.searchByTitleOrWriter(keyword);
-			System.out.println("検索: " + keyword);
-			System.out.println("検索結果: " + books.size() + "冊");
+			System.out.println("🔍 検索: " + keyword);
+			System.out.println("📚 検索結果: " + books.size() + "冊");
 			model.addAttribute("keyword", keyword);
 		} else {
 			// すべての本を取得
 			books = bookRepository.findAll();
-			System.out.println("全本取得: " + books.size() + "冊");
+			System.out.println("📚 全本取得: " + books.size() + "冊");
 		}
 
 		model.addAttribute("books", books);
-		return "user/search";
+		return "UserSearch";
 	}
 }

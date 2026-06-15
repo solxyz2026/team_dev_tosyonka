@@ -95,7 +95,7 @@ VALUES
 
 
 
-INSERT INTO categoris(category_name)
+INSERT INTO categories(category_name)
 VALUES
 ('IT・プログラミング'),
 ('歴史'),
