@@ -35,9 +35,9 @@
 				<th>本のタイトル</th>
 				<th>状況</th>
 			</tr>
-			<tr th:each="reservations:${reservationsList}">
-				<td>[[${reservations.reservationdetails}]]</td>
-				<td>[[${reservations.reservationdetails.reservationStatus}]]</td>
+			<tr th:each="reservation:${reservationsList}">
+				<td>[[${reservation.reservationdetails.book.name}]]</td>
+				<td>[[${reservation.reservationdetails.id}]]</td>
 			</tr>	
 		</table>
 				

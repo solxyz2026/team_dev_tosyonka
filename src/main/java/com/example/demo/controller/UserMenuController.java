@@ -2,6 +2,7 @@
 
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -41,9 +42,9 @@ public class UserMenuController {
 		model.addAttribute("newsList", newsList);
 
 		//予約内容の取得
-		List<Reservation> reservationsList = reservationRepository.findByUserId(userId);
+		List<Reservation> reservationsList = new ArrayList<>(); //reservationRepository.findAll();//ByUserId(userId);
 		model.addAttribute("reservationsList", reservationsList);
-		System.out.println(reservationsList);
+		System.out.println(reservationsList.size());
 
 		return "userMenu";
 	}

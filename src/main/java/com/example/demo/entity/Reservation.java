@@ -17,6 +17,9 @@ import jakarta.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "reservations")
 @Component
@@ -43,31 +46,6 @@ public class Reservation {
 	public Reservation(Integer id, User user, LocalDate reservationDate) {
 		this.id = id;
 		this.user = user;
-		this.reservationDate = reservationDate;
-	}
-
-	//ゲッターセッター
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public LocalDate getReservationDate() {
-		return reservationDate;
-	}
-
-	public void setReservationDate(LocalDate reservationDate) {
 		this.reservationDate = reservationDate;
 	}
 
