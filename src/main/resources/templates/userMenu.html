@@ -7,52 +7,117 @@
 </head>
 <body>
 	<h1>としょんか</h1>
-	
-	<!--リンク-->
-	<div>
-		<a href="/user/logout">ログアウト</a>
-		<a href="/user/mypage">マイページ</a>
-		<a href="/user/reservations">予約</a>
-		<a href="/user/search">本検索</a>
-	</div>
-	
-	<!--お知らせ表示-->
-	<table>
-		<tr th:each="">
-			<th>お知らせ</th>
-		</tr>
-		<tr th:each="news:${newsList}">
-			<td>[[${news.content}]]</td>
-		</tr>
-	</table>
-	
-	<!--予約状況-->
-	<div>予約状況</div>
-	<table>
-		<tr>
-			<th>本のタイトル</th>
-			<th>状況</th>
-		</tr>
-		<tr th:each="">
-			<td>[[${}]]</td>
-			<td>[[${}]]</td>
-		</tr>
-	</table>
-	
-	<!--カレンダー-->
-	
-	<!--としょんかの詳細情報-->
-	<div>
-		アクセス　東京都港区芝５丁目３３
-		営業時間　9:00 ～ 20:00
-		定休日　月曜日(祝日除く)、毎月第3木曜日
-		概要　広々とした読書スペースがあり、ゆったりとした時間が過ごせます。
-	</div>
-	
-	<!--リマインド-->
-	<script>
-		alert('リマインド\n明日までに以下の本を返却してください。');
-	</script>
+		
+		<!--リンク-->
+		<div>
+			<a href="/user/logout">ログアウト</a><br>
+			<a href="/user/mypage">マイページ</a><br>
+			<a href="/user/reservations">予約</a><br>
+			<a href="/user/search">本検索</a><br>
+		</div>
+		
+		<!--お知らせ表示-->
+		<table border="1">
+			<tr>
+				<th>お知らせ</th>
+			</tr>
+			<tr th:each="news:${newsList}">
+				<td>[[${news.content}]]</td>
+			</tr>
+		</table>
+				
+		<!--予約状況-->
+		<div>予約状況</div>
+		<table border="1">
+			<tr>
+				<th>本のタイトル</th>
+				<th>状況</th>
+			</tr>	
+		</table>
+				
+		<!--カレンダー-->
+		<div id="calendar" class="calendar-wrap"></div>
+		
+		<script>
+			const date = new Date();
+			const today = date.getDate();
+			const currentMonth = date.getMonth();
+
+			function createCalendar(month) {
+			    const monthDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+			    let calendarHTML = '<table class="calendar"><thead><tr>';
+
+			    for (let i = 0; i < 7; i++) {
+			        if (i === 0) {
+			            calendarHTML += `<th class="sun">${monthDays[i]}</th>`;
+			        } else if (i === 6) {
+			            calendarHTML += `<th class="sat">${monthDays[i]}</th>`;
+			        } else {
+			            calendarHTML += `<th>${monthDays[i]}</th>`;
+			        }
+			    }
+
+			    calendarHTML += '</tr></thead><tbody>';
+
+			    const daysInMonth = new Date(date.getFullYear(), month + 1, 0).getDate();
+			    const firstDay = new Date(date.getFullYear(), month, 1).getDay();
+
+			    const daysInPrevMonth = new Date(date.getFullYear(), month, 0).getDate();
+
+			    let dayCount = 1;
+			    let prevDayCount = daysInPrevMonth - firstDay + 1;
+
+			    for (let i = 0; i < 6; i++) {
+			        calendarHTML += '<tr>';
+
+			        for (let j = 0; j < 7; j++) {
+			            if (i === 0 && j < firstDay) {
+			                calendarHTML += `<td class="mute">${prevDayCount}</td>`;
+			                prevDayCount++;
+			            } else if (dayCount > daysInMonth) {
+			                let nextMonthDayCount = dayCount - daysInMonth;
+			                calendarHTML += `<td class="mute">${nextMonthDayCount}</td>`;
+			                dayCount++;
+			            } else {
+			                // 今日の日付にclassを付ける
+			                if (dayCount === today && month === currentMonth) {
+			                    calendarHTML += `<td class="today">${dayCount}</td>`;
+			                } 
+			                // 月曜日にclassを付ける
+			                else if (j === 1) {
+			                    calendarHTML += `<td class="off">${dayCount}</td>`;
+			                } else {
+			                    calendarHTML += `<td>${dayCount}</td>`;
+			                }
+			                dayCount++;
+			            }
+			        }
+
+			        calendarHTML += '</tr>';
+
+			        if (dayCount - daysInMonth > 7) {
+			            break;
+			        }
+			    }
+
+			    calendarHTML += '</tbody></table>';
+
+			    return calendarHTML;
+			}
+
+			document.getElementById('calendar').innerHTML = createCalendar(currentMonth);
+		</script>
+		
+				
+		<!--としょんかの詳細情報-->
+		<div>
+			アクセス　東京都港区芝５丁目３３<br>
+			営業時間　9:00 ～ 20:00<br>
+			定休日　月曜日<br>
+			概要　広々とした読書スペースがあり、ゆったりとした時間が過ごせます。<br>
+		</div>
+		
+		<!--リマインド-->
 
 </body>
 </html>
