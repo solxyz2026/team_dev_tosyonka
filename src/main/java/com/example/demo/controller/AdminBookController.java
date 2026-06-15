@@ -61,8 +61,5 @@ public class AdminBookController {
 		this.book = book;
 		this.bookrepository = bookrepository;
 	}
-<<<<<<< HEAD
-=======
 
->>>>>>> refs/heads/ryo
 }
