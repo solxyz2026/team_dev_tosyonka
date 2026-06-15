@@ -51,6 +51,18 @@ public class Book {
 		this.category = category;
 	}
 
+	public Book(Integer id, String title, String publisher, String summary, LocalDate date, Writer writer,
+			Category category) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.publisher = publisher;
+		this.summary = summary;
+		this.date = date;
+		this.writer = writer;
+		this.category = category;
+	}
+
 	public Integer getId() {
 		return id;
 	}
