@@ -42,12 +42,14 @@ public class UserMenuController {
 		model.addAttribute("newsList", newsList);
 
 		//予約内容の取得
+		//ReservationのuserIdとuserIdが同じものを取得する
 		List<Reservation> reservationsList = reservationRepository.findByUserId(userId);
-		model.addAttribute("reservationsList", reservationsList);
 		System.out.println(reservationsList.size());
 
+		//ReservationのReservationdetailsの値をゲットする
+		//変数型はReservationdetail
 		List<Reservationdetail> detail = reservationsList.get(0).getReservationdetails();
-		System.out.println("a = " + detail.size());
+		System.out.println(detail.size());
 		model.addAttribute("detail", detail);
 
 		return "userMenu";

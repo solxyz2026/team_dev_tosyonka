@@ -239,8 +239,8 @@ VALUES
 (1, 2, FALSE),
 (1, 8, FALSE),
 (1, 22, FALSE),
-(4, 30, FALSE),
-(5, 34, FALSE),
+(2, 30, FALSE),
+(2, 34, FALSE),
 (6, 36, FALSE),
 (7, 40, FALSE),
 (8, 42, FALSE);
