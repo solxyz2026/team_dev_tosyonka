@@ -36,8 +36,8 @@
 				<th>状況</th>
 			</tr>
 			<tr th:each="reservation:${reservationsList}">
-				<td>[[${reservation.reservationdetails.book.name}]]</td>
-				<td>[[${reservation.reservationdetails.id}]]</td>
+				<td>[[${reservation.reservationdetails.book.title}]]</td>
+				<td>[[${reservation.reservationdetails.reservationStatus}]]</td>
 			</tr>	
 		</table>
 				

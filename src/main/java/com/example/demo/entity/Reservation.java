@@ -21,7 +21,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "reservations")
+@Table(name = "resevations")
 @Component
 public class Reservation {
 

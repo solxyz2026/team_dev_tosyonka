@@ -237,8 +237,8 @@ INSERT INTO resevationdetails
 (resevation_id, book_id, resevation_status)
 VALUES
 (1, 2, FALSE),
-(2, 8, FALSE),
-(3, 22, FALSE),
+(1, 8, FALSE),
+(1, 22, FALSE),
 (4, 30, FALSE),
 (5, 34, FALSE),
 (6, 36, FALSE),

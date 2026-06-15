@@ -2,7 +2,6 @@
 
 package com.example.demo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -35,14 +34,14 @@ public class UserMenuController {
 	@GetMapping("/")
 	public String index(Model model) {
 		//int userId = account.getId();
-		int userId = 1;
+		int userId = 3;
 
 		//お知らせ内容の取得
 		List<Announcement> newsList = announcementRepository.findAll();
 		model.addAttribute("newsList", newsList);
 
 		//予約内容の取得
-		List<Reservation> reservationsList = new ArrayList<>(); //reservationRepository.findAll();//ByUserId(userId);
+		List<Reservation> reservationsList = reservationRepository.findByUserId(userId);
 		model.addAttribute("reservationsList", reservationsList);
 		System.out.println(reservationsList.size());
 
