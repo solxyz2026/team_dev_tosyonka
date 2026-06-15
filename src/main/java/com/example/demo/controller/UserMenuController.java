@@ -1,3 +1,5 @@
+//大森
+
 package com.example.demo.controller;
 
 import java.util.List;
@@ -31,7 +33,8 @@ public class UserMenuController {
 	//メイン画面の表示
 	@GetMapping("/")
 	public String index(Model model) {
-		int userId = account.getId();
+		//int userId = account.getId();
+		int userId = 1;
 
 		//お知らせ内容の取得
 		List<Announcement> newsList = announcementRepository.findAll();
@@ -40,6 +43,7 @@ public class UserMenuController {
 		//予約内容の取得
 		List<Reservation> reservationsList = reservationRepository.findByUserId(userId);
 		model.addAttribute("reservationsList", reservationsList);
+		System.out.println(reservationsList);
 
 		return "userMenu";
 	}
