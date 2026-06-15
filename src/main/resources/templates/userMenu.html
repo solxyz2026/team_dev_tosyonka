@@ -15,8 +15,9 @@
 			<a href="/user/logout">ログアウト</a><br>
 			<a href="/user/mypage">マイページ</a><br>
 			<a href="/user/reservations">予約</a><br>
-			<a href="/user/search">本検索</a><br>
+			<a href="/user/search">本検索</a>
 		</div>
+		<br>
 		
 		<!--お知らせ表示-->
 		<table border="1">
@@ -27,6 +28,7 @@
 				<td>[[${news.content}]]</td>
 			</tr>
 		</table>
+		<br>
 				
 		<!--予約状況-->
 		<div>予約状況</div>
@@ -36,9 +38,8 @@
 				<th>状況</th>
 			</tr>
 			<tr th:each="details:${detail}">
-				
 					<td>[[${details.book.title}]]</td>
-					<td>[[${details.reservationStatus}]]</td>
+					<td>[[${details.status}]]</td>
 			</tr>	
 		</table>
 		<br>
@@ -118,6 +119,7 @@
 		
 				
 		<!--としょんかの詳細情報-->
+		<br>
 		<div>
 			アクセス　東京都港区芝５丁目３３<br>
 			営業時間　9:00 ～ 20:00<br>
