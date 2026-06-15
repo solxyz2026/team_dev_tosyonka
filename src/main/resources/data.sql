@@ -95,7 +95,7 @@ VALUES
 
 
 
-INSERT INTO categoris(category_name)
+INSERT INTO categories(category_name)
 VALUES
 ('IT・プログラミング'),
 ('歴史'),
@@ -221,7 +221,7 @@ VALUES
 (10, 40),
 (10, 42);
 
-INSERT INTO resevations
+INSERT INTO reservations
 (user_id, reservation_date)
 VALUES
 (3, '2025-06-11'),
@@ -233,8 +233,8 @@ VALUES
 (9, '2025-06-14'),
 (10, '2025-06-14');
 
-INSERT INTO resevationdetails
-(resevation_id, book_id, resevation_status)
+INSERT INTO reservationdetails
+(reservation_id, book_id, reservation_status)
 VALUES
 (1, 2, FALSE),
 (1, 8, FALSE),

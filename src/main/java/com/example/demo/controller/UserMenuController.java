@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.entity.Announcement;
 import com.example.demo.entity.Reservation;
+import com.example.demo.entity.Reservationdetail;
 import com.example.demo.model.Account;
 import com.example.demo.repository.AnnouncementRepository;
 import com.example.demo.repository.ReservationRepository;
@@ -44,6 +45,10 @@ public class UserMenuController {
 		List<Reservation> reservationsList = reservationRepository.findByUserId(userId);
 		model.addAttribute("reservationsList", reservationsList);
 		System.out.println(reservationsList.size());
+
+		List<Reservationdetail> detail = reservationsList.get(0).getReservationdetails();
+		System.out.println("a = " + detail.size());
+		model.addAttribute("detail", detail);
 
 		return "userMenu";
 	}
