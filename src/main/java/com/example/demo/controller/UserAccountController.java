@@ -138,7 +138,7 @@ public class UserAccountController {
 
 		User user = new User(name, birthday, telNumber, email, password, "User");
 		userRepository.save(user);
-		return "UserHome";
+		return "UserMenu";
 	}
 
 }
