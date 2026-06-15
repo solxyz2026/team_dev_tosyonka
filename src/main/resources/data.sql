@@ -181,3 +181,14 @@ VALUES
 ('映画史を学ぶ', 45, '芸術社', '映画の歴史を概説', FALSE, '2022-10-09', 10),
 ('写真撮影テクニック', 46, '芸術社', '写真撮影のコツを紹介', TRUE, '2023-01-25', 10),
 ('デザインの基本', 47, '芸術社', 'デザイン原則を学ぶ', FALSE, '2021-07-07', 10);
+
+--予約
+INSERT INTO resevations
+(user_id,reservation_date)
+VALUES
+(1,'2026-6-20');
+
+INSERT INTO resevationdetails
+(resevation_id,book_id,resevation_status)
+VALUES
+(1,2,'false');
