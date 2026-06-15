@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>本の追加</title>
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+	<main>
+		<h1>本の追加</h1>
+		<p th:each="error:${errors}" id="error">[[${error}]]</p>
+
+
+		<form action="/admin/books" method="post">
+			タイトル<input type="text" name="title"><br>
+			著者<input type="text" name="writer_id">
+			出版社<input type="text" name="publisher">
+			出版月<input type="month" name="month">
+			<select name="カテゴリー">
+				<option value="">IT</option>
+				<option value="">歴史</option>
+				<option value="">科学</option>
+				<option value="">ビジネス</option>
+				<option value="">文学</option>
+				<option value="">旅行</option>
+				<option value="">健康</option>
+				<option value="">スポーツ</option>
+				<option value="">語学</option>
+				<option value="">芸術</option>
+			</select>
+			<label>
+				<input type="checkbox" name="tag" value="field_guide"> 図鑑
+				<input type="checkbox" name="tag" value="romance"> 恋愛
+				<input type="checkbox" name="tag" value="horror"> ホラー
+				<input type="checkbox" name="tag" value="novel"> 小説
+			</label>
+			本の要約文<input type="text" name="summary">
+			<button>登録</button>
+		</form>
+	</main>
+</body>
+
+</html>
