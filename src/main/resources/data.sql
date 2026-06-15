@@ -247,7 +247,7 @@ VALUES
 (7, 40, FALSE),
 (8, 42, FALSE);
 
-=======
+
 --追加　原田
 INSERT INTO rentals
 (user_id, rental_date, drop_date, return_date)
@@ -310,4 +310,3 @@ VALUES
 (6, 36, FALSE),
 (7, 40, FALSE),
 (8, 42, FALSE);
->>>>>>> refs/heads/Daigo
