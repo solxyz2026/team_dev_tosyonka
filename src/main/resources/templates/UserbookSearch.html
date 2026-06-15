@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>📚 本を探す</title>
+<style>
+
+</style>
+</head>
+<body>
+	<!--作成　北嶋-->
+	<div >
+	    <h2>🔍 本を探す</h2>
+	    <form method="GET" th:action="@{/user/search}" >
+			<input type="text" name="keyword" placeholder="本のタイトル、著者で検索"
+			th:value="${keyword}">
+			<button type="submit">検索</button>
+	    </form>
+	</div>
+
+	<!-- 検索結果の表示 -->
+	<div th:if="${keyword}">
+		<div class="result-info">
+			<p>
+				「<strong th:text="${keyword}"></strong>」の検索結果:
+				<strong th:text="${books.size()}"></strong> 件
+			</p>
+		</div>
+
+		<!-- 検索結果がない場合 -->
+		<div th:if="${books.isEmpty()}" >
+			<p>📭 検索に該当する本が見つかりませんでした。</p>
+			<p>別のキーワードで検索してみてください。</p>
+		</div>
+
+		<!-- 本の一覧表示 -->
+		<div th:if="${!books.isEmpty()}" >
+			<div th:each="book : ${books}" >
+				<p class="book-title">[[${book.title}]]</p>
+				<div class="book-info">
+					<p><strong>著者:</strong> <span th:text="${book.writer.writerName}">著者名</span></p>
+					<p><strong>出版社:</strong> <span th:text="${book.publisher}">出版社</span></p>
+					<p><strong>出版日:</strong> <span th:text="${book.date}">出版日</span></p>
+					<p><strong>貸出状況:</strong> 
+						<span th:text="${book.loans} ? '貸出中' : '利用可能'"></span>
+					</p>
+					<p th:if="${book.summary}">
+						<strong>説明:</strong> <span th:text="${book.summary}">説明</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

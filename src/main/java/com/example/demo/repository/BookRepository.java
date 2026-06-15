@@ -13,10 +13,18 @@ import com.example.demo.entity.Book;
 public interface BookRepository extends JpaRepository<Book, Long> {
     
     //タイトルまたは著者名で本を検索（大文字小文字区別なし）
+<<<<<<< HEAD
      
     @Query("SELECT b FROM Book b WHERE " +
            "LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
            "LOWER(b.writer.writerName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
      
+=======
+    
+    @Query("SELECT b FROM Book b WHERE " +
+           "LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(b.writer.writerName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+           
+>>>>>>> refs/heads/kitajima
     List<Book> searchByTitleOrWriter(@Param("keyword") String keyword);
 }
