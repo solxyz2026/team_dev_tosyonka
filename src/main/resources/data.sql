@@ -184,17 +184,28 @@ VALUES
 
 --予約 大森
 INSERT INTO resevations
-(user_id,reservation_date)
+(user_id, reservation_date)
 VALUES
-(1,'2026-6-20'),
-(1,'2026-6-20');
+(3, '2025-06-11'),
+(4, '2025-06-11'),
+(5, '2025-06-12'),
+(6, '2025-06-12'),
+(7, '2025-06-13'),
+(8, '2025-06-13'),
+(9, '2025-06-14'),
+(10, '2025-06-14');
 
 INSERT INTO resevationdetails
-(resevation_id,book_id,resevation_status)
+(resevation_id, book_id, resevation_status)
 VALUES
-(1,2,'false'),
-(2,2,'false'),
-(1,3,'false');
+(1, 2, FALSE),
+(2, 8, FALSE),
+(3, 22, FALSE),
+(4, 30, FALSE),
+(5, 34, FALSE),
+(6, 36, FALSE),
+(7, 40, FALSE),
+(8, 42, FALSE);
 
 
 --追加　原田
@@ -211,4 +222,28 @@ VALUES
 (8, '2025-06-08', '2025-06-22', NULL),
 (9, '2025-06-09', '2025-06-23', NULL),
 (10, '2025-06-10', '2025-06-24', NULL);
+
+INSERT INTO rentaldetails
+(rental_id, book_id)
+VALUES
+(1, 2),
+(1, 4),
+(2, 6),
+(2, 8),
+(3, 10),
+(3, 12),
+(4, 14),
+(4, 18),
+(5, 20),
+(5, 22),
+(6, 24),
+(6, 26),
+(7, 28),
+(7, 30),
+(8, 32),
+(8, 34),
+(9, 36),
+(9, 38),
+(10, 40),
+(10, 42);
 
