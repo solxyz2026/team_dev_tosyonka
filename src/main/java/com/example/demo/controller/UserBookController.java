@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
@@ -20,20 +22,32 @@ public class UserBookController {
 	private BookRepository bookRepository;
 
 	
-	@GetMapping("/user/search")
+	@GetMapping("user/search")
 	public String searchGet(HttpSession session, Model model) {
-		
-		Integer userId = (Integer) session.getAttribute("userId");
+	    Integer userId = (Integer) session.getAttribute("userId");
+	    String userName = (String) session.getAttribute("userName");
 
-		if (userId == null) {
-			return "redirect:/user/login";  
-		}
+	    if (userId == null) {
+	        return "redirect:/user/login";
+	    }
 
-		String userName = (String) session.getAttribute("userName");
-		model.addAttribute("userName", userName);
-		model.addAttribute("books", new java.util.ArrayList<>()); 
+	    model.addAttribute("userName", userName);
 
-		return "UserSearch";
+	    try {
+	        // ✅ すべての本を取得
+	        List<Book> books = bookRepository.findAll();
+	        
+	        // ✅ ID の若い順にソート
+	        books.sort(Comparator.comparing(Book::getId));
+	        
+	        System.out.println("📚 全本取得: " + books.size() + "冊");
+	        model.addAttribute("books", books);
+	    } catch (Exception e) {
+	        System.out.println("❌ 全本取得エラー: " + e.getMessage());
+	        model.addAttribute("books", new ArrayList<>());
+	    }
+
+	    return "UserSearch";
 	}
 
 	
