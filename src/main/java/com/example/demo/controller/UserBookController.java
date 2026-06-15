@@ -52,7 +52,7 @@ public class UserBookController {
 
 		List<Book> books;
 		if (keyword != null && !keyword.trim().isEmpty()) {
-			// タイトルと著者名 両方で検索
+			
 			books = bookRepository.searchByTitleOrWriter(keyword);
 			System.out.println("🔍 検索: " + keyword);
 			System.out.println("📚 検索結果: " + books.size() + "冊");

@@ -1,3 +1,5 @@
+<!--大森-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -32,6 +34,10 @@
 			<tr>
 				<th>本のタイトル</th>
 				<th>状況</th>
+			</tr>
+			<tr th:each="reservations:${reservationsList}">
+				<td>[[${reservations.reservationdetails}]]</td>
+				<td>[[${reservations.reservationdetails.reservationStatus}]]</td>
 			</tr>	
 		</table>
 				
