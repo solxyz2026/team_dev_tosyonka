@@ -1,8 +1,8 @@
-//大森
-
 package com.example.demo.controller;
 
 import java.util.List;
+
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,19 +32,28 @@ public class UserMenuController {
 
 	//メイン画面の表示
 	@GetMapping("/")
-	public String index(Model model) {
-		//int userId = account.getId();
-		int userId = 3;
-
+	public String index(HttpSession session, Model model) {
+		Integer userId = (Integer) session.getAttribute("userId");
+		
+		if (userId == null) {
+			System.out.println("❌ セッションなし → ログイン画面へ");
+			return "redirect:/user/login";
+		}
+		
+		
 		//お知らせ内容の取得
 		List<Announcement> newsList = announcementRepository.findAll();
 		model.addAttribute("newsList", newsList);
 
 		//予約内容の取得
-		List<Reservation> reservationsList = reservationRepository.findByUserId(userId);
-		model.addAttribute("reservationsList", reservationsList);
-		System.out.println(reservationsList.size());
-
+		try {
+			List<Reservation> reservationsList = reservationRepository.findByUserId(userId);
+			model.addAttribute("reservationsList", reservationsList);
+			System.out.println("予約数: " + reservationsList.size());
+		} catch (Exception e) {
+			System.out.println("予約取得エラー: " + e.getMessage());
+			model.addAttribute("reservationsList", new java.util.ArrayList<>());
+		}
 		return "userMenu";
 	}
 }

@@ -19,30 +19,32 @@ public class UserBookController {
 	@Autowired
 	private BookRepository bookRepository;
 
+	
 	@GetMapping("/user/search")
 	public String searchGet(HttpSession session, Model model) {
-
+		
 		Integer userId = (Integer) session.getAttribute("userId");
 
 		if (userId == null) {
-			return "redirect:/user/login";
+			return "redirect:/user/login";  
 		}
 
 		String userName = (String) session.getAttribute("userName");
 		model.addAttribute("userName", userName);
-		model.addAttribute("books", new java.util.ArrayList<>());
+		model.addAttribute("books", new java.util.ArrayList<>()); 
 
 		return "UserSearch";
 	}
 
+	
 	@PostMapping("/user/search")
 	public String search(@RequestParam(value = "keyword", required = false) String keyword,
 			HttpSession session, Model model) {
-
+		
 		Integer userId = (Integer) session.getAttribute("userId");
 
 		if (userId == null) {
-			return "redirect:/user/login"; // 
+			return "redirect:/user/login";  // 
 		}
 
 		String userName = (String) session.getAttribute("userName");
@@ -50,13 +52,13 @@ public class UserBookController {
 
 		List<Book> books;
 		if (keyword != null && !keyword.trim().isEmpty()) {
-
+			
 			books = bookRepository.searchByTitleOrWriter(keyword);
 			System.out.println("検索: " + keyword);
 			System.out.println("検索結果: " + books.size() + "冊");
 			model.addAttribute("keyword", keyword);
 		} else {
-
+	
 			books = bookRepository.findAll();
 			System.out.println("全本取得: " + books.size() + "冊");
 		}
