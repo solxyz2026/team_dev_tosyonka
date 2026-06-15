@@ -46,6 +46,6 @@ public class WriterController {
 		//				model.addAttribute("tasks", taskList);
 
 		return "redirect:/writers";
-
 	}
+
 }
