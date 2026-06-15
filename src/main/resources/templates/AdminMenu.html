@@ -1,10 +1,49 @@
+<!--山本-->
+
 <!DOCTYPE html>
-<html xmlns:th = "http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset = "UTF-8">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<title>管理者画面</title>
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+	<h1>管理者画面</h1>
+		
+		<!--リンク-->
+		<div>
+			<a href="/user/logout">ログアウト</a><br>
+			<a href="/user/mypage">ホームページ</a><br>
+			<a href="/user/reservations">在庫一覧</a><br>
+			<a href="/user/search">本追加</a><br>
+			<a href="/user/search">著者の追加</a><br>
+			<a href="/user/search">カテゴリー追加</a><br>
+			<a href="/user/search">予約一覧</a><br>
+			<a href="/user/search">貸し出し状況</a><br>
+		</div>
+		
+		<!--お知らせ表示-->
+		<table border="1">
+			<tr>
+				<th>お知らせ</th>
+			</tr>
+			<tr th:each="news:${newsList}">
+				<td>[[${news.content}]]</td>
+			</tr>
+		</table>
+				
+		<!--予約状況-->
+		<div>予約状況</div>
+		<table border="1">
+			<tr>
+				<th>本のタイトル</th>
+				<th>状況</th>
+			</tr>
+			<tr th:each="reservations:${reservationsList}">
+				<td>[[${reservations.reservationdetails}]]</td>
+				<td>[[${reservations.reservationdetails.reservationStatus}]]</td>
+			</tr>	
+		</table>
 
 </body>
 </html>
