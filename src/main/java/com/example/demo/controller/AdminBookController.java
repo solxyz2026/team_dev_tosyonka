@@ -17,6 +17,11 @@ import com.example.demo.repository.BookRepository;
 @RequestMapping("/admin")
 public class AdminBookController {
 
+	@GetMapping("")
+	public String index() {
+		return "
+	}
+
 	@GetMapping("/books/add")
 	public String addForm() {
 		return "AdminBooksAdd";

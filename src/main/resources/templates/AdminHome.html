@@ -27,17 +27,52 @@
 
 	<form action="/admin/books/search" method="post">
 		本の登録ID<input type="text" name="book_id">
+		<button>検索</button>
+
+		<table border="1">
+			<tr>
+				<th>ID</th>
+				<th>タイトル</th>
+				<th>著者</th>
+				<th>カテゴリー</th>
+				<th>タグ</th>
+			</tr>
+			<tr th:each="details:${detail}">
+				<td>[[${details.book.title}]]</td>
+				<td>[[${details.status}]]</td>
+			</tr>
+		</table>
+		<br>
+	</form>
+	<formform action="/admin/-/-" method="post">
 		<button>追加</button>
-	</form>
+		</form>
+		<hr>
 
-	<hr>
-	
-	<form action="/admin/user/search" method="post"> 
-<!--		URLマッピングにユーザID検索っぽいのがない-->
-	ユーザID<input type="text" name="user_id">
-	<button>確定</button>
-	</form>
+		<form action="/admin/user/search" method="post">
+			<!--		URLマッピングにユーザID検索っぽいのがない-->
+			貸し出し内容
+			<table border="1">
+						<tr>
+							<th>ID</th>
+							<th>タイトル</th>
+							<th>著者</th>
+							<th>カテゴリー</th>
+							<th>タグ</th>
+						</tr>
+						<tr th:each="details:${detail}">
+							<td>[[${details.book.title}]]</td>
+							<td>[[${details.status}]]</td>
+						</tr>
+					</table>
+			
+			ユーザID<input type="text" name="user_id">
+			<button>検索</button>
+		</form>
 
+		<form action="/admin/-/-" method="post">
+					<button>確定</button>
+				</form>
 </body>
 
 </html>
