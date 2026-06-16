@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>本を探す</title>
+<title>在庫一覧</title>
 <style>
 
 </style>
@@ -10,7 +10,7 @@
 <body>
 	<!--作成　北嶋-->
 	<div>
-	    <h2>本を探す</h2>
+	    <h2>在庫一覧</h2>
 	    <form method="POST" th:action="@{/user/search}" >  
 			<input type="text" name="keyword" placeholder="本のタイトル、著者で検索"
 			th:value="${keyword}">
