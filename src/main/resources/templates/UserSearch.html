@@ -4,78 +4,106 @@
 <meta charset="UTF-8">
 <title>本を探す</title>
 <style>
-
+	
 </style>
 </head>
 <body>
 	<!--作成　北嶋-->
-	<div class="search-section">
+	<div >
 	    <h2>本を探す</h2>
 	    <form method="POST" th:action="@{/user/search}" class="search-form">
-			<input type="text" name="keyword" placeholder="本のタイトル、著者で検索"
+			<!-- キーワード検索 -->
+			<input type="text" name="keyword" placeholder="タイトルまたは著者で検索"
 			th:value="${keyword}">
+			
+			<!-- カテゴリ選択 -->
+			<select>
+				<option value="0">カテゴリを選択</option>
+				<option th:each="category : ${categories}" 
+					th:value="${category.id}"
+					th:text="${category.categoryName}"
+					th:selected="${categoryId == category.id}">
+				</option>
+			</select>
+			
 			<button type="submit">検索</button>
 	    </form>
 	</div>
-
+<div>
+	<a th:href="@{/user/}">← ユーザーメニューに戻る</a>
+</div>
 	<!-- 本一覧 -->
-	<div class="books-table-section">
-		<!-- キーワードありの場合 -->
-		<div th:if="${keyword}">
+	<div>
+		<!-- キーワードまたはカテゴリで検索した場合 -->
+		<div th:if="${keyword != null or categoryId != null}">
 			<div class="result-info">
 				<p>
-					「<strong th:text="${keyword}"></strong>」の検索結果:
+					<!-- キーワード＋カテゴリ -->
+					<span th:if="${keyword != null and categoryId != null}">
+						「<strong th:text="${keyword}"></strong>」で、カテゴリ「<strong th:each="cat : ${categories}" th:if="${cat.id == categoryId}" th:text="${cat.categoryName}"></strong>」の検索結果:
+					</span>
+					<!-- キーワードのみ -->
+					<span th:if="${keyword != null and categoryId == null}">
+						「<strong th:text="${keyword}"></strong>」の検索結果:
+					</span>
+					<!-- カテゴリのみ -->
+					<span th:if="${keyword == null and categoryId != null}">
+						カテゴリ「<strong th:each="cat : ${categories}" th:if="${cat.id == categoryId}" th:text="${cat.categoryName}"></strong>」の検索結果:
+					</span>
 					<strong th:text="${books.size()}"></strong> 件
 				</p>
 			</div>
 
 			<!-- 検索結果がない場合 -->
-			<div th:if="${books.isEmpty()}" class="no-results">
+			<div th:if="${books.isEmpty()}">
 				<p>検索に該当する本が見つかりませんでした。</p>
-				<p>別のキーワードで検索してみてください。</p>
+				<p>別のキーワードやカテゴリで検索してみてください。</p>
 			</div>
 		</div>
 
-		<!-- キーワードなし（初期表示）の場合 -->
-		<div th:unless="${keyword}">
+		<!-- キーワードなし・カテゴリなしの場合 -->
+		<div th:unless="${keyword != null or categoryId != null}">
 			<div class="initial-info">
-				<p>📚 すべての本を表示しています。（合計: <strong th:text="${books.size()}"></strong> 冊）</p>
+				<p>すべての本を表示しています。（合計: <strong th:text="${books.size()}"></strong> 冊）</p>
 			</div>
 		</div>
 
-	
-			<div th:if="${!books.isEmpty()}">
-				<table>
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>タイトル</th>
-							<th>著者</th>
-							
-						</tr>
-					</thead>
-					<tbody>
-					
-						<tr th:each="book : ${books}">
-							<td th:text="${book.id}">ID</td>
-							<td th:text="${book.title}">タイトル</td>
-							<td th:text="${book.writer.writerName}">著者名</td>
-							<td th:text="${book.publisher}">出版社</td>
-							<td th:text="${book.date}">出版日</td>
-							<td>
-					
-								<span th:if="${book.loans}" class="status-borrowed">貸出中</span>
-								<span th:unless="${book.loans}" class="status-available">利用可能</span>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+		<!-- 本の一覧-->
+		<div th:if="${!books.isEmpty()}">
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>タイトル</th>
+						<th>著者</th>
+						<th>出版社</th>
+						<th>出版日</th>
+						<th>貸出状況</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- th:each で本を一覧表示（IDでソート済み） -->
+					<tr th:each="book : ${books}">
+						<td th:text="${book.id}">ID</td>
+						<td th:text="${book.title}">タイトル</td>
+						<td th:text="${book.writer.writerName}">著者名</td>
+						<td th:text="${book.publisher}">出版社</td>
+						<td th:text="${book.date}">出版日</td>
+						<td>
+							<!-- 貸出状況を色分け -->
+							<span th:if="${book.loans}" class="status-borrowed">貸出中</span>
+							<span th:unless="${book.loans}" class="status-available">利用可能</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
+	</div>
 
-	
-	<div class="back-link">
+	<!-- 戻るボタン -->
+	<div>
 		<a th:href="@{/user/}">← ユーザーメニューに戻る</a>
+		<a th:href="@{/user/search}">← 検索に戻る</a>
 	</div>
 
 </body>

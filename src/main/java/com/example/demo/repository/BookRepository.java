@@ -10,16 +10,28 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entity.Book;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Long> {
-    //作成　北嶋
-    //タイトルで本を検索（大文字小文字区別なし）
+public interface BookRepository extends JpaRepository<Book, Integer> {
     
+    //タイトルで本を検索
+     
     List<Book> findByTitleContainingIgnoreCase(String title);
     
-    //タイトルまたは著者名で本を検索（大文字小文字区別なし）
-    
+    // タイトルまたは著者名で本を検索
+     
     @Query("SELECT b FROM Book b WHERE " +
            "LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
            "LOWER(b.writer.writerName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Book> searchByTitleOrWriter(@Param("keyword") String keyword);
+    
+    //キーワードとカテゴリの組み合わせで検索
+    
+    @Query("SELECT b FROM Book b WHERE " +
+           "(LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(b.writer.writerName) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+           "AND b.category.id = :categoryId")
+    List<Book> searchByKeywordAndCategory(@Param("keyword") String keyword, 
+                                          @Param("categoryId") Integer categoryId);
+    
+    //カテゴリのみで検索
+    List<Book> findByCategoryId(Integer categoryId);
 }
