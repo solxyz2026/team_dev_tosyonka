@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -127,5 +128,44 @@ public class UserBookController {
 		}
 
 		return "UserSearch";
+	}
+	@GetMapping("/book/{book_id}")
+	public String show(
+			@PathVariable Integer book_id,
+			HttpSession session, Model model) {
+		
+	
+		// セッションチェック
+		Integer userId = account.getId();
+		String userName = account.getName();
+ 
+		if (userId == null) {
+			System.out.println("セッションなし → ログイン画面へリダイレクト");
+			return "redirect:/user/login";
+		}
+ 
+		
+		model.addAttribute("userName", userName);
+ 
+		try {
+			Book book = bookRepository.findById(book_id).orElse(null);
+			
+			if (book == null) {
+				System.out.println("本が見つかりません: book_id=" + book_id);
+				model.addAttribute("error", "本が見つかりませんでした。");
+				return "UserSearch";
+			}
+			
+			
+			model.addAttribute("book", book);
+			
+		} catch (Exception e) {
+			System.out.println("本詳細取得エラー: " + e.getMessage());
+			e.printStackTrace();
+			model.addAttribute("error", "本の詳細情報取得中にエラーが発生しました。");
+		}
+ 
+		
+		return "BookDetail";
 	}
 }

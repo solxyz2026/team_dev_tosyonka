@@ -4,56 +4,201 @@
 <meta charset="UTF-8">
 <title>本を探す</title>
 <style>
-
+	body {
+		font-family: 'Arial', sans-serif;
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 20px;
+		background-color: #ffffff;
+	}
+	
+	.container {
+		padding: 0;
+	}
+	
+	h2 {
+		font-size: 20px;
+		margin: 0 0 20px 0;
+		border-bottom: 1px solid #000;
+		padding-bottom: 10px;
+	}
+	
+	/* 検索フォーム */
+	.search-section {
+		margin-bottom: 30px;
+		padding-bottom: 20px;
+		border-bottom: 1px solid #000;
+	}
+	
+	.search-form {
+		display: flex;
+		gap: 10px;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+	
+	.search-form input,
+	.search-form select {
+		padding: 10px;
+		border: 1px solid #000;
+		font-size: 14px;
+	}
+	
+	.search-form input[type="text"] {
+		flex: 1;
+		min-width: 200px;
+	}
+	
+	.search-form select {
+		min-width: 150px;
+	}
+	
+	.search-form button {
+		padding: 10px 20px;
+		border: 1px solid #000;
+		background-color: #ffffff;
+		cursor: pointer;
+		font-weight: bold;
+	}
+	
+	.search-form button:hover {
+		background-color: #f5f5f5;
+	}
+	
+	/* テーブル */
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 20px 0;
+	}
+	
+	table thead {
+		border: 1px solid #000;
+	}
+	
+	table th {
+		padding: 12px;
+		text-align: left;
+		font-weight: bold;
+		border-right: 1px solid #000;
+		background-color: #ffffff;
+	}
+	
+	table th:last-child {
+		border-right: none;
+	}
+	
+	table td {
+		padding: 12px;
+		border: 1px solid #000;
+	}
+	
+	table tbody tr:hover {
+		background-color: #f9f9f9;
+	}
+	
+	/* リンク */
+	a {
+		color: #000;
+		text-decoration: none;
+	}
+	
+	a:hover {
+		text-decoration: underline;
+	}
+	
+	/* ステータス */
+	.status-available {
+		font-weight: bold;
+	}
+	
+	.status-borrowed {
+		font-weight: bold;
+	}
+	
+	/* メッセージ */
+	.no-results {
+		padding: 15px;
+		border: 1px solid #000;
+		margin: 20px 0;
+	}
+	
+	/* ボタングループ */
+	.button-group {
+		margin-top: 20px;
+		display: flex;
+		gap: 10px;
+	}
+	
+	.btn {
+		padding: 10px 20px;
+		border: 1px solid #000;
+		background-color: #ffffff;
+		cursor: pointer;
+		font-weight: bold;
+		text-decoration: none;
+		display: inline-block;
+	}
+	
+	.btn:hover {
+		background-color: #f5f5f5;
+	}
 </style>
 </head>
 <body>
-	<div class="search-section">
-	    <h2>本を探す</h2>
-	    <form id="searchForm" method="POST" th:action="@{/user/search}" class="search-form">
-			<input type="text" name="keyword" id="keyword" placeholder="タイトルまたは著者で検索" th:value="${keyword}">
-			<select name="categoryId" id="categoryId">
-				<option value="0">カテゴリを選択</option>
-				<option th:each="category : ${categories}" 
-					th:value="${category.id}"
-					th:text="${category.categoryName}"
-					th:selected="${categoryId == category.id}">
-				</option>
-			</select>
-			<button type="submit">検索</button>
-	    </form>
+	<div class="container">
+		<!-- 検索セクション -->
+		<div class="search-section">
+		    <h2>本を探す</h2>
+		    <form id="searchForm" method="POST" th:action="@{/user/search}" class="search-form">
+				<input type="text" name="keyword" id="keyword" placeholder="タイトルまたは著者で検索" th:value="${keyword}">
+				<select name="categoryId" id="categoryId">
+					<option value="0">カテゴリを選択</option>
+					<option th:each="category : ${categories}"
+						th:value="${category.id}"
+						th:text="${category.categoryName}"
+						th:selected="${categoryId == category.id}">
+					</option>
+				</select>
+				<button type="submit">検索</button>
+		    </form>
+		</div>
+
+		<!-- 本一覧テーブル -->
+		<table th:if="${!books.isEmpty()}">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>タイトル</th>
+					<th>著者</th>
+					<th>出版社</th>
+					<th>貸出状況</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="book : ${books}">
+					<td th:text="${book.id}">ID</td>
+					<td><a th:href="@{/user/book/{book_id}(book_id=${book.id})}" th:text="${book.title}"></a></td>
+					<td th:text="${book.writer.writerName}">著者名</td>
+					<td th:text="${book.publisher}">出版社</td>
+					<td>
+						<span th:if="${book.loans}" class="status-borrowed">貸出中</span>
+						<span th:unless="${book.loans}" class="status-available">利用可能</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<!-- 検索結果がない場合 -->
+		<div th:if="${books.isEmpty()}" class="no-results">
+			<p>本が見つかりませんでした。</p>
+		</div>
+
+		<!-- ボタングループ -->
+		<div class="button-group">
+			<a class="btn" th:href="@{/user/}">ユーザーメニューに戻る</a>
+			<a class="btn" th:href="@{/user/search}">検索に戻る</a>
+		</div>
 	</div>
-
-	<!-- 本一覧 -->
-	<table th:if="${!books.isEmpty()}">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>タイトル</th>
-				<th>著者</th>
-				<th>出版社</th>
-				<th>貸出状況</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="book : ${books}">
-				<td th:text="${book.id}">ID</td>
-				<td><a th:href="@{/admin/books/{bookId}(bookId=${book.id})}">[[${book.title}]]</a></td>
-				<td th:text="${book.writer.writerName}">著者名</td>
-				<td th:text="${book.publisher}">出版社</td>
-				<td>
-					<span th:if="${book.loans}" class="status-borrowed">貸出中</span>
-					<span th:unless="${book.loans}" class="status-available">利用可能</span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<div th:if="${books.isEmpty()}">
-		<p>本が見つかりませんでした。</p>
-	</div>
-
-	<a th:href="@{/user/}">← ユーザーメニューに戻る</a>
-	<a th:href="@{/user/search}">← 検索に戻る</a>
 </body>
 </html>
