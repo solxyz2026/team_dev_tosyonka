@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.entity.Announcement;
+import com.example.demo.entity.Rental;
 import com.example.demo.entity.Reservation;
 import com.example.demo.entity.Reservationdetail;
 import com.example.demo.model.Account;
@@ -36,8 +37,7 @@ public class UserMenuController {
 	//メイン画面の表示
 	@GetMapping("/")
 	public String index(Model model) {
-		//int userId = account.getId();
-		int userId = 3;
+		int userId = account.getId();
 
 		//お知らせ内容の取得
 		List<Announcement> newsList = announcementRepository.findAll();
@@ -50,14 +50,19 @@ public class UserMenuController {
 		model.addAttribute("reservationsList", reservationsList);
 		System.out.println(reservationsList.size());
 
-		List<Reservationdetail> detail = reservationsList.get(0).getReservationdetails();
-		System.out.println("a = " + detail.size());
-		model.addAttribute("detail", detail);
+		if (reservationsList.size() != 0) {
+			List<Reservationdetail> detail = reservationsList.get(0).getReservationdetails();
+			System.out.println("a = " + detail.size());
+			model.addAttribute("detail", detail);
+		}
 
 		//翌日返却日の本の取得
 		LocalDate tomorrow = LocalDate.now().plusDays(1);
 		System.out.println(tomorrow);
-		//Optional<Rental> rental = rentalRepository.findById(userId);
+		List<Rental> rental = rentalRepository.findByUserIdAndDropDate(userId, tomorrow);
+		int listSize = rental.size();
+		System.out.println(listSize);
+		model.addAttribute("rental", rental);
 
 		return "userMenu";
 	}
