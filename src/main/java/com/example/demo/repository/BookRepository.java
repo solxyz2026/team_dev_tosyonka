@@ -22,4 +22,5 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 			"LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
 			"LOWER(b.writer.writerName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
 	List<Book> searchByTitleOrWriter(@Param("keyword") String keyword);
+
 }
