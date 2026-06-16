@@ -18,6 +18,7 @@ import com.example.demo.repository.AnnouncementRepository;
 import com.example.demo.repository.RentalRepository;
 import com.example.demo.repository.ReservationRepository;
 
+//大森
 @Controller
 @RequestMapping("/user")
 public class UserMenuController {
@@ -35,7 +36,6 @@ public class UserMenuController {
 		this.rentalRepository = rentalRepository;
 	}
 
-	//大森
 	//メイン画面の表示
 	@GetMapping("/")
 	public String index(Model model) {
