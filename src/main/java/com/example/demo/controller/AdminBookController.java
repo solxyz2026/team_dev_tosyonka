@@ -1,9 +1,3 @@
-/*編集、作成　山本諒　6月16日　10時
- * 
- * */
-
-//index部分いじってます
-
 package com.example.demo.controller;
 
 import java.util.ArrayList;
@@ -23,10 +17,11 @@ import com.example.demo.repository.BookRepository;
 @RequestMapping("/admin")
 public class AdminBookController {
 
-	@GetMapping("")
-	public String index() {
-		return "
-	}
+	//	@GetMapping("")
+	//	public String index() {
+	//
+	//		return "
+	//	}
 
 	@GetMapping("/books/add")
 	public String addForm() {
