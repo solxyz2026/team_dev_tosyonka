@@ -4,8 +4,8 @@
 
 package com.example.demo.controller;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Rental;
+import com.example.demo.entity.Rentaldetail;
 import com.example.demo.entity.Writer;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.RentalRepository;
@@ -43,24 +44,38 @@ public class LoanController {
 	//貸し出し本一覧表示
 	@GetMapping("/rental")
 	public String index(Model model) {
-		List<Rental> rentalList = rentalRepository.findAll();
+		List<Rental> rentalList = rentalRepository.findByReturnDateIsNull();
 		model.addAttribute("rentalList", rentalList);
 		return "Rentalshow";
 	}
 
-	//返却処理
-	@PostMapping("/rental/{bookId}/return")
-	public String returnBook(
-			@PathVariable Integer bookId,
-			Model model) {
-		Optional<Book> optionalBook = bookRepository.findById(bookId);
-		if (optionalBook.isPresent()) {
-			Book book = optionalBook.get();
+	@PostMapping("/rental/{rentalId}/return")
+	public String returnRental(@PathVariable Integer rentalId) {
+
+		Rental rental = rentalRepository.findById(rentalId)
+				.orElseThrow(() -> new IllegalArgumentException("Rental not found"));
+
+		// すでに返却済みなら何もしない
+		if (rental.getReturnDate() != null) {
+			return "redirect:/admin/rental";
+		}
+
+		// ① 伝票内のすべての本を返却
+		for (Rentaldetail detail : rental.getRentaldetail()) {
+
+			Book book = detail.getBook();
+
+			// 貸出フラグを戻す
 			book.setLoans(false);
+
 			bookRepository.save(book);
 		}
 
+		// ② 伝票の返却日を更新
+		rental.setReturnDate(LocalDate.now());
+
+		rentalRepository.save(rental);
+
 		return "redirect:/admin/rental";
 	}
-
 }

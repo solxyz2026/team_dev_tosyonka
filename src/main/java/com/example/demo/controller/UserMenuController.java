@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.entity.Announcement;
 import com.example.demo.entity.Rental;
+import com.example.demo.entity.Rentaldetail;
 import com.example.demo.entity.Reservation;
 import com.example.demo.entity.Reservationdetail;
 import com.example.demo.model.Account;
@@ -34,6 +35,7 @@ public class UserMenuController {
 		this.rentalRepository = rentalRepository;
 	}
 
+	//大森
 	//メイン画面の表示
 	@GetMapping("/")
 	public String index(Model model) {
@@ -60,9 +62,18 @@ public class UserMenuController {
 		LocalDate tomorrow = LocalDate.now().plusDays(1);
 		System.out.println(tomorrow);
 		List<Rental> rental = rentalRepository.findByUserIdAndDropDate(userId, tomorrow);
-		int listSize = rental.size();
-		System.out.println(listSize);
-		model.addAttribute("rental", rental);
+		System.out.println(rental.size());
+		model.addAttribute("rentalSize", rental.size());
+
+		String msg = "リマインド\n明日までに以下の本を返却してください。\n\n";
+
+		for (Rental rent : rental) {
+			for (Rentaldetail detail : rent.getRentaldetail()) {
+				msg += "・" + detail.getBook().getTitle() + "\n";
+			}
+		}
+
+		model.addAttribute("msg", msg);
 
 		return "userMenu";
 	}
