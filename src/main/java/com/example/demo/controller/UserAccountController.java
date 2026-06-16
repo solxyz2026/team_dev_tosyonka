@@ -152,4 +152,44 @@ public class UserAccountController {
 		return "UserLogin";
 	}
 
+	//会員情報変更画面を表示
+	@GetMapping("/users/edit")
+	public String edit(Model model) {
+
+		Integer id = account.getId();
+
+		User user = userRepository.findById(id).get();
+
+		model.addAttribute("user", user);
+
+		return "UserInfoChange";
+	}
+
+	//会員情報の変更
+	@PostMapping("/users/edit")
+	public String change(
+			@RequestParam(defaultValue = "") String name,
+			@RequestParam(defaultValue = "") String birthday,
+			@RequestParam(defaultValue = "") String telNumber,
+			@RequestParam(defaultValue = "") String email,
+			@RequestParam(defaultValue = "") String password,
+			Model model) {
+
+		Integer id = account.getId();
+		User user = userRepository.findById(id).get();
+
+		user.setName(name);
+		user.setName(birthday);
+		user.setName(telNumber);
+		user.setEmail(email);
+		user.setPassword(password);
+
+		userRepository.save(user);
+
+		account.setName(name);
+
+		return "redirect:/●●●";
+		//マイページのURLは？
+	}
+
 }
