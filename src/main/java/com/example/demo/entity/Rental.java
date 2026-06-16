@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -34,6 +36,9 @@ public class Rental {
 	@ManyToOne
 	@JoinColumn(name = "user_id") //顧客ID
 	private User user;
+
+	@OneToMany(mappedBy = "rental")
+	private List<Rentaldetail> rentaldetail;
 
 	public Rental() {
 
