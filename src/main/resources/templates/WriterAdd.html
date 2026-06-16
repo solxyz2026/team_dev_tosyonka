@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>著者の追加</title>
+</head>
+<body>
+<h1>著者の追加</h1>
+	
+<span th:text="${errors}" style="color:red;"></span>
+
+	<form action="/admin/categories" method="post">		
+
+		著者<input type="text" name="categoryName"th:value="${categoryName}"><br>
+		
+		著者紹介文<input type="text" name="writerDescription"th:value="${writerDescription}"><br>
+		
+			<button>登録</button>
+	</form>
+</body>
+</html>

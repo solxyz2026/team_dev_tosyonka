@@ -1,0 +1,37 @@
+<!--原田-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset = "UTF-8">
+<title>貸し出し一覧</title>
+</head>
+<body>
+	<header>〇〇図書館　管理者</header>
+<h1>予約一覧</h1>
+<table border="1">
+	<tr>
+		<td>本ID</td>
+		<td>タイトル</td>
+		<td>著者</td>
+		<td>ユーザID</td>
+		<td>期限</td>
+		<td>返却</td>
+	</tr>
+	
+	<tr th:each = "rental : ${rentalList}">
+		<td>[[${rental.rentaldetail.bookId</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>
+			<form>
+				<button>返却</button>
+			</form>
+		</td>
+	</tr>
+	
+	
+</table>
+</body>
+</html>

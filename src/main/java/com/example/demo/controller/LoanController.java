@@ -20,13 +20,10 @@ import com.example.demo.repository.RentaldetailRepository;
 public class LoanController {
 
 	private final RentaldetailRepository rentaldetailRepository;
-
-	private final Rental rental;
 	private final RentalRepository rentalRepository;
 
-	public LoanController(Rental rental, RentalRepository rentalRepository,
+	public LoanController(RentalRepository rentalRepository,
 			RentaldetailRepository rentaldetailRepository) {
-		this.rental = rental;
 		this.rentalRepository = rentalRepository;
 		this.rentaldetailRepository = rentaldetailRepository;
 	}
@@ -34,10 +31,10 @@ public class LoanController {
 	//貸し出し本一覧表示
 	@GetMapping("/rental")
 	public String index(Model model) {
-		List<Rental> rentalList = null;
-		rentalList = rentalRepository.findAll();
+		List<Rental> rentalList = rentalRepository.findAll();
 		model.addAttribute("rentalList", rentalList);
-		return "Rental";
+		return "Rentalshow";
+
 	}
 
 }

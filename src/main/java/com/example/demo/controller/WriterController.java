@@ -10,9 +10,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.entity.Writer;
+import com.example.demo.repository.WriterRepository;
+
 @Controller
 @RequestMapping("/admin")
 public class WriterController {
+
+	private WriterRepository writerRepository;
+
+	public WriterController(
+			WriterRepository writerRepository) {
+		this.writerRepository = writerRepository;
+	}
 
 	@GetMapping("/writers")
 	public String index() {
@@ -21,31 +31,31 @@ public class WriterController {
 
 	@PostMapping("/writers")
 	public String store(
-			@RequestParam(defaultValue = "") String writer_name,
-			@RequestParam(defaultValue = "") String writer_description,
+			@RequestParam(defaultValue = "") String writerName,
+			@RequestParam(defaultValue = "") String writerDescription,
 			Model model) {
 
 		List<String> errors = new ArrayList<>();
 
-		if (writer_name.equals("")) {
+		if (writerName.equals("")) {
 			errors.add("著者名が未入力です");
 		}
-		if (writer_description.equals("")) {
+		if (writerDescription.equals("")) {
 			errors.add("著者紹介文が未入力です");
 		}
 		if (errors.size() > 0) {
 			model.addAttribute("errors", errors);
-			return "writers";
+			model.addAttribute("writerName", writerName);
+			model.addAttribute("writerDescription", writerDescription);
+			return "WriterAdd";
 		}
 
 		//なんだっけ
-		//		Integer user_id = account.getId();
-		//		Task task = new Task(user_id, title, closingDate, 0, memo, important);
-		//		taskRepository.save(task);
-		//				List<Task> taskList = taskRepository.findAll();
-		//				model.addAttribute("tasks", taskList);
+		//	
+		Writer writer = new Writer(writerName, writerDescription);
+		writerRepository.save(writer);
 
-		return "redirect:/writers";
+		return "redirect:/WriterAdd";
 	}
 
 }
