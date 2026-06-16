@@ -75,8 +75,10 @@ public class UserBookController {
 			@RequestParam(value = "categoryId", required = false, defaultValue = "0") Integer categoryId,
 			HttpSession session, Model model) {
 
-		Integer userId = (Integer) session.getAttribute("userId");
-		String userName = (String) session.getAttribute("username");
+		Integer userId = account.getId();
+		//(Integer) session.getAttribute("id");
+		String userName = account.getName();
+		//(String) session.getAttribute("userName");
 		//セッションチェック
 		if (userId == null) {
 			return "redirect:/user/login";
