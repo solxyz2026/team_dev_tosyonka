@@ -110,6 +110,13 @@ public class AdminBookController {
 		return "AdminBookSearch";
 	}
 
+	@GetMapping("/books/{book_id}")
+	public String show() {
+		//		session.invalidate();
+		return "●●●";
+		//管理者用の本詳細HTMLがなかったのでとりあえず●●●で
+	}
+
 	@PostMapping("/books/{book_id}/delete")
 	public String delete(
 			@PathVariable Integer book_id) {
