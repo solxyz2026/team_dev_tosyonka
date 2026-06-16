@@ -1,10 +1,13 @@
 package com.example.demo.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -27,6 +30,9 @@ public class User {
 
 	private String birthday; //誕生日
 	private String role; //ロール
+
+	@OneToMany(mappedBy = "user")
+	private List<Rental> rental;
 
 	//コンストラクタ
 	public User() {
@@ -109,6 +115,14 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public List<Rental> getRental() {
+		return rental;
+	}
+
+	public void setRental(List<Rental> rental) {
+		this.rental = rental;
 	}
 
 }
