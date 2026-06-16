@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -28,7 +29,7 @@ public class User {
 	@Column(name = "tel_number")
 	private String telNumber; //電話番号
 
-	private String birthday; //誕生日
+	private LocalDate birthday; //誕生日
 	private String role; //ロール
 
 	@OneToMany(mappedBy = "user")
@@ -38,7 +39,7 @@ public class User {
 	public User() {
 	}
 
-	public User(String name, String birthday, String telNumber, String email, String password, String role) {
+	public User(String name, LocalDate birthday, String telNumber, String email, String password, String role) {
 		//新規会員登録用
 		this.email = email;
 		this.name = name;
@@ -48,7 +49,7 @@ public class User {
 		this.role = role;
 	}
 
-	public User(Integer id, String email, String name, String password, String telNumber, String birthday,
+	public User(Integer id, String email, String name, String password, String telNumber, LocalDate birthday,
 			String role) {
 		//会員情報変更用
 		this.id = id;
@@ -101,11 +102,11 @@ public class User {
 		this.telNumber = telNumber;
 	}
 
-	public String getBirthday() {
+	public LocalDate getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(String birthday) {
+	public void setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
 	}
 

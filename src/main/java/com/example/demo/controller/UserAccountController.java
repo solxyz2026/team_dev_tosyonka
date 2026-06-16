@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -100,7 +101,7 @@ public class UserAccountController {
 	@PostMapping("/register")
 	public String register(
 			@RequestParam(defaultValue = "") String name,
-			@RequestParam(defaultValue = "") String birthday,
+			@RequestParam(required = false) LocalDate birthday,
 			@RequestParam(defaultValue = "") String telNumber,
 			@RequestParam(defaultValue = "") String email,
 			@RequestParam(defaultValue = "") String password,
@@ -112,7 +113,7 @@ public class UserAccountController {
 			list.add("名前を入力してください");
 
 		}
-		if (birthday.equals("")) {
+		if (birthday == null) {
 			list.add("生年月日を入力してください");
 
 		}
@@ -134,7 +135,7 @@ public class UserAccountController {
 			list.add("パスワードを入力してください");
 
 		}
-		if (name.equals("") || birthday.equals("") || telNumber.equals("") || email.equals("") || password.equals("")
+		if (name.equals("") || birthday == null || telNumber.equals("") || email.equals("") || password.equals("")
 				|| (record.isEmpty() == false)) {
 			model.addAttribute("con", list);
 			model.addAttribute("name", name);
