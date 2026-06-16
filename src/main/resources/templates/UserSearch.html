@@ -38,7 +38,7 @@
 		<tbody>
 			<tr th:each="book : ${books}">
 				<td th:text="${book.id}">ID</td>
-				<td th:text="${book.title}">タイトル</td>
+				<td><a th:href="@{/admin/books/{bookId}(bookId=${book.id})}">[[${book.title}]]</a></td>
 				<td th:text="${book.writer.writerName}">著者名</td>
 				<td th:text="${book.publisher}">出版社</td>
 				<td>
