@@ -98,9 +98,9 @@ public class UserAccountController {
 
 	//会員情報を登録し、再度ログイン画面へ
 	@PostMapping("/register")
-	public String addUser(
+	public String register(
 			@RequestParam(defaultValue = "") String name,
-			@RequestParam(required = false) String birthday,
+			@RequestParam(defaultValue = "") String birthday,
 			@RequestParam(defaultValue = "") String telNumber,
 			@RequestParam(defaultValue = "") String email,
 			@RequestParam(defaultValue = "") String password,
@@ -110,15 +110,15 @@ public class UserAccountController {
 		//空欄に対するエラー
 		if (name.equals("")) {
 			list.add("名前を入力してください");
-			model.addAttribute("con", list);
+
 		}
-		if (birthday.equals(null)) {
+		if (birthday.equals("")) {
 			list.add("生年月日を入力してください");
-			model.addAttribute("con", list);
+
 		}
 		if (telNumber.equals("")) {
 			list.add("電話番号を入力してください");
-			model.addAttribute("con", list);
+
 		}
 		if (email.equals("")) {
 			list.add("メールを入力してください");
@@ -129,22 +129,26 @@ public class UserAccountController {
 			}
 
 		}
-		model.addAttribute("con", list);
+
 		if (password.equals("")) {
 			list.add("パスワードを入力してください");
-			model.addAttribute("con", list);
+
 		}
-		if (name.equals("") || birthday.equals(null) || telNumber.equals("") || email.equals("") || password.equals("")
+		if (name.equals("") || birthday.equals("") || telNumber.equals("") || email.equals("") || password.equals("")
 				|| (record.isEmpty() == false)) {
+			model.addAttribute("con", list);
 			model.addAttribute("name", name);
+			model.addAttribute("birthday", birthday);
+			model.addAttribute("telNumber", telNumber);
 			model.addAttribute("email", email);
 			model.addAttribute("password", password);
-			return "Account";
+
+			return "UserAdd";
 		}
 
 		User user = new User(name, birthday, telNumber, email, password, "User");
 		userRepository.save(user);
-		return "redirect:/user/login";
+		return "UserLogin";
 	}
 
 }

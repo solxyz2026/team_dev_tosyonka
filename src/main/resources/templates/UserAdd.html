@@ -11,12 +11,13 @@
 		<li th:each="data:${con}" style="color:red;">[[${data}]]</li>
 	</ul>
 	
-	<form action="/users/add" method="post">
+	<form action="/user/register" method="post">
 		
 
 		名前<input type="text" name="name"th:value="${name}"><br>
-		生年月日<input type="date" name="birthday" th:value="${birthday}"><br>
-		電話番号<input type="text" name="tel_number" th:value=${tel_number}><br>
+<!--		生年月日<input type="date" name="birthday" th:value="${birthday}"><br>-->
+		生年月日<input type="text" name="birthday" th:value="${birthday}"><br>
+		電話番号<input type="text" name="telNumber" th:value=${telNumber}><br>
 		メールアドレス<input type="text" name="email"th:value="${email}"><br>
 		パスワード<input type="text" name="password"th:value="${password}"><br>
 		

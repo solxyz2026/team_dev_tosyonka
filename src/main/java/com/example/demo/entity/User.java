@@ -38,7 +38,7 @@ public class User {
 	public User() {
 	}
 
-	public User(String email, String name, String password, String telNumber, String birthday, String role) {
+	public User(String name, String birthday, String telNumber, String email, String password, String role) {
 		//新規会員登録用
 		this.email = email;
 		this.name = name;

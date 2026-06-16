@@ -62,7 +62,7 @@ public class WriterController {
 	//著者更新ページへ
 	@GetMapping("/admin/writers/{writer_id}")
 	public String edit(
-			@PathVariable Integer id,
+			@PathVariable Integer id, //←{writer_id}とidの使い分けが不安
 			Model model) {
 		Writer writer = writerRepository.findById(id).get();
 		model.addAttribute("user", writer);
