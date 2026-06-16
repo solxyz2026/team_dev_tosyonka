@@ -1,38 +1,49 @@
 <!--原田-->
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset = "UTF-8">
+<meta charset="UTF-8">
 <title>貸し出し一覧</title>
 </head>
+
 <body>
-	<header>〇〇図書館　管理者</header>
+<header>〇〇図書館　管理者</header>
+
 <h1>貸し出し一覧</h1>
+
 <table border="1">
-	<tr>
-		<td>本ID</td>
-		<td>タイトル</td>
-		<td>著者</td>
-		<td>ユーザID</td>
-		<td>期限</td>
-		<td>返却</td>
-	</tr>
-	
-	<th:block th:each = "rental : ${rentalList}">
-		<tr th:each = "detail : ${rental.rentaldetail}">
-			<td>[[${detail.book.id}]]</td>
-			<td>[[${detail.book.title}]]</td>
-			<td>[[${detail.book.writer.writerName}]]</td>
-			<td>[[${rental.user.id}]]</td>
-			<td>[[${rental.dropDate}]]</td>
-			<td>
-				<form th:action="@{/admin/rental/{bookId}/return(bookId=${detail.book.id})}" method="post">
-					<button>返却</button>
-				</form>
-			</td>
-		</tr>
-	
-	
+    <tr>
+        <th>本一覧</th>
+        <th>ユーザID</th>
+		<th>利用者名</th>
+        <th>期限</th>
+        <th>返却</th>
+    </tr>
+
+    <tr th:each="rental : ${rentalList}">
+
+        <!-- 本はまとめて表示 -->
+        <td>
+            <ul>
+                <li th:each="detail : ${rental.rentaldetail}">
+                    [[${detail.book.title}]]
+                </li>
+            </ul>
+        </td>
+
+        <td>[[${rental.user.id}]]</td>
+		<td>[[${rental.user.name}]]</td>
+        <td>[[${rental.dropDate}]]</td>
+
+        <td>
+            <form th:action="@{/admin/rental/{rentalId}/return(rentalId=${rental.id})}"method="post">
+                <button>返却</button>
+            </form>
+        </td>
+
+    </tr>
+
 </table>
+
 </body>
 </html>
