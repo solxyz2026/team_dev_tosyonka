@@ -2,31 +2,43 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>管理者画面</title>
-<link rel="stylesheet" href="/css/style.css">
+	<meta charset="UTF-8">
+	<title>管理者画面</title>
+	<link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 	<h1>管理者画面</h1>
-		
-		<!--リンク-->
-		<div>
-			<a href="/admin/logout">ログアウト</a><br>
-						<a href="/user/">ホームページ</a><br>
-						<a href="/admin/books">在庫一覧</a><br>
-						<a href="/admin/books/add">本追加</a><br>
-						<a href="/admin/writers">著者の追加</a><br>
-						<a href="/admin/categories">カテゴリー追加</a><br>
-						<a href="/admin/reservations">予約一覧</a><br>
-						<a href="/admin/loans">貸し出し状況</a><br>
-		</div>
-		<h2>貸し出し</h2>
-		<form action="/admin/login" method="post">
-				メールアドレス<input type="text" name="email" th:value="${email}"><br>
-				パスワード<input type="text" name="password"  th:value="${password}"><br>
-				<button>ログイン</button>
-			</form>
+
+	<!--リンク-->
+	<div>
+		<a href="/admin/logout">ログアウト</a><br>
+		<a href="/user/">ホームページ</a><br>
+		<a href="/admin/books">在庫一覧</a><br>
+		<a href="/admin/books/add">本追加</a><br>
+		<a href="/admin/writers">著者の追加</a><br>
+		<a href="/admin/categories">カテゴリー追加</a><br>
+		<a href="/admin/reservations">予約一覧</a><br>
+		<a href="/admin/loans">貸し出し状況</a><br>
+	</div>
+	<h2>貸し出し</h2>
+
+	<!--		<form method="POST" th:action="@{/user/search}" class="search-form">-->
+	<!--					<input type="text" name="keyword" placeholder="本のタイトル、著者で検索"-->
+	<!--					th:value="${keyword}">-->
+	<!--					<button type="submit">検索</button>-->
+	<!--			    </form>-->
+
+	<form action="/admin/books/search" method="post">
 		本の登録ID<input type="text" name="book_id">
+	</form>
+
+	<form action="/admin/books/search" method="post">
+	ユーザID<input type="text" name="user_id">
+	</form>
+
 </body>
+
 </html>
