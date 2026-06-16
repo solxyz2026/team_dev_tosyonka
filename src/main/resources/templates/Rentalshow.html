@@ -7,7 +7,7 @@
 </head>
 <body>
 	<header>〇〇図書館　管理者</header>
-<h1>予約一覧</h1>
+<h1>貸し出し一覧</h1>
 <table border="1">
 	<tr>
 		<td>本ID</td>
@@ -18,18 +18,19 @@
 		<td>返却</td>
 	</tr>
 	
-	<tr th:each = "rental : ${rentalList}">
-		<td>[[${rental.rentaldetail.bookId</td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td>
-			<form>
-				<button>返却</button>
-			</form>
-		</td>
-	</tr>
+	<th:block th:each = "rental : ${rentalList}">
+		<tr th:each = "detail : ${rental.rentaldetail}">
+			<td>[[${detail.book.id}]]</td>
+			<td>[[${detail.book.title}]]</td>
+			<td>[[${detail.book.writer.writerName}]]</td>
+			<td>[[${rental.user.id}]]</td>
+			<td>[[${rental.dropDate}]]</td>
+			<td>
+				<form th:action="@{/admin/rental/{bookId}/return(bookId=${detail.book.id})}" method="post">
+					<button>返却</button>
+				</form>
+			</td>
+		</tr>
 	
 	
 </table>

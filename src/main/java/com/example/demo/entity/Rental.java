@@ -92,4 +92,12 @@ public class Rental {
 		this.user = user;
 	}
 
+	public List<Rentaldetail> getRentaldetail() {
+		return rentaldetail;
+	}
+
+	public void setRentaldetail(List<Rentaldetail> rentaldetail) {
+		this.rentaldetail = rentaldetail;
+	}
+
 }
