@@ -21,17 +21,15 @@
 			<th>タイトル</th>
 			<th>著者</th>
 			<th>カテゴリー</th>
-			<th>返却期限</th>
+			<th style="color: rgb(255, 128, 128);">返却期限</th>
 		</tr>
 		
 		<th:block th:each="rental:${expiredList}">
 			<tr th:each="rentaldetails:${rental.rentaldetail}">
-			
 				<td>[[${rentaldetails.book.title}]]</td>
 				<td>[[${rentaldetails.book.writer.writerName}]]</td>
 				<td>[[${rentaldetails.book.category.categoryName}]]</td>
-			
-				<td>[[${rental.returnDate}]]</td>
+				<td>[[${rental.dropDate}]]</td>
 			</tr>
 		</th:block>
 	</table><br>

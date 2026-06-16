@@ -53,11 +53,6 @@ public class MyPageController {
 		List<Rental> expiredList = rentalRepository.findByUserIdAndDropDateBeforeAndReturnDateIsNull(userId, today);
 		model.addAttribute("expiredList", expiredList);
 
-		//		if (expiredList.size() != 0) {
-		//			List<Rentaldetail> expiredBook = expiredList.get(0).getRentaldetail();
-		//			model.addAttribute("expiredBook", expiredBook);
-		//		}
-
 		return "myPage";
 	}
 
