@@ -106,6 +106,6 @@ public class AdminBookController {
 
 		}
 
-		return "UserSearch";
+		return "AdminBookSearch";
 	}
 }
