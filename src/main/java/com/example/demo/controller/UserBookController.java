@@ -34,16 +34,16 @@ public class UserBookController {
 	    model.addAttribute("userName", userName);
 
 	    try {
-	        // ✅ すべての本を取得
+	        // すべての本を取得
 	        List<Book> books = bookRepository.findAll();
 	        
-	        // ✅ ID の若い順にソート
+	        //　ID の若い順にソート
 	        books.sort(Comparator.comparing(Book::getId));
 	        
-	        System.out.println("📚 全本取得: " + books.size() + "冊");
+	        System.out.println("全本取得: " + books.size() + "冊");
 	        model.addAttribute("books", books);
 	    } catch (Exception e) {
-	        System.out.println("❌ 全本取得エラー: " + e.getMessage());
+	        System.out.println("全本取得エラー: " + e.getMessage());
 	        model.addAttribute("books", new ArrayList<>());
 	    }
 
