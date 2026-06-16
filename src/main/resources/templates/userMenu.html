@@ -1,5 +1,3 @@
-<!--大森-->
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -8,6 +6,7 @@
 <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+	<!--大森-->
 	<h1>としょんか</h1>
 		
 		<!--リンク-->
@@ -128,12 +127,14 @@
 		</div>
 		
 		<!--リマインド-->
-		<script>
-			
-			let message = 'リマインド\n明日までに以下の本を返却してください。';
-			
-			alert(message);
+		<script th:inline="javascript">
+			var Size = /*[[${rentalSize}]]*/0;
+	
+			if(Size !== 0){
+				const message = /*[[${msg}]]*/"";
+				alert(message);
+				
+			}
 		</script>
-		
 </body>
 </html>
