@@ -56,3 +56,63 @@
 .calendar .off {
   background-color: rgb(222, 222, 222);
 }
+
+button {
+	margin: 2px;
+	padding: 5px 10px;
+	background-color: #e5857b;
+	color: #ffffff;
+	border: none;
+	width: 50px;
+	cursor: pointer;
+	border-radius: 10px;
+}
+
+/* 送信ボタン(マウスオーバー時) */
+button:hover {
+	background-color: #f1b2b2;
+	border-radius: 10px;
+}
+
+body {
+   font-family:'Noto Sans JP',sans-serif;
+   background-color:#f6f5f4;
+}
+
+.side {
+  background-color:skyblue;
+  width:500px;
+  height:3000px;
+  text-align:center;
+  border-radius: 10px;
+} 
+
+.content {
+/*  background-color:#b3d874;*/
+  width:2500px;
+  height:3000px;
+  text-align:center;
+  margin-left:10px;/*サイドバーとメインコンテンツの間に隙間                    をあけた*/
+  border-radius: 10px;
+  }
+
+article {
+  display:flex;/*サイドバーとメインコンテンツを横並びにする                指定をした*/
+  border-radius: 10px;
+}
+
+/* 表線 */
+table, th, td {
+	border-collapse: collapse;
+	border: 1px solid #7d8bae;
+}
+/* 表 */
+table {
+    margin: 5px auto;
+    min-width: 800px;
+}
+/* 表見出しセル */
+table th {
+	background: #7d8bae;
+	color: #ffffff;
+}
