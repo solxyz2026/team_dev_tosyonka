@@ -72,13 +72,13 @@ public class UserAccountController {
 			model.addAttribute("password", password);
 			return "UserLogin";
 		}
-		 User user = userList.get(0);
-		    session.setAttribute("userId", user.getId());      
-		    session.setAttribute("userName", user.getName());  
-		    
-		    System.out.println("✅ ログイン成功: userId=" + user.getId() + ", userName=" + user.getName());
+		User user = userList.get(0);
+		session.setAttribute("userId", user.getId());
+		session.setAttribute("userName", user.getName());
 
-		return "userMenu";
+		System.out.println("✅ ログイン成功: userId=" + user.getId() + ", userName=" + user.getName());
+
+		return "redirect:/user/";
 	}
 
 	//ログアウト
