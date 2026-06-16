@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>著者の変更</title>
+</head>
+
+<body>
+	<h1>著者の変更</h1>
+	<ul>
+		<li th:each="data:${list}" style="color:red;">[[${data}]]</li>
+	</ul>
+
+	<form th:action="@{/admin/writers/{writer_id}(writer_id=${writer.id})}" method="post">
+		
+
+			著者<input type="text" name="name" th:value="${writer.writerName}"><br>
+			著者紹介文<input type="text" name="email" th:value="${writer.writerDescription}"><br>
+			
+			
+		<button>変更</button>
+	</form>
+
+</body>
+
+</html>

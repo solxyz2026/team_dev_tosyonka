@@ -12,7 +12,7 @@ import com.example.demo.entity.Book;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
     
-    //タイトルで本を検索
+   //タイトルで本を検索
      
     List<Book> findByTitleContainingIgnoreCase(String title);
     

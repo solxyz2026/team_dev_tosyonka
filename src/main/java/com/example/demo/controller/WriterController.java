@@ -6,13 +6,24 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.entity.Writer;
+import com.example.demo.repository.WriterRepository;
+
 @Controller
 @RequestMapping("/admin")
 public class WriterController {
+
+	private WriterRepository writerRepository;
+
+	public WriterController(
+			WriterRepository writerRepository) {
+		this.writerRepository = writerRepository;
+	}
 
 	@GetMapping("/writers")
 	public String index() {
@@ -21,31 +32,75 @@ public class WriterController {
 
 	@PostMapping("/writers")
 	public String store(
-			@RequestParam(defaultValue = "") String writer_name,
-			@RequestParam(defaultValue = "") String writer_description,
+			@RequestParam(defaultValue = "") String writerName,
+			@RequestParam(defaultValue = "") String writerDescription,
 			Model model) {
 
 		List<String> errors = new ArrayList<>();
 
-		if (writer_name.equals("")) {
+		if (writerName.equals("")) {
 			errors.add("著者名が未入力です");
 		}
-		if (writer_description.equals("")) {
+		if (writerDescription.equals("")) {
 			errors.add("著者紹介文が未入力です");
 		}
 		if (errors.size() > 0) {
 			model.addAttribute("errors", errors);
-			return "writers";
+			model.addAttribute("writerName", writerName);
+			model.addAttribute("writerDescription", writerDescription);
+			return "WriterAdd";
 		}
 
 		//なんだっけ
-		//		Integer user_id = account.getId();
-		//		Task task = new Task(user_id, title, closingDate, 0, memo, important);
-		//		taskRepository.save(task);
-		//				List<Task> taskList = taskRepository.findAll();
-		//				model.addAttribute("tasks", taskList);
+		//	
+		Writer writer = new Writer(writerName, writerDescription);
+		writerRepository.save(writer);
 
-		return "redirect:/writers";
+		return "redirect:/WriterAdd";
 	}
 
+	//著者更新ページへ
+	@GetMapping("/admin/writers/{writer_id}")
+	public String edit(
+			@PathVariable Integer id,
+			Model model) {
+		Writer writer = writerRepository.findById(id).get();
+		model.addAttribute("user", writer);
+		return "WriterEdit";
+	}
+
+	//著者更新
+	@PostMapping("/admin/writers/{writer_id}") //←{writer_id}とwriterIdの使い分けが不安
+	public String update(
+			@PathVariable Integer id,
+			@RequestParam(defaultValue = "") String writerName,
+			@RequestParam(defaultValue = "") String writerDescription,
+			Model model) {
+
+		ArrayList<String> list = new ArrayList<>();
+		//空欄に対するエラー
+		if (writerName.equals("")) {
+			list.add("著者を入力してください");
+		}
+		if (writerDescription.equals("")) {
+			list.add("著者紹介文を入力してください");
+		}
+		model.addAttribute("list", list);
+
+		if (writerName.equals("") || writerDescription.equals("")) {
+			Writer writer = writerRepository.findById(id).get();
+			writer.setWriterName(writerName);
+			writer.setWriterDescription(writerDescription);
+
+			model.addAttribute("writer", writer);
+			return "WriterEdit";
+		}
+
+		Writer writer = writerRepository.findById(id).get();
+		writer.setWriterName(writerName);
+		writer.setWriterDescription(writerDescription);
+		writerRepository.save(writer);
+		return "";//○○（本のタイトル）の画面へ(←未入力)
+
+	}
 }

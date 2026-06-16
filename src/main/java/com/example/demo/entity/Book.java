@@ -64,6 +64,10 @@ public class Book {
 		this.category = category;
 	}
 
+	public Book(Integer id, boolean loans) {
+
+	}
+
 	public Integer getId() {
 		return id;
 	}
