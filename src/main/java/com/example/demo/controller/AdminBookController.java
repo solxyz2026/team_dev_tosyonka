@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -16,17 +18,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Category;
+import com.example.demo.entity.Writer;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.CategoryRepository;
+import com.example.demo.repository.WriterRepository;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminBookController {
+
+	private final AdminAccountController adminAccountController;
 	@Autowired
 	private BookRepository bookRepository;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private WriterRepository writerRepository;
+
+	@Autowired
+	private Writer writer;
+
+	AdminBookController(AdminAccountController adminAccountController) {
+		this.adminAccountController = adminAccountController;
+	}
 
 	@GetMapping("/search")
 	public String searchGet(HttpSession session, Model model) {
@@ -107,5 +123,41 @@ public class AdminBookController {
 		}
 
 		return "AdminBookSearch";
+	}
+
+	@GetMapping("/books/add")
+	public String addForm() {
+		return "AdminBooksAdd";
+	}
+
+	@PostMapping("/books")
+	public String store(
+			@RequestParam String title,
+			@RequestParam String writer,
+			@RequestParam String publisher,
+			@RequestParam String summary,
+			@RequestParam String categoryName,
+			@RequestParam LocalDate date,
+			Model model) {
+
+		Optional<Writer> optionalWriter = writerRepository.findByWriterName(writer);
+		if (optionalWriter.isEmpty()) {
+			model.addAttribute("error", "著者「" + writer + "」は登録されていません。");
+			return "AdminBookAdd";
+		}
+		Optional<Category> optionalCategoryName = categoryRepository.findByCategoryName(categoryName);
+
+		Book book = new Book();
+		book.setTitle(title);
+		book.setPublisher(publisher);
+		book.setSummary(summary);
+		book.setWriter(optionalWriter.get());
+		book.setCategory(optionalCategoryName.get());
+		book.setDate(date);
+		book.setLoans(false);
+
+		bookRepository.save(book);
+
+		return "AdminHome";
 	}
 }

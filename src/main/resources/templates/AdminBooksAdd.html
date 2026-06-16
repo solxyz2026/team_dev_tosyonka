@@ -15,10 +15,10 @@
 
 		<form action="/admin/books" method="post">
 			タイトル<input type="text" name="title"><br>
-			著者<input type="text" name="writer_id"><br>
+			著者<input type="text" name="writer"><br>
 			出版社<input type="text" name="publisher"><br>
-			出版月<input type="month" name="month"><br>
-			<select name="カテゴリー">
+			出版月<input type="date" name="date"><br>
+			<select name="categoryName">
 				<option value="">IT</option>
 				<option value="">歴史</option>
 				<option value="">科学</option>
@@ -30,16 +30,12 @@
 				<option value="">語学</option>
 				<option value="">芸術</option>
 			</select><br>
-			タグ<label>
-				<input type="checkbox" name="tag" value="field_guide"> 図鑑
-				<input type="checkbox" name="tag" value="romance"> 恋愛
-				<input type="checkbox" name="tag" value="horror"> ホラー
-				<input type="checkbox" name="tag" value="novel"> 小説
-			</label><br>
 			本の要約文<input type="text" name="summary">
 			<button>登録</button>
 		</form>
 	</main>
+	
+	<p>デモ入力著者 : 山田太郎</p>
 </body>
 
 </html>
