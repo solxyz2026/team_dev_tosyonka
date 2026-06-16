@@ -21,5 +21,12 @@
 						<a href="/admin/reservations">予約一覧</a><br>
 						<a href="/admin/loans">貸し出し状況</a><br>
 		</div>
+		<h2>貸し出し</h2>
+		<form action="/admin/login" method="post">
+				メールアドレス<input type="text" name="email" th:value="${email}"><br>
+				パスワード<input type="text" name="password"  th:value="${password}"><br>
+				<button>ログイン</button>
+			</form>
+		本の登録ID<input type="text" name="book_id">
 </body>
 </html>
