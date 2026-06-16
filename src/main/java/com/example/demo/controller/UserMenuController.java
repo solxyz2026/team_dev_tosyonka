@@ -2,8 +2,6 @@ package com.example.demo.controller;
 
 import java.util.List;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,14 +31,9 @@ public class UserMenuController {
 
 	//メイン画面の表示
 	@GetMapping("/")
-	public String index(HttpSession session, Model model) {
-		Integer userId = (Integer) session.getAttribute("userId");
-		
-		if (userId == null) {
-			System.out.println("❌ セッションなし → ログイン画面へ");
-			return "redirect:/user/login";
-		}
-		
+	public String index( Model model) {
+		 int userId = 3;
+
 		
 		//お知らせ内容の取得
 		List<Announcement> newsList = announcementRepository.findAll();

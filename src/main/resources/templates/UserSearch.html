@@ -9,47 +9,104 @@
 </head>
 <body>
 	<!--作成　北嶋-->
-	<div>
+	<div class="search-section">
 	    <h2>本を探す</h2>
-	    <form method="POST" th:action="@{/user/search}" >  
+	    <form method="POST" th:action="@{/user/search}" class="search-form">
 			<input type="text" name="keyword" placeholder="本のタイトル、著者で検索"
 			th:value="${keyword}">
 			<button type="submit">検索</button>
 	    </form>
 	</div>
-	<a th:href="@{/user/}" >戻る</a>
-	<!-- 検索結果の表示 -->
-	<div th:if="${keyword}">
-		<div>
-			<p>
-				「<strong th:text="${keyword}"></strong>」の検索結果:
-				<strong th:text="${books.size()}"></strong> 件
-			</p>
-		</div>
 
-		<!-- 検索結果がない場合 -->
-		<div th:if="${books.isEmpty()}">
-			<p>検索に該当する本が見つかりませんでした。</p>
-			<p>別のキーワードで検索してみてください。</p>
-		</div>
+	<!-- 本一覧（テーブル形式） -->
+	<div class="books-table-section">
+		<!-- キーワードありの場合 -->
+		<div th:if="${keyword}">
+			<div class="result-info">
+				<p>
+					「<strong th:text="${keyword}"></strong>」の検索結果:
+					<strong th:text="${books.size()}"></strong> 件
+				</p>
+			</div>
 
-		<!-- 本の一覧表示 -->
-		<div th:if="${!books.isEmpty()}">
-			<div th:each="book : ${books}" >
-				<p class="book-title">[[${book.title}]]</p>
-				<div class="book-info">
-					<p><strong>著者:</strong> <span th:text="${book.writer.writerName}">著者名</span></p>
-					<p><strong>出版社:</strong> <span th:text="${book.publisher}">出版社</span></p>
-					<p><strong>出版日:</strong> <span th:text="${book.date}">出版日</span></p>
-					<p><strong>貸出状況:</strong>
-						<span th:text="${book.loans} ? '貸出中' : '利用可能'" ></span>
-					</p>
-					<p th:if="${book.summary}">
-						<strong>説明:</strong> <span th:text="${book.summary}">説明</span>
-					</p>
-				</div>
+			<!-- 検索結果がない場合 -->
+			<div th:if="${books.isEmpty()}" class="no-results">
+				<p>検索に該当する本が見つかりませんでした。</p>
+				<p>別のキーワードで検索してみてください。</p>
 			</div>
 		</div>
+
+		<!-- キーワードなし（初期表示）の場合 -->
+		<div th:unless="${keyword}">
+			<div class="initial-info">
+				<p>📚 すべての本を表示しています。（合計: <strong th:text="${books.size()}"></strong> 冊）</p>
+			</div>
+		</div>
+
+		<!-- 本の一覧（テーブル形式） -->
+		<div th:if="${!books.isEmpty()}">
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>タイトル</th>
+						<th>著者</th>
+						<th>出版社</th>
+						<th>出版日</th>
+						<th>貸出状況</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- th:each で本を一覧表示（IDでソート済み） -->
+					<tr th:each="book : ${books}">
+						<td th:text="${book.id}">ID</td>
+						<td th:text="${book.title}">タイトル</td>
+						<td th:text="${book.writer.writerName}">著者名</td>
+						<td th:text="${book.publisher}">出版社</td>
+						<td th:text="${book.date}">出版日</td>
+						<td>
+							<!-- 貸出状況を色分け -->
+							<span th:if="${book.loans}" class="status-borrowed">貸出中</span>
+							<span th:unless="${book.loans}" class="status-available">利用可能</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+			<div th:if="${!books.isEmpty()}">
+				<table>
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>タイトル</th>
+							<th>著者</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr th:each="book : ${books}">
+							<td th:text="${book.id}">ID</td>
+							<td th:text="${book.title}">タイトル</td>
+							<td th:text="${book.writer.writerName}">著者名</td>
+							<td th:text="${book.publisher}">出版社</td>
+							<td th:text="${book.date}">出版日</td>
+							<td>
+					
+								<span th:if="${book.loans}" class="status-borrowed">貸出中</span>
+								<span th:unless="${book.loans}" class="status-available">利用可能</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	
+	<div class="back-link">
+		<a th:href="@{/user/}">← ユーザーメニューに戻る</a>
 	</div>
 
 </body>
