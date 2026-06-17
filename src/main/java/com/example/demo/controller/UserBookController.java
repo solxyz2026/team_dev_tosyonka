@@ -46,7 +46,7 @@ public class UserBookController {
 
 		try {
 			// すべての本を取得
-			List<Book> books = bookRepository.findAll();
+			List<Book> books = bookRepository.findByDeleteJudgeFalse();
 
 			//　ID の若い順にソート
 			books.sort(Comparator.comparing(Book::getId));
@@ -103,13 +103,13 @@ public class UserBookController {
 			} else if ((keyword == null || keyword.isEmpty()) && categoryId > 0) {
 				// カテゴリのみで検索
 				System.out.println("カテゴリのみで検索: カテゴリID=" + categoryId);
-				books = bookRepository.findByCategoryId(categoryId);
+				books = bookRepository.findByCategoryIdAndDeleteJudgeFalse(categoryId);
 				System.out.println("検索結果: " + books.size() + "冊");
 
 			} else {
 				// 検索条件がない場合は全件取得
 				System.out.println("検索条件がない → すべての本を表示");
-				books = bookRepository.findAll();
+				books = bookRepository.findByDeleteJudgeFalse();
 				System.out.println("全本取得: " + books.size() + "冊");
 			}
 		} catch (Exception e) {
@@ -129,43 +129,40 @@ public class UserBookController {
 
 		return "UserSearch";
 	}
+
 	@GetMapping("/book/{book_id}")
 	public String show(
 			@PathVariable Integer book_id,
 			HttpSession session, Model model) {
-		
-	
+
 		// セッションチェック
 		Integer userId = account.getId();
 		String userName = account.getName();
- 
+
 		if (userId == null) {
 			System.out.println("セッションなし → ログイン画面へリダイレクト");
 			return "redirect:/user/login";
 		}
- 
-		
+
 		model.addAttribute("userName", userName);
- 
+
 		try {
 			Book book = bookRepository.findById(book_id).orElse(null);
-			
+
 			if (book == null) {
 				System.out.println("本が見つかりません: book_id=" + book_id);
 				model.addAttribute("error", "本が見つかりませんでした。");
 				return "UserSearch";
 			}
-			
-			
+
 			model.addAttribute("book", book);
-			
+
 		} catch (Exception e) {
 			System.out.println("本詳細取得エラー: " + e.getMessage());
 			e.printStackTrace();
 			model.addAttribute("error", "本の詳細情報取得中にエラーが発生しました。");
 		}
- 
-		
+
 		return "BookDetail";
 	}
 }

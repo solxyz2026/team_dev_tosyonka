@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +28,9 @@ public class Book {
 	private String summary;//内容の要約
 	private boolean loans;//貸出状況　true : 貸出中 false : 未貸し出し
 	private LocalDate date;//出版日付
+
+	@Column(name = "delete_judge")
+	private boolean deleteJudge;
 
 	@ManyToOne
 	@JoinColumn(name = "writer_id") //出版社id
@@ -64,8 +68,25 @@ public class Book {
 		this.category = category;
 	}
 
-	public Book(Integer id, boolean loans) {
+	public Book(Integer id, String title, String publisher, String summary, boolean loans, LocalDate date,
+			boolean deleteJudge, Writer writer, Category category) {
+		this.id = id;
+		this.title = title;
+		this.publisher = publisher;
+		this.summary = summary;
+		this.loans = loans;
+		this.date = date;
+		this.deleteJudge = deleteJudge;
+		this.writer = writer;
+		this.category = category;
+	}
 
+	public boolean isDeleteJudge() {
+		return deleteJudge;
+	}
+
+	public void setDeleteJudge(boolean deleteJudge) {
+		this.deleteJudge = deleteJudge;
 	}
 
 	public Integer getId() {
