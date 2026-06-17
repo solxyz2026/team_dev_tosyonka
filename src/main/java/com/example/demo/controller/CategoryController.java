@@ -46,6 +46,7 @@ public class CategoryController {
 		Category category = new Category(null, categoryName);
 		categoryRepository.save(category);
 
-		return "redirect:CategoryAdd";
+		//		return "redirect:CategoryAdd";
+		return "AdminHome";
 	}
 }

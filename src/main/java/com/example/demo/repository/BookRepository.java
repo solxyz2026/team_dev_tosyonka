@@ -39,4 +39,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
 	//全件取得
 	List<Book> findByDeleteJudgeFalse();
+
+	//著者に紐づく本の冊数を検索
+	List<Book> findByWriterId(Integer id);
 }

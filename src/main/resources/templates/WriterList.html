@@ -77,9 +77,10 @@
 			<td th:text="${writerList.writerDescription}"></td>
 			
 <!--			<td></td>-->
-
+<!--↑th:textで本の冊数を表示-->
 			<td>
 				<form th:action="@{/admin/writers/list/{id}/delete(id=${writerList.id})}" method="post">
+					<input type="hidden" name="writerName" th:value="${writerList.writerName}">
 					<button>削除</button>
 				</form>
 			</td>
