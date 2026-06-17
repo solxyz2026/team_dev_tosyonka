@@ -1,10 +1,361 @@
 package com.example.demo.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-@Controller
+import jakarta.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.demo.entity.Book;
+import com.example.demo.entity.CartItem;
+import com.example.demo.entity.Rental;
+import com.example.demo.entity.Rentaldetail;
+import com.example.demo.entity.User;
+import com.example.demo.repository.BookRepository;
+import com.example.demo.repository.RentalRepository;
+import com.example.demo.repository.RentaldetailRepository;
+import com.example.demo.repository.UserRepository;
+
 @RequestMapping("/admin")
+@Controller
 public class AdminMenuController {
 
+	@Autowired
+	private RentalRepository rentalRepository;
+
+	@Autowired
+	private RentaldetailRepository rentaldetailRepository;
+
+	@Autowired
+	private BookRepository bookRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	private static final String SESSION_RENTAL_CART = "rentalCart";
+	private static final String SESSION_MESSAGE = "message";
+	private static final String SESSION_ERROR = "error";
+
+	/**
+	 * GET /admin/ - 管理者ホーム画面（貸し出し画面）
+	 */
+	@GetMapping("/")
+	public String index(HttpSession session, Model model) {
+		System.out.println("\n========== 管理者ホーム ==========");
+
+		// 1. セッションのカートを取得
+		@SuppressWarnings("unchecked")
+		List<CartItem> rentalCart = (List<CartItem>) session.getAttribute(SESSION_RENTAL_CART);
+		if (rentalCart == null) {
+			rentalCart = new ArrayList<>();
+			session.setAttribute(SESSION_RENTAL_CART, rentalCart);
+		}
+
+		model.addAttribute("rentalCart", rentalCart);
+		model.addAttribute("cartCount", rentalCart.size());
+
+		// 2. メッセージを取得して表示
+		if (session.getAttribute(SESSION_MESSAGE) != null) {
+			model.addAttribute("message", session.getAttribute(SESSION_MESSAGE));
+			session.removeAttribute(SESSION_MESSAGE);
+		}
+		if (session.getAttribute(SESSION_ERROR) != null) {
+			model.addAttribute("error", session.getAttribute(SESSION_ERROR));
+			session.removeAttribute(SESSION_ERROR);
+		}
+
+		// ★★★ 【新規追加】直近の貸し出し情報を取得 ★★★
+		Rental latestRental = rentalRepository.findFirstByOrderByIdDesc();
+		if (latestRental != null) {
+			System.out.println("✅ 直近の貸出: Rental ID = " + latestRental.getId());
+			System.out.println("   ユーザー: " + latestRental.getUser().getName());
+			System.out.println("   貸出日: " + latestRental.getRentalDate());
+
+			// 関連する Rentaldetail を取得
+			List<Rentaldetail> rentalDetails = rentaldetailRepository.findByRentalId(latestRental.getId());
+			System.out.println("   本数: " + rentalDetails.size() + "冊");
+
+			// Model に追加
+			model.addAttribute("latestRental", latestRental);
+			model.addAttribute("latestRentalDetails", rentalDetails);
+		}
+		// ★★★ ここまで ★★★
+
+		System.out.println("========== ホーム画面表示 ==========\n");
+
+		return "AdminHome";
+	}
+
+	/**
+	 * POST /admin/rental/add-to-cart - カートに本を追加
+	 */
+	@PostMapping("/rental/add-to-cart")
+	public String addToCart(@RequestParam Integer bookId, HttpSession session) {
+		System.out.println("\n========== カート追加処理 ==========");
+		System.out.println("bookId: " + bookId);
+
+		try {
+			// 1. 本を取得
+			Book book = bookRepository.findById(bookId).orElse(null);
+
+			if (book == null) {
+				System.out.println("❌ 本が見つかりません");
+				session.setAttribute(SESSION_ERROR, "本が見つかりません（ID: " + bookId + "）");
+				return "redirect:/admin/";
+			}
+
+			System.out.println("✅ 本を取得: " + book.getTitle());
+
+			// 2. セッションのカートを取得
+			@SuppressWarnings("unchecked")
+			List<CartItem> rentalCart = (List<CartItem>) session.getAttribute(SESSION_RENTAL_CART);
+			if (rentalCart == null) {
+				rentalCart = new ArrayList<>();
+				session.setAttribute(SESSION_RENTAL_CART, rentalCart);
+			}
+
+			// 3. 重複チェック（同じ本がカート内にあるか）
+			boolean exists = rentalCart.stream()
+					.anyMatch(item -> item.getBookId().equals(bookId));
+
+			if (exists) {
+				System.out.println("⚠️ この本は既にカートに入っています");
+				session.setAttribute(SESSION_ERROR, "この本は既にカートに入っています");
+				return "redirect:/admin/";
+			}
+
+			// ★★★ 【方法1】loans フラグをチェック ★★★
+			if (book.isLoans()) {
+				System.out.println("⚠️ この本は現在貸し出し中です");
+				session.setAttribute(SESSION_ERROR, "「" + book.getTitle() + "」は現在貸し出し中です");
+				return "redirect:/admin/";
+			}
+			// ★★★ ここまで ★★★
+
+			// 4. CartItem を作成
+			CartItem item = new CartItem();
+			item.setBookId(book.getId());
+			item.setTitle(book.getTitle());
+			item.setAuthor(book.getWriter().getWriterName());
+			item.setCategory(book.getCategory().getCategoryName());
+			item.setTag("新着");
+
+			// 5. カートに追加
+			rentalCart.add(item);
+
+			System.out.println("✅ カートに追加: " + book.getTitle());
+			System.out.println("   カート内の冊数: " + rentalCart.size());
+			session.setAttribute(SESSION_MESSAGE, "「" + book.getTitle() + "」をカートに追加しました");
+
+		} catch (Exception e) {
+			System.out.println("❌ エラー: " + e.getMessage());
+			e.printStackTrace();
+			session.setAttribute(SESSION_ERROR, "エラーが発生しました");
+		}
+
+		System.out.println("========== 処理完了 ==========\n");
+
+		return "redirect:/admin/";
+	}
+
+	/**
+	 * POST /admin/rental/remove-from-cart - カートから削除
+	 */
+	@PostMapping("/rental/remove-from-cart")
+	public String removeFromCart(@RequestParam Integer bookId, HttpSession session) {
+		System.out.println("\n========== カート削除処理 ==========");
+		System.out.println("bookId: " + bookId);
+
+		try {
+			// 1. セッションのカートを取得
+			@SuppressWarnings("unchecked")
+			List<CartItem> rentalCart = (List<CartItem>) session.getAttribute(SESSION_RENTAL_CART);
+
+			if (rentalCart == null || rentalCart.isEmpty()) {
+				System.out.println("⚠️ カートが空です");
+				session.setAttribute(SESSION_ERROR, "カートが空です");
+				return "redirect:/admin/";
+			}
+
+			// 2. 削除対象を検索
+			CartItem targetItem = rentalCart.stream()
+					.filter(item -> item.getBookId().equals(bookId))
+					.findFirst()
+					.orElse(null);
+
+			if (targetItem == null) {
+				System.out.println("⚠️ 指定された本がカートに入っていません");
+				session.setAttribute(SESSION_ERROR, "指定された本がカートに入っていません");
+				return "redirect:/admin/";
+			}
+
+			// 3. 削除
+			rentalCart.remove(targetItem);
+
+			System.out.println("✅ カートから削除: " + targetItem.getTitle());
+			System.out.println("   カート内の冊数: " + rentalCart.size());
+			session.setAttribute(SESSION_MESSAGE, "「" + targetItem.getTitle() + "」を削除しました");
+
+		} catch (Exception e) {
+			System.out.println("❌ エラー: " + e.getMessage());
+			e.printStackTrace();
+			session.setAttribute(SESSION_ERROR, "エラーが発生しました");
+		}
+
+		System.out.println("========== 処理完了 ==========\n");
+
+		return "redirect:/admin/";
+	}
+
+	/**
+	 * POST /admin/rental/create - 貸し出し確定
+	 */
+	@Transactional
+	@PostMapping("/rental/create")
+	public String createRental(@RequestParam Integer userId, HttpSession session) {
+		System.out.println("\n========== 貸し出し確定処理 ==========");
+		System.out.println("ユーザーID: " + userId);
+
+		try {
+			// 1. セッションのカートを取得
+			@SuppressWarnings("unchecked")
+			List<CartItem> rentalCart = (List<CartItem>) session.getAttribute(SESSION_RENTAL_CART);
+
+			if (rentalCart == null || rentalCart.isEmpty()) {
+				System.out.println("❌ カートが空です");
+				session.setAttribute(SESSION_ERROR, "カートに本が入っていません");
+				return "redirect:/admin/";
+			}
+
+			System.out.println("本数: " + rentalCart.size() + "冊");
+
+			// 2. ユーザーを確認
+			User user = userRepository.findById(userId).orElse(null);
+
+			if (user == null) {
+				System.out.println("❌ ユーザーが見つかりません");
+				session.setAttribute(SESSION_ERROR, "ユーザーが見つかりません");
+				return "redirect:/admin/";
+			}
+
+			System.out.println("✅ ユーザー確認: " + user.getName());
+
+			// 3. Rental を作成
+			Rental rental = new Rental();
+			rental.setUser(user);
+			rental.setRentalDate(LocalDate.now());
+			rental.setDropDate(LocalDate.now().plusDays(14)); // 2週間後
+			rentalRepository.save(rental);
+
+			System.out.println("✅ 貸出伝票作成: ID = " + rental.getId());
+
+			// 4. 各本を処理
+			int successCount = 0;
+			for (CartItem item : rentalCart) {
+				Book book = bookRepository.findById(item.getBookId()).orElse(null);
+
+				if (book != null) {
+					// 4-1. Rentaldetail を作成
+					Rentaldetail detail = new Rentaldetail();
+					detail.setRental(rental);
+					detail.setBook(book);
+					rentaldetailRepository.save(detail);
+
+					// 4-2. Book.loans を true に更新
+					book.setLoans(true);
+					bookRepository.save(book);
+
+					System.out.println("  ✅ " + book.getTitle());
+					successCount++;
+				} else {
+					System.out.println("  ⚠️ 本が見つかりません: book_id = " + item.getBookId());
+				}
+			}
+
+			System.out.println("✅ " + successCount + "冊の貸し出し処理完了");
+
+			// 5. カートをクリア
+			rentalCart.clear();
+
+			session.setAttribute(SESSION_MESSAGE, 
+				successCount + "冊の貸し出しが完了しました（Rental ID: " + rental.getId() + "）");
+
+		} catch (Exception e) {
+			System.out.println("❌ エラー: " + e.getMessage());
+			e.printStackTrace();
+			session.setAttribute(SESSION_ERROR, "貸し出し処理に失敗しました: " + e.getMessage());
+		}
+
+		System.out.println("========== 処理完了 ==========\n");
+
+		return "redirect:/admin/";
+	}
+
+	/**
+	 * POST /admin/rental/{rentalId}/return - 本の返却処理
+	 */
+	@Transactional
+	@PostMapping("/rental/{rentalId}/return")
+	public String returnRental(@PathVariable Integer rentalId, HttpSession session) {
+		System.out.println("\n========== 返却処理開始 ==========");
+		System.out.println("rentalId: " + rentalId);
+
+		try {
+			// 1. Rental を取得
+			Rental rental = rentalRepository.findById(rentalId)
+					.orElseThrow(() -> new IllegalArgumentException("Rental not found: " + rentalId));
+
+			System.out.println("✅ 貸出伝票取得: ID = " + rental.getId());
+
+			// 2. すでに返却済みなら何もしない
+			if (rental.getReturnDate() != null) {
+				System.out.println("⚠️ すでに返却済み");
+				session.setAttribute(SESSION_ERROR, "この貸出は既に返却済みです");
+				return "redirect:/admin/rental";
+			}
+
+			// 3. 伝票内のすべての本を返却
+			List<Rentaldetail> details = rental.getRentaldetail();
+			System.out.println("📚 返却対象の本数：" + (details != null ? details.size() : 0));
+
+			if (details != null && !details.isEmpty()) {
+				for (Rentaldetail detail : details) {
+					Book book = detail.getBook();
+					System.out.println("  返却中：" + book.getTitle());
+
+					// 貸出フラグを戻す
+					book.setLoans(false);
+					bookRepository.save(book);
+				}
+			}
+
+			// 4. 返却日を更新
+			rental.setReturnDate(LocalDate.now());
+			rentalRepository.save(rental);
+
+			System.out.println("✅ 返却処理完了");
+
+			session.setAttribute(SESSION_MESSAGE, 
+				(details != null ? details.size() : 0) + "冊の返却が完了しました");
+
+		} catch (Exception e) {
+			System.out.println("❌ エラー: " + e.getMessage());
+			e.printStackTrace();
+			session.setAttribute(SESSION_ERROR, "返却処理に失敗しました");
+		}
+
+		System.out.println("========== 処理完了 ==========\n");
+
+		return "redirect:/admin/rental";
+	}
 }
