@@ -17,4 +17,11 @@ public interface RentalRepository extends JpaRepository<Rental, Integer> {
 
 	//返却期限切れの本を取得する
 	List<Rental> findByUserIdAndDropDateBeforeAndReturnDateIsNull(Integer userId, LocalDate today);
+
+	//貸し出し中の本(返却期限切れも含めた)を取得する
+	List<Rental> findByUserIdAndReturnDateIsNull(Integer userId);
+
+	//貸し出し履歴
+	List<Rental> findByUserId(Integer userId);
+
 }
