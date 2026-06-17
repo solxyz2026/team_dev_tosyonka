@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +28,7 @@ public class WriterController {
 	//著者追加画面へ
 	@GetMapping("/writers")
 	public String index() {
-		return "writers";
+		return "WriterAdd";
 	}
 
 	//著者追加
@@ -37,7 +38,9 @@ public class WriterController {
 			@RequestParam(defaultValue = "") String writerDescription,
 			Model model) {
 
-		List<String> errors = new ArrayList<>();
+		//		List<String> errors = new ArrayList<>();
+
+		ArrayList<String> errors = new ArrayList<>();
 
 		if (writerName.equals("")) {
 			errors.add("著者名が未入力です");
@@ -57,7 +60,7 @@ public class WriterController {
 		Writer writer = new Writer(writerName, writerDescription);
 		writerRepository.save(writer);
 
-		return "redirect:/WriterAdd";
+		return "AdminHome";
 	}
 
 	//	//著者更新ページへ
@@ -116,5 +119,12 @@ public class WriterController {
 	}
 
 	//著者削除
+	@PostMapping("/writers/list/{id}/delete")
+	public String deleteWriter(
+			@PathVariable Integer id,
+			Model model) {
+		writerRepository.deleteById(id);
 
+		return "redirect:/admin/writers/list";
+	}
 }

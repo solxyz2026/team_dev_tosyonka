@@ -67,6 +67,7 @@
 			<th>著者ID</th>
 			<th>著者</th>
 			<th>著者紹介文</th>
+<!--			<th>本の冊数</th>-->
 			<th>削除</th>
 		</tr>
 		
@@ -75,9 +76,10 @@
 			<td th:text="${writerList.writerName}"></td>
 			<td th:text="${writerList.writerDescription}"></td>
 			
+<!--			<td></td>-->
 
 			<td>
-				<form th:action="@{/admin/writers/list/{writerId}/delete(writerId=${writerList.id})}" method="post">
+				<form th:action="@{/admin/writers/list/{id}/delete(id=${writerList.id})}" method="post">
 					<button>削除</button>
 				</form>
 			</td>
