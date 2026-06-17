@@ -18,9 +18,10 @@
 	</div>
 	<br>
 	
+	<div>[[${msg}]]</div>
+	
 	<!--予約一覧-->
 	<div>予約する本一覧</div>
-	<form action="/user/reservations" method="post">
 		<table border="1">
 			<tr>
 				<td>タイトル</td>
@@ -32,9 +33,14 @@
 				<td>[[${book.title}]]</td>
 				<td>[[${book.writer.writerName}]]</td>
 				<td>[[${book.category.categoryName}]]</td>
-				<td>×</td>
+				<td>
+					<form th:action="|/user/${book.id}/delete|" method="post">
+						<button>削除</button>
+					</form>
+				</td>
 			</tr>
 		</table><br>
+	<form action="/user/reservations" method="post">
 		<button>予約確定</button>
 	</form>
 	

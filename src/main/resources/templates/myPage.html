@@ -24,9 +24,11 @@
 	
 	<!--返却期限切れリスト-->
 	<div>返却期限切れの本一覧</div>
-	<div style="color: rgb(255, 128, 128);">至急、以下の本を返却してください。<br>
-		返却されない場合はアカウントが停止し、本を借りれなくなります。</div>
-		
+	<div th:if="${expiredList != null && !expiredList.isEmpty()}" 
+	     style="color: rgb(255, 128, 128);">
+	    至急、以下の本を返却してください。<br>
+	    返却されない場合はアカウントが停止し、本を借りれなくなります。
+	</div>
 	<table border="1">
 		<tr>
 			<th>タイトル</th>
@@ -72,11 +74,13 @@
 			<th>著者</th>
 			<th>カテゴリー</th>
 		</tr>
-		<tr th:each="details:${detail}">
-			<td>[[${details.book.title}]]</td>
-			<td>[[${details.book.writer.writerName}]]</td>
-			<td>[[${details.book.category.categoryName}]]</td>	
-		</tr>
+		<th:block th:each="reservationList:${reservationsList}">
+			<tr th:each="reservationdetails:${reservationList.reservationdetails}">
+				<td>[[${reservationdetails.book.title}]]</td>
+				<td>[[${reservationdetails.book.writer.writerName}]]</td>
+				<td>[[${reservationdetails.book.category.categoryName}]]</td>
+			</tr>
+		</th:block>
 	</table><br>
 	
 	<!--貸し出し履歴リスト-->

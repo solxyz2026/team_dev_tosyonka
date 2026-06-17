@@ -12,7 +12,8 @@
 <li th:each="data:${errors}" style="color:red;">[[${data}]]</li>
 
 	<form action="/admin/writers" method="post">		
-
+		<a class="btn" th:href="@{/admin/}">管理者メニューに戻る</a>
+		<br>
 		著者<input type="text" name="writerName"th:value="${writerName}"><br>
 		
 		著者紹介文<input type="text" name="writerDescription"th:value="${writerDescription}"><br>
