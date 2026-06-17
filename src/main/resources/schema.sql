@@ -39,6 +39,7 @@ summary TEXT,
 loans BOOLEAN,
 date DATE,
 category_id INTEGER,
+delete_judge BOOLEAN,
 
 FOREIGN KEY (writer_id) REFERENCES writers(id),
 FOREIGN KEY (category_id) REFERENCES categories(id)
