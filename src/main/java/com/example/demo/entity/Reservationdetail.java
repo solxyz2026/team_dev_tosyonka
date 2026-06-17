@@ -35,6 +35,12 @@ public class Reservationdetail {
 	public Reservationdetail() {
 	}
 
+	public Reservationdetail(Reservation reservation, Book book, Boolean reservationStatus) {
+		this.reservation = reservation;
+		this.book = book;
+		this.reservationStatus = reservationStatus;
+	}
+
 	public Reservationdetail(Integer id, Reservation reservation, Book book, Boolean reservationStatus) {
 		this.id = id;
 		this.reservation = reservation;

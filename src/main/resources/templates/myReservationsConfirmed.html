@@ -26,8 +26,14 @@
 			<td>著者</td>
 			<td>カテゴリー</td>
 		</tr>
-		<tr>
-		</tr>
+		<th:block th:each="reservatonConfirmed:${reservatonsConfirmed}">
+			<tr th:each="rentaldetails:${reservatonConfirmed.rentaldetail}">
+				<td>[[${rentaldetails.book.title}]]</td>
+				<td>[[${rentaldetails.book.writer.writerName}]]</td>
+				<td>[[${rentaldetails.book.category.categoryName}]]</td>
+				<td style="color: rgb(255, 128, 128);">[[${rental.dropDate}]]</td>
+			</tr>
+		</th:block>
 	</table><br>
 
 </body>

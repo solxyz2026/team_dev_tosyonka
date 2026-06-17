@@ -56,7 +56,7 @@ public class ReservationsCart {
 
 	// カートの中身を全てクリア
 	public void clear() {
-		books = new ArrayList<>();
+		books.clear();
 	}
 
 }
