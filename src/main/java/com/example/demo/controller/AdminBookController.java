@@ -164,19 +164,20 @@ public class AdminBookController {
 		return "AdminHome";
 	}
 
-	//	@PostMapping("/books/{book_id}/delete")
-	//	public String delete(
-	//			@PathVariable Integer book_id) {
-	//
-	//		bookRepository.deleteById(book_id);
-	//
-	//		return "redirect:/admin/serarch";
-	//	}
+	@GetMapping("/books/{book_id}/delete")
+	public String delete(
+			@PathVariable Integer book_id) {
+
+		bookRepository.deleteById(book_id);
+
+		return "redirect:/admin/search";
+	}
 
 	@GetMapping("/books/{book_id}")
 	public String show(
 			@PathVariable Integer book_id,
 			HttpSession session, Model model) {
+
 		try {
 			Book book = bookRepository.findById(book_id).orElse(null);
 
