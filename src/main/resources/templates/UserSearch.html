@@ -163,6 +163,9 @@
 				<button type="submit">検索</button>
 		    </form>
 		</div>
+		<div class="button-group">
+					<a class="btn" th:href="@{/user/}">ユーザーメニューに戻る</a>
+		</div>
 
 		<!-- 本一覧テーブル -->
 		<table th:if="${!books.isEmpty()}">
@@ -195,10 +198,7 @@
 		</div>
 
 		<!-- ボタングループ -->
-		<div class="button-group">
-			<a class="btn" th:href="@{/user/}">ユーザーメニューに戻る</a>
-			<a class="btn" th:href="@{/user/search}">検索に戻る</a>
-		</div>
+		
 	</div>
 </body>
 </html>

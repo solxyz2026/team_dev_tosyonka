@@ -127,7 +127,7 @@ public class UserBookController {
 
 		}
 
-		return "UserSearch";
+		return "redirect:/search";
 	}
 
 	@GetMapping("/book/{book_id}")
