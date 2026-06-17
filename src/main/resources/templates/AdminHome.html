@@ -1,183 +1,417 @@
-<!--大森-->
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
-	<title>管理者画面</title>
-	<link rel="stylesheet" href="/css/style.css">
+	<title>管理者画面 - 貸し出し管理</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Arial', 'Hiragino Sans', sans-serif;
+			background-color: #f5f5f5;
+		}
+
+		article {
+			display: flex;
+			min-height: 100vh;
+		}
+
+		.side {
+			width: 200px;
+			background: linear-gradient(135deg, #0097D4 0%, #0077B6 100%);
+			color: white;
+			padding: 20px;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+		}
+
+		.side a {
+			color: white;
+			text-decoration: none;
+			padding: 10px;
+			border-radius: 4px;
+			transition: background-color 0.3s;
+			display: block;
+			font-size: 14px;
+		}
+
+		.side a:hover {
+			background-color: rgba(255, 255, 255, 0.2);
+		}
+
+		.content {
+			flex: 1;
+			padding: 30px;
+		}
+
+		h1 {
+			color: #333;
+			margin-bottom: 10px;
+			font-size: 28px;
+		}
+
+		.subtitle {
+			color: #999;
+			margin-bottom: 30px;
+			font-size: 14px;
+		}
+
+		h2 {
+			color: #0097D4;
+			margin: 25px 0 15px 0;
+			border-bottom: 2px solid #0097D4;
+			padding-bottom: 8px;
+			font-size: 18px;
+		}
+
+		/* メッセージ */
+		.message {
+			padding: 12px;
+			margin: 10px 0;
+			border-radius: 4px;
+			font-weight: bold;
+		}
+
+		.message.success {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4CAF50;
+			color: #2e7d32;
+		}
+
+		.message.error {
+			background-color: #ffebee;
+			border-left: 4px solid #d32f2f;
+			color: #d32f2f;
+		}
+
+		/* フォーム */
+		.form-section {
+			background-color: #f9f9f9;
+			padding: 15px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			margin-bottom: 15px;
+		}
+
+		.form-group {
+			display: flex;
+			gap: 10px;
+			align-items: center;
+			margin-bottom: 10px;
+		}
+
+		.form-group label {
+			font-weight: bold;
+			min-width: 100px;
+			font-size: 14px;
+		}
+
+		.form-group input {
+			flex: 1;
+			padding: 8px;
+			border: 1px solid #999;
+			border-radius: 4px;
+			font-size: 14px;
+		}
+
+		.btn {
+			padding: 8px 15px;
+			background-color: #0097D4;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-weight: bold;
+			transition: background-color 0.3s;
+			font-size: 14px;
+		}
+
+		.btn:hover {
+			background-color: #0077B6;
+		}
+
+		.btn-delete {
+			background-color: #d32f2f;
+			padding: 5px 10px;
+			font-size: 12px;
+		}
+
+		.btn-delete:hover {
+			background-color: #c62828;
+		}
+
+		/* テーブル */
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 15px 0;
+			background-color: white;
+		}
+
+		table thead {
+			background-color: #004B7A;
+			color: white;
+		}
+
+		table th,
+		table td {
+			padding: 12px;
+			text-align: left;
+			border: 1px solid #ddd;
+			font-size: 14px;
+		}
+
+		table tbody tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+
+		table tbody tr:hover {
+			background-color: #e8e8e8;
+		}
+
+		.empty-row {
+			text-align: center;
+			color: #999;
+		}
+
+		/* カート情報 */
+		.cart-info {
+			background-color: #e8f4f8;
+			padding: 12px;
+			border-left: 4px solid #0097D4;
+			margin: 15px 0;
+			border-radius: 4px;
+			font-size: 14px;
+		}
+
+		.cart-info strong {
+			color: #0097D4;
+			font-size: 18px;
+		}
+
+		/* ユーザーセクション */
+		.user-section {
+			background-color: #f9f9f9;
+			padding: 15px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			display: flex;
+			gap: 10px;
+			align-items: center;
+			margin-bottom: 20px;
+		}
+
+		.user-section label {
+			font-weight: bold;
+			font-size: 14px;
+		}
+
+		.user-section input {
+			flex: 1;
+			max-width: 300px;
+			padding: 8px;
+			border: 1px solid #999;
+			border-radius: 4px;
+			font-size: 14px;
+		}
+
+		form {
+			display: inline;
+		}
+
+		/* 直近の貸し出し情報 */
+		.latest-rental-info {
+			background-color: #f0f7ff;
+			padding: 15px;
+			border-left: 4px solid #0097D4;
+			border-radius: 4px;
+			margin-bottom: 20px;
+		}
+
+		.latest-rental-info div {
+			margin-bottom: 10px;
+			font-size: 14px;
+		}
+
+		.latest-rental-info strong {
+			font-weight: bold;
+			color: #333;
+		}
+
+		.empty-info {
+			background-color: #f9f9f9;
+			padding: 15px;
+			border-radius: 4px;
+			text-align: center;
+			color: #999;
+			margin-bottom: 20px;
+		}
+
+		.status-lend {
+			color: #ff9800;
+			font-weight: bold;
+		}
+
+		.status-return {
+			color: #4CAF50;
+			font-weight: bold;
+		}
+	</style>
 </head>
 
 <body>
-	<!--リンク-->
 	<article>
+		<!-- サイドナビゲーション -->
 		<div class="side">
-			<br><br>
-			<a href="/admin/logout">ログアウト</a><br><br>
-			<a href="/user/">ホームページ</a><br><br>
-			<a href="/admin/books">在庫一覧</a><br><br>
-			<a href="/admin/books/add">本追加</a><br><br>
-			<a href="/admin/writers">著者の追加</a><br><br>
-			<a href="/admin/categories">カテゴリー追加</a><br><br>
-			<a href="/admin/reservations">予約一覧</a><br><br>
-			<a href="/admin/rental">貸し出し状況</a><br><br>
-			<a href="/admin/writers/list">著者一覧</a><br><br>
+			<a href="/admin/logout">ログアウト</a>
+			<a href="/user/">ホームページ</a>
+			<a href="/admin/books">在庫一覧</a>
+			<a href="/admin/books/add">本追加</a>
+			<a href="/admin/writers">著者の追加</a>
+			<a href="/admin/categories">カテゴリー追加</a>
+			<a href="/admin/reservations">予約一覧</a>
+			<a href="/admin/rental">貸し出し状況</a>
 		</div>
+
+		<!-- メインコンテンツ -->
 		<div class="content">
 			<h1>管理者画面</h1>
-			<h2>貸し出し</h2>
+			<p class="subtitle">本の貸し出し処理</p>
 
-			<form action="/admin/books/search" method="post">
-				本の登録ID　　<input type="text" name="book_id">
-				<button>検索</button>
+			<!-- メッセージ表示 -->
+			<div th:if="${message != null}" class="message success">
+				✅ [[${message}]]
+			</div>
+			<div th:if="${error != null}" class="message error">
+				❌ [[${error}]]
+			</div>
 
-				<table border="1">
+			<!-- ============================================ -->
+			<!-- セクション1：本をカートに追加 -->
+			<!-- ============================================ -->
+			<h2>📚 本をカートに追加</h2>
+
+			<div class="form-section">
+				<form action="/admin/rental/add-to-cart" method="post" class="form-group">
+					<label for="bookId">本の登録ID</label>
+					<input type="number" id="bookId" name="bookId" placeholder="本のIDを入力（例：1）" min="1" required>
+					<button type="submit" class="btn">追加</button>
+				</form>
+			</div>
+
+			<!-- カート情報 -->
+			<div class="cart-info">
+				カート内の冊数：<strong th:text="${cartCount ?: 0}">0</strong> 冊
+			</div>
+
+			<!-- ============================================ -->
+			<!-- セクション2：カート内容 -->
+			<!-- ============================================ -->
+			<h2>🛒 カート内容</h2>
+
+			<table>
+				<thead>
 					<tr>
 						<th>ID</th>
 						<th>タイトル</th>
 						<th>著者</th>
 						<th>カテゴリー</th>
 						<th>タグ</th>
+						<th style="width: 80px;">操作</th>
 					</tr>
-					<tr th:each="details:${detail}">
-						<td>[[${details.book.title}]]</td>
-						<td>[[${details.status}]]</td>
+				</thead>
+				<tbody>
+					<!-- Thymeleaf でカートをループ表示 -->
+					<tr th:if="${rentalCart != null && !rentalCart.isEmpty()}" th:each="item : ${rentalCart}">
+						<td th:text="${item.bookId}">1</td>
+						<td th:text="${item.title}">Java入門</td>
+						<td th:text="${item.author}">太郎</td>
+						<td th:text="${item.category}">プログラミング</td>
+						<td th:text="${item.tag}">新着</td>
+						<td style="text-align: center;">
+							<form action="/admin/rental/remove-from-cart" method="post" style="display: inline;">
+								<input type="hidden" name="bookId" th:value="${item.bookId}">
+								<button type="submit" class="btn btn-delete" onclick="return confirm('削除しますか？')">削除</button>
+							</form>
+						</td>
 					</tr>
-				</table>
-				<br>
-			</form>
-			<formform action="/admin/-/-" method="post">
-				<button>追加</button>
-				</form>
-				<hr>
+					<!-- カートが空の場合 -->
+					<tr th:if="${rentalCart == null || rentalCart.isEmpty()}" class="empty-row">
+						<td colspan="6">本を追加してください</td>
+					</tr>
+				</tbody>
+			</table>
 
-				<form action="/admin/user/search" method="post">
-					<!--		URLマッピングにユーザID検索っぽいのが見つからない-->
-					貸し出し内容
-					<table border="1">
+			<!-- ============================================ -->
+			<!-- セクション3：貸し出し先ユーザー -->
+			<!-- ============================================ -->
+			<h2>👤 貸し出し先ユーザー</h2>
+
+			<div class="user-section">
+				<form action="/admin/rental/create" method="post" onsubmit="return confirm('貸し出しを確定しますか？');" style="display: flex; gap: 10px; align-items: center; width: 100%;">
+					<label for="userId">ユーザID</label>
+					<input type="number" id="userId" name="userId" placeholder="ユーザーIDを入力（例：1）" min="1" required>
+					<button type="submit" class="btn">確定</button>
+				</form>
+			</div>
+
+			<!-- ============================================ -->
+			<!-- セクション4：直近の貸し出し情報 -->
+			<!-- ============================================ -->
+			<h2>📖 直近の貸し出し情報</h2>
+
+			<!-- 直近の貸し出しがある場合 -->
+			<div th:if="${latestRental != null}" class="latest-rental-info">
+				<div>
+					<strong>貸出ID：</strong> <span th:text="${latestRental.id}">1</span>
+				</div>
+				<div>
+					<strong>ユーザー名：</strong> <span th:text="${latestRental.user.name}">田中太郎</span>
+				</div>
+				<div>
+					<strong>貸出日：</strong> <span th:text="${#temporals.format(latestRental.rentalDate, 'yyyy-MM-dd')}">2026-06-17</span>
+				</div>
+				<div>
+					<strong>返却期限：</strong> <span th:text="${#temporals.format(latestRental.dropDate, 'yyyy-MM-dd')}">2026-07-01</span>
+				</div>
+				<div>
+					<strong>返却状況：</strong>
+					<span th:if="${latestRental.returnDate == null}" class="status-lend">貸出中</span>
+					<span th:if="${latestRental.returnDate != null}" class="status-return">返却済み</span>
+				</div>
+
+				<h3 style="margin-top: 15px; margin-bottom: 10px; color: #333; border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 16px;">
+					📚 貸し出した本
+				</h3>
+
+				<table>
+					<thead>
 						<tr>
-							<th>ID</th>
+							<th>本ID</th>
 							<th>タイトル</th>
 							<th>著者</th>
-							<th>カテゴリー</th>
-							<th>タグ</th>
-							<!--大森-->
-
-							<!DOCTYPE html>
-							<html xmlns:th="http://www.thymeleaf.org">
-
-							<head>
-								<meta charset="UTF-8">
-								<title>管理者画面</title>
-								<link rel="stylesheet" href="/css/style.css">
-							</head>
-
-							<body>
-								<article>
-									<!-- サイドナビゲーション -->
-									<div class="side">
-										<a href="/admin/logout">ログアウト</a>
-										<a href="/user/">ホームページ</a>
-										<a href="/admin/books">在庫一覧</a>
-										<a href="/admin/books/add">本追加</a>
-										<a href="/admin/writers">著者の追加</a>
-										<a href="/admin/categories">カテゴリー追加</a>
-										<a href="/admin/reservations">予約一覧</a>
-										<a href="/admin/rental">貸し出し状況</a>
-									</div>
-
-									<!-- メインコンテンツ -->
-									<div class="content">
-										<h1>管理者画面</h1>
-										<p class="subtitle">本の貸し出し処理</p>
-
-										<!-- メッセージ表示 -->
-										<div th:if="${message != null}" class="message success">
-											[[${message}]]
-										</div>
-										<div th:if="${error != null}" class="message error">
-											[[${error}]]
-										</div>
-
-										<h2>本をカートに追加</h2>
-
-										<div class="form-section">
-											<form action="/admin/rental/add-to-cart" method="post" class="form-group">
-												<label for="bookId">本の登録ID</label>
-												<input type="number" id="bookId" name="bookId" placeholder="本のIDを入力（例：1）" min="1" required>
-												<button type="submit" class="btn">追加</button>
-											</form>
-										</div>
-
-										<!-- カート情報 -->
-										<div class="cart-info">
-											カート内の冊数：<strong th:text="${cartCount ?: 0}">0</strong> 冊
-										</div>
-
-										
-										<h2>カート内容</h2>
-
-										<table>
-											<thead>
-												<tr>
-													<th>ID</th>
-													<th>タイトル</th>
-													<th>著者</th>
-													<th>カテゴリー</th>
-													<th>タグ</th>
-													<th style="width: 60px;">操作</th>
-												</tr>
-											</thead>
-											<tbody>
-												<!-- ThymeleafでrentalCartをループ表示 -->
-												<tr th:if="${rentalCart != null && !rentalCart.isEmpty()}" th:each="item : ${rentalCart}">
-													<td th:text="${item.bookId}">1</td>
-													<td th:text="${item.title}">Java入門</td>
-													<td th:text="${item.author}">太郎</td>
-													<td th:text="${item.category}">プログラミング</td>
-													<td th:text="${item.tag}">新着</td>
-													<td style="text-align: center;">
-														<form action="/admin/rental/remove-from-cart" method="post" style="display: inline;">
-															<input type="hidden" name="bookId" th:value="${item.bookId}">
-															<button type="submit" class="btn btn-delete" onclick="return confirm('削除しますか？')">🗑️</button>
-														</form>
-													</td>
-												</tr>
-												<tr th:if="${rentalCart == null || rentalCart.isEmpty()}" class="empty-row">
-													<td colspan="6">本を追加してください</td>
-												</tr>
-											</tbody>
-										</table>
-
-										<h2>貸し出し先ユーザー</h2>
-
-										<div class="user-section">
-											<form action="/admin/rental/create" method="post" onsubmit="return confirm('貸し出しを確定しますか？');" style="display: flex; gap: 10px; align-items: center; width: 100%; justify-content: flex-end;">
-												<label for="userId">ユーザID</label>
-												<input type="number" id="userId" name="userId" placeholder="ユーザーIDを入力（例：1）" min="1" required>
-												<button type="submit" class="btn btn-confirm">確定</button>
-											</form>
-										</div>
-									</div>
-								</article>
-							</body>
-
-							</html>
 						</tr>
-						<tr th:each="details:${detail}">
-							<td>[[${details.book.title}]]</td>
-							<td>[[${details.status}]]</td>
+					</thead>
+					<tbody>
+						<tr th:each="detail : ${latestRentalDetails}">
+							<td th:text="${detail.book.id}">1</td>
+							<td th:text="${detail.book.title}">Java入門</td>
+							<td th:text="${detail.book.writer.writerName}">山田太郎</td>
 						</tr>
-					</table>
+					</tbody>
+				</table>
+			</div>
 
-					ユーザID　　<input type="text" name="user_id">
-					<button>検索</button>
-				</form>
-
-				<form action="/admin/-/-" method="post">
-					<button>確定</button>
-				</form>
+			<!-- 直近の貸し出しがない場合 -->
+			<div th:if="${latestRental == null}" class="empty-info">
+				直近の貸し出し情報はありません
+			</div>
 		</div>
 	</article>
 </body>

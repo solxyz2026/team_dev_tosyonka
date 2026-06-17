@@ -19,7 +19,7 @@ import com.example.demo.repository.UserRepository;
 @Controller
 @RequestMapping("/admin")
 public class AdminAccountController {
-
+	
 	private final HttpSession session;
 	private UserRepository userRepository;
 
@@ -31,28 +31,40 @@ public class AdminAccountController {
 		this.userRepository = userRepository;
 	}
 
-	//ログイン画面表示
+	/**
+	 * ログイン画面表示
+	 */
 	@GetMapping("/login")
 	public String index() {
-
 		return "AdminLogin";
 	}
 
+	/**
+	 * ログアウト処理
+	 */
 	@GetMapping("/logout")
 	public String logout() {
-
-		return "AdminLogin";
+		// セッション情報をクリア
+		session.invalidate();
+		System.out.println("✅ ログアウト完了");
+		return "redirect:/admin/login";  // ← /admin/login にリダイレクト
 	}
 
-	//ログイン処理
+	/**
+	 * ログイン処理
+	 */
 	@PostMapping("/login")
 	public String login(
 			@RequestParam(defaultValue = "") String email,
 			@RequestParam(defaultValue = "") String password,
 			Model model) {
+		
+		System.out.println("\n========== ログイン処理 ==========");
+		System.out.println("Email: " + email);
 
 		ArrayList<String> list = new ArrayList<>();
-		//空欄に対するエラー
+
+		// 空欄に対するエラー
 		if (email.equals("")) {
 			list.add("メールアドレスを入力してください");
 			model.addAttribute("con", list);
@@ -61,24 +73,37 @@ public class AdminAccountController {
 			list.add("パスワードを入力してください");
 			model.addAttribute("con", list);
 		}
-
 		if (email.equals("") || password.equals("")) {
 			model.addAttribute("email", email);
 			model.addAttribute("password", password);
+			System.out.println("⚠️ 入力値エラー");
 			return "AdminLogin";
 		}
 
+		// データベースで検索
 		List<User> userList = userRepository.findByEmailAndPasswordAndRole(email, password, "Admin");
 
-		//メールアドレスとパスワードが一致しない
+		// メールアドレスとパスワードが一致しない
 		if (userList.size() == 0) {
+			System.out.println("❌ 認証失敗");
 			model.addAttribute("message", "メールアドレスとパスワードが一致しません");
 			model.addAttribute("email", email);
 			model.addAttribute("password", password);
 			return "AdminLogin";
 		}
 
-		return "AdminHome";
-	}
+		// ログイン成功
+		User user = userList.get(0);
+		System.out.println("✅ ログイン成功: " + user.getName());
 
+		// セッションに User 情報を保存
+		session.setAttribute("loginUser", user);
+		session.setAttribute("userId", user.getId());
+		session.setAttribute("userName", user.getName());
+
+		System.out.println("========== /admin/ にリダイレクト ==========\n");
+
+		// /admin/ にリダイレクト
+		return "redirect:/admin/";
+	}
 }
