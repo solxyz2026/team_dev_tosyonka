@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>本詳細</title>
+<style>
+	body {
+		font-family: 'Arial', sans-serif;
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 20px;
+		background-color: #ffffff;
+	}
+	
+	.container {
+		padding: 20px;
+	}
+	
+	h1 {
+		font-size: 24px;
+		margin: 0 0 20px 0;
+		border-bottom: 1px solid #000;
+		padding-bottom: 10px;
+	}
+	
+	/* 詳細情報テーブル */
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 20px 0;
+	}
+	
+	table tr {
+		border-bottom: 1px solid #ccc;
+	}
+	
+	table tr:last-child {
+		border-bottom: 1px solid #000;
+	}
+	
+	table th {
+		border: 1px solid #000;
+		padding: 12px;
+		text-align: left;
+		font-weight: bold;
+		width: 20%;
+		background-color: #ffffff;
+	}
+	
+	table td {
+		border: 1px solid #000;
+		padding: 12px;
+	}
+	
+	/* 説明セクション */
+	.summary-section {
+		margin: 20px 0;
+		padding: 15px;
+		border: 1px solid #000;
+	}
+	
+	.summary-section h3 {
+		margin: 0 0 10px 0;
+		font-size: 16px;
+	}
+	
+	.summary-section p {
+		margin: 0;
+		line-height: 1.6;
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+	
+	/* ボタングループ */
+	.button-group {
+		display: flex;
+		gap: 10px;
+		margin-top: 20px;
+	}
+	
+	.btn {
+		padding: 10px 20px;
+		border: 1px solid #000;
+		background-color: #ffffff;
+		cursor: pointer;
+		font-weight: bold;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 14px;
+	}
+	
+	.btn:hover {
+		background-color: #f5f5f5;
+	}
+	
+	/* エラーメッセージ */
+	.error {
+		border: 1px solid #000;
+		padding: 15px;
+		margin-bottom: 20px;
+	}
+</style>
+</head>
+<body>
+	<div class="container">
+		<!-- エラーメッセージ -->
+		<div th:if="${error}" class="error">
+			<p th:text="${error}"></p>
+			<a class="btn" th:href="@{/user/search}">検索ページに戻る</a>
+		</div>
+
+		<!-- 本の詳細情報 -->
+		<div th:if="${book}">
+			<!-- タイトル -->
+			<h1 th:text="${book.title}">本のタイトル</h1>
+
+			<!-- 詳細情報テーブル -->
+			<table>
+				<tr>
+					<th>ID</th>
+					<td th:text="${book.id}">1</td>
+				</tr>
+				<tr>
+					<th>著者</th>
+					<td th:text="${book.writer.writerName}">著者名</td>
+				</tr>
+				<tr>
+					<th>著者説明</th>
+					<td th:text="${book.writer.writerDescription}">著者の説明文</td>
+				</tr>
+				<tr>
+					<th>出版社</th>
+					<td th:text="${book.publisher}">出版社名</td>
+				</tr>
+				<tr>
+					<th>出版日</th>
+					<td th:text="${book.date}">2020-01-01</td>
+				</tr>
+				<tr>
+					<th>カテゴリ</th>
+					<td th:text="${book.category.categoryName}">カテゴリ名</td>
+				</tr>
+				<tr>
+					<th>貸出状況</th>
+					<td>
+						<span th:if="${book.loans}">貸出中</span>
+						<span th:unless="${book.loans}">利用可能</span>
+					</td>
+				</tr>
+			</table>
+
+			<!-- 本の説明セクション -->
+			<div th:if="${book.summary}" class="summary-section">
+				<h3>本の説明</h3>
+				<p th:text="${book.summary}">本の説明文がここに表示されます。</p>
+			</div>
+
+			<!-- ボタングループ -->
+			<div class="button-group">
+				<a class="btn" th:href="@{/admin/search}">検索ページに戻る</a>
+				<a class="btn" th:href="@{/user/}">ユーザーメニューに戻る</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
