@@ -76,12 +76,22 @@ public class ReservationController {
 		List<Book> books = reservationsCart.getBooks();
 		model.addAttribute("books", books);
 
+		if (books.size() == 0) {
+			model.addAttribute("msg", "・予約カートは空です。");
+		}
+
 		return "myReservations";
 	}
 
 	//予約カートの中身を確定させる
 	@PostMapping("/reservations")
 	public String myReservations(Model model) {
+		List<Book> books = reservationsCart.getBooks();
+
+		if (books.size() == 0 || books.isEmpty()) {
+			return "redirect:/user/reservations";
+		}
+
 		LocalDate today = LocalDate.now();
 		User user = userRepository.findById(account.getId()).get();
 
@@ -91,7 +101,6 @@ public class ReservationController {
 
 		//確定したidを利用しカートの中身をReservationに登録する
 		List<Reservationdetail> details = new ArrayList<>();
-		List<Book> books = reservationsCart.getBooks();
 		for (Book book : books) {
 			details.add(new Reservationdetail(reservation, book, !book.isLoans()));
 		}
