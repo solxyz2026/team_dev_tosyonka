@@ -8,6 +8,7 @@ import com.example.demo.entity.Rentaldetail;
 
 public interface RentaldetailRepository extends JpaRepository<Rentaldetail, Integer> {
 
-	List<Rentaldetail> findByBookIdAndRental_ReturnDateIsNull(Integer bookId);
-
+	//貸し出しID貸し出し詳細を取得
+    List<Rentaldetail> findByRentalId(Integer rentalId);
+   
 }

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>貸し出し状況</title>
+	<style>
+		
+	</style>
+</head>
+
+<body>
+	<article>
+		<!-- サイドナビゲーション -->
+		<div>
+			<a href="/admin/logout">ログアウト</a>
+			<a href="/user/">ホームページ</a>
+			<a href="/admin/books">在庫一覧</a>
+			<a href="/admin/books/add">本追加</a>
+			<a href="/admin/writers">著者の追加</a>
+			<a href="/admin/categories">カテゴリー追加</a>
+			<a href="/admin/reservations">予約一覧</a>
+			<a href="/admin/loans">貸し出し状況</a>
+		</div>
+
+		<!-- メインコンテンツ -->
+		<div>
+			<h1>管理者画面</h1>
+			<p>貸し出し状況確認</p>
+
+			<!-- メッセージ表示 -->
+			<div th:if="${message != null}" >
+				✅ [[${message}]]
+			</div>
+			<div th:if="${error != null}">
+				❌ [[${error}]]
+			</div>
+
+			<!-- 統計情報 -->
+			<div th:if="${loanDetails != null && !loanDetails.isEmpty()}" class="stats-box">
+				<div class="stat-card">
+					<div th:text="${#lists.size(loanDetails)}">5</div>
+					<div >貸出中の冊数</div>
+				</div>
+				<div class="stat-card">
+					<div th:text="${#lists.size(#lists.filter(loanDetails, l -> l.overdue))}">2</div>
+					<div>延滞中の冊数</div>
+				</div>
+				<div class="stat-card">
+					<div>0</div>
+					<div>本日の返却予定</div>
+				</div>
+			</div>
+
+			<h2>🔴 貸出中の本</h2>
+
+			<!-- 貸出中一覧テーブル -->
+			<div th:if="${loanDetails != null && !loanDetails.isEmpty()}">
+				<table>
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>ユーザー</th>
+							<th>本のタイトル</th>
+							<th>貸出日</th>
+							<th>返却予定日</th>
+							<th>状態</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Thymeleaf で loanDetails をループ -->
+						<tr th:each="detail : ${loanDetails}">
+							<td th:text="${detail.rentalId}">1</td>
+							<td th:text="${detail.userName}">太郎</td>
+							<td th:text="${detail.bookTitle}">Java本</td>
+							<td th:text="${#temporals.format(detail.rentalDate, 'yyyy-MM-dd')}">2026-06-16</td>
+							<td th:text="${#temporals.format(detail.dropDate, 'yyyy-MM-dd')}">2026-06-30</td>
+							<td>
+								<!-- 延滞判定 -->
+								<span th:if="${detail.overdue}" >延滞中</span>
+								<span th:unless="${detail.overdue}" >🔴 貸出中</span>
+							</td>
+							<td>
+								<div class="button-group">
+									<!-- 詳細ボタン -->
+									<form th:action="@{/admin/loans/{rental_id}(rental_id=${detail.rentalId})}" method="get" >
+										<button type="submit" >詳細</button>
+									</form>
+									<!-- 返却ボタン -->
+									<form th:action="@{/admin/loans/{rental_id}/return(rental_id=${detail.rentalId})}" method="post"" onsubmit="return confirm('本当に返却しますか？');">
+										<button type="submit" >返却</button>
+									</form>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div th:if="${loanDetails == null || loanDetails.isEmpty()}" >
+				貸出中の本はありません
+			</div>
+
+			
+			<a href="/admin/" >← 管理者画面に戻る</a>
+		</div>
+	</article>
+</body>
+
+</html>

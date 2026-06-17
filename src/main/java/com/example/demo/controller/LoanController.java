@@ -1,13 +1,11 @@
-/*編集、作成　原田大瑚　6月15日　13時
- * 
- * */
-
 package com.example.demo.controller;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,31 +15,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Rental;
 import com.example.demo.entity.Rentaldetail;
-import com.example.demo.entity.Writer;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.RentalRepository;
 import com.example.demo.repository.RentaldetailRepository;
 
-@Controller
 @RequestMapping("/admin")
+@Controller
 public class LoanController {
+	@Autowired
+	private RentalRepository rentalRepository;
 
-	private final Writer writer;
+	@Autowired
+	private RentaldetailRepository rentaldetailRepository;
 
-	private final RentaldetailRepository rentaldetailRepository;
-	private final RentalRepository rentalRepository;
-	private final BookRepository bookRepository;
+	@Autowired
+	private BookRepository bookRepository;
 
-	public LoanController(RentaldetailRepository rentaldetailRepository, RentalRepository rentalRepository,
-			BookRepository bookRepository, Writer writer) {
-		super();
-		this.rentaldetailRepository = rentaldetailRepository;
-		this.rentalRepository = rentalRepository;
-		this.bookRepository = bookRepository;
-		this.writer = writer;
-	}
-
-	//貸し出し本一覧表示
+	/**
+	 * 貸し出し本一覧表示
+	 */
 	@GetMapping("/rental")
 	public String index(Model model) {
 		List<Rental> rentalList = rentalRepository.findByReturnDateIsNull();
@@ -49,32 +41,46 @@ public class LoanController {
 		return "Rentalshow";
 	}
 
+	/**
+	 * 本の返却処理
+	 */
+	@Transactional  // ← 重要：これを追加
 	@PostMapping("/rental/{rentalId}/return")
 	public String returnRental(@PathVariable Integer rentalId) {
+		System.out.println("返却処理開始：rentalId = " + rentalId);
 
+		// 1. 貸出伝票を取得
 		Rental rental = rentalRepository.findById(rentalId)
-				.orElseThrow(() -> new IllegalArgumentException("Rental not found"));
+				.orElseThrow(() -> new IllegalArgumentException("Rental not found: " + rentalId));
 
-		// すでに返却済みなら何もしない
+		System.out.println("✅ 貸出伝票取得：" + rental.getId());
+
+		// 2. すでに返却済みなら何もしない
 		if (rental.getReturnDate() != null) {
+			System.out.println("⚠️ すでに返却済み");
 			return "redirect:/admin/rental";
 		}
 
-		// ① 伝票内のすべての本を返却
-		for (Rentaldetail detail : rental.getRentaldetail()) {
+		// 3. 伝票内のすべての本を返却
+		List<Rentaldetail> details = rental.getRentaldetail();
+		System.out.println("📚 返却対象の本数：" + (details != null ? details.size() : 0));
 
-			Book book = detail.getBook();
+		if (details != null && !details.isEmpty()) {
+			for (Rentaldetail detail : details) {
+				Book book = detail.getBook();
+				System.out.println("  返却中：" + book.getTitle());
 
-			// 貸出フラグを戻す
-			book.setLoans(false);
-
-			bookRepository.save(book);
+				// 貸出フラグを戻す
+				book.setLoans(false);
+				bookRepository.save(book);
+			}
 		}
 
-		// ② 伝票の返却日を更新
+		// 4. 貸出伝票の返却日を更新
 		rental.setReturnDate(LocalDate.now());
-
 		rentalRepository.save(rental);
+
+		System.out.println("✅ 返却処理完了");
 
 		return "redirect:/admin/rental";
 	}
