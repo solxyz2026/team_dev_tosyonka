@@ -26,7 +26,7 @@ import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.WriterRepository;
 
 @Controller
-@RequestMapping("/admin/books")
+@RequestMapping("/admin")
 public class AdminBookController {
 
 	private final Reservationdetail reservationdetail;
@@ -53,7 +53,7 @@ public class AdminBookController {
 		this.reservationdetail = reservationdetail;
 	}
 
-	@GetMapping("")
+	@GetMapping("/search")
 	public String index(HttpSession session, Model model) {
 
 		try {
@@ -139,7 +139,7 @@ public class AdminBookController {
 	public String addForm(Model model) {
 		List<Category> categoryList = categoryRepository.findAll();
 		model.addAttribute("categoryList", categoryList);
-		return "AdminBooksAdd";
+		return "redirect:/search";
 	}
 
 	//本登録処理
@@ -190,10 +190,10 @@ public class AdminBookController {
 			model.addAttribute("error", "本の詳細情報取得中にエラーが発生しました。");
 		}
 
-		return "redirect:/admin/books";
+		return "redirect:/admin/search";
 	}
 
-	@GetMapping("/{book_id}")
+	@GetMapping("book/{book_id}")
 	public String show(
 			@PathVariable Integer book_id,
 			HttpSession session, Model model) {

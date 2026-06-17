@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>利用者一覧</title>
+</head>
+<body>
+	<h1>利用者一覧</h1>
+	
+	<table border="1">
+		<tr>
+			<th>ユーザID</th>
+			<th>名前</th>
+			<th>メールアドレス</th>
+			<th>電話番号</th>
+			<th>パスワード</th>
+			<th>誕生日</th>
+			<th>削除</th>
+		</tr>
+		<tr th:each="user:${usersList}">
+			<td>[[${user.id}]]</td>
+			<td>[[${user.name}]]</td>
+			<td>[[${user.email}]]</td>
+			<td>[[${user.telNumber}]]</td>
+			<td>[[${user.password}]]</td>
+			<td>[[${user.birthday}]]</td>
+			<td>
+				<form th:action="|/admin/${user.id}/delete|" method="post">
+					<button>削除</button>
+				</form>
+			</td>
+		</tr>
+	</table>
+
+</body>
+</html>
