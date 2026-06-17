@@ -5,6 +5,7 @@
 <title>マイページ</title>
 </head>
 <body>
+	<!--大森-->
 	<h1>マイページ</h1>
 	<div>としょんか</div>
 	
@@ -15,12 +16,13 @@
 	<!--リンク-->
 	<div>
 		<a href="/user/logout">ログアウト</a><br>
-		<a href="/user/userMenu">トップページ</a><br>
+		<a href="/user/">トップページ</a><br>
 		<a href="/user/reservations">予約</a><br>
 		<a href="/user/search">本検索</a>
 	</div>
 	<br>
 	
+	<!--返却期限切れリスト-->
 	<div>返却期限切れの本一覧</div>
 	<div style="color: rgb(255, 128, 128);">至急、以下の本を返却してください。<br>
 		返却されない場合はアカウントが停止し、本を借りれなくなります。</div>
@@ -43,6 +45,7 @@
 		</th:block>
 	</table><br>
 	
+	<!--貸し出し中リスト-->
 	<div>借りてる本</div>
 	<table border="1">
 		<tr>
@@ -61,6 +64,7 @@
 		</th:block>	
 	</table><br>
 	
+	<!--予約済みリスト-->
 	<div>予約済みの本</div>
 	<table border="1">
 		<tr>
@@ -75,6 +79,7 @@
 		</tr>
 	</table><br>
 	
+	<!--貸し出し履歴リスト-->
 	<div>貸し出し履歴</div>
 	<table border="1">
 		<tr>
@@ -92,5 +97,6 @@
 			</tr>
 		</th:block>	
 	</table>
+	
 </body>
 </html>

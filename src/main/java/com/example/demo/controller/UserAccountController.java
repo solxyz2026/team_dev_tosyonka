@@ -169,7 +169,7 @@ public class UserAccountController {
 	@PostMapping("/edit")
 	public String change(
 			@RequestParam(defaultValue = "") String name,
-			@RequestParam(defaultValue = "") String birthday,
+			@RequestParam(defaultValue = "") LocalDate birthday,
 			@RequestParam(defaultValue = "") String telNumber,
 			@RequestParam(defaultValue = "") String email,
 			@RequestParam(defaultValue = "") String password,
@@ -179,8 +179,8 @@ public class UserAccountController {
 		User user = userRepository.findById(id).get();
 
 		user.setName(name);
-		user.setName(birthday);
-		user.setName(telNumber);
+		user.setBirthday(birthday);
+		user.setTelNumber(telNumber);
 		user.setEmail(email);
 		user.setPassword(password);
 
