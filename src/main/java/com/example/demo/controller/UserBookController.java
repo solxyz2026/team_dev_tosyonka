@@ -130,7 +130,7 @@ public class UserBookController {
 		return "redirect:/search";
 	}
 
-	@GetMapping("/book/{book_id}")
+	@GetMapping("/books/{book_id}")
 	public String show(
 			@PathVariable Integer book_id,
 			HttpSession session, Model model) {
