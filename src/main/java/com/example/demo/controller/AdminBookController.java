@@ -127,7 +127,9 @@ public class AdminBookController {
 	}
 
 	@GetMapping("/books/add")
-	public String addForm() {
+	public String addForm(Model model) {
+		List<Category> categoryList = categoryRepository.findAll();
+		model.addAttribute("categoryList", categoryList);
 		return "AdminBooksAdd";
 	}
 
@@ -176,6 +178,6 @@ public class AdminBookController {
 
 		bookRepository.deleteById(book_id);
 
-		return "redirect:/books/{book_id}";
+		return "redirect:/admin/serarch";
 	}
 }
