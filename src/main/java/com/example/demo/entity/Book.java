@@ -80,7 +80,7 @@ public class Book {
 		this.category = category;
 	}
 
-	public boolean isDeleteJudge() {
+	public boolean getDeleteJudge() {
 		return deleteJudge;
 	}
 
