@@ -53,7 +53,7 @@ public class AdminBookController {
 		this.reservationdetail = reservationdetail;
 	}
 
-	@GetMapping("/search")
+	@GetMapping("/books")
 	public String searchGet(HttpSession session, Model model) {
 
 		try {
@@ -81,7 +81,7 @@ public class AdminBookController {
 		return "AdminBookSearch";
 	}
 
-	@PostMapping("/search")
+	@PostMapping("/books/search")
 	public String search(@RequestParam(value = "keyword", required = false) String keyword,
 			@RequestParam(value = "categoryId", required = false, defaultValue = "0") Integer categoryId,
 			HttpSession session, Model model) {
