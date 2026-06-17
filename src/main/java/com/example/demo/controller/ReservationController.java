@@ -59,6 +59,15 @@ public class ReservationController {
 		return "redirect:/user/book/" + id;
 	}
 
+	// 指定した商品をカートから削除
+	@PostMapping("/{id}/delete")
+	public String deleteCart(@PathVariable Integer id) {
+		// カート情報から削除
+		System.out.println("本のID＝" + id);
+		reservationsCart.delete(id);
+		return "redirect:/user/reservations";
+	}
+
 	//予約カート画面の表示
 	@GetMapping("/reservations")
 	public String store(Model model) {
