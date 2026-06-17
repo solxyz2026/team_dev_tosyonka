@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Category;
+import com.example.demo.entity.Reservationdetail;
 import com.example.demo.entity.Writer;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.CategoryRepository;
@@ -27,6 +28,10 @@ import com.example.demo.repository.WriterRepository;
 @Controller
 @RequestMapping("/admin")
 public class AdminBookController {
+
+	private final Reservationdetail reservationdetail;
+
+	private final UserAccountController userAccountController;
 
 	private final AdminAccountController adminAccountController;
 	@Autowired
@@ -41,8 +46,11 @@ public class AdminBookController {
 	@Autowired
 	private Writer writer;
 
-	AdminBookController(AdminAccountController adminAccountController) {
+	AdminBookController(AdminAccountController adminAccountController, UserAccountController userAccountController,
+			Reservationdetail reservationdetail) {
 		this.adminAccountController = adminAccountController;
+		this.userAccountController = userAccountController;
+		this.reservationdetail = reservationdetail;
 	}
 
 	@GetMapping("/search")
@@ -50,7 +58,7 @@ public class AdminBookController {
 
 		try {
 			// すべての本を取得
-			List<Book> books = bookRepository.findAll();
+			List<Book> books = bookRepository.findByDeleteJudgeFalse();
 
 			//　ID の若い順にソート
 			books.sort(Comparator.comparing(Book::getId));
@@ -99,13 +107,13 @@ public class AdminBookController {
 			} else if ((keyword == null || keyword.isEmpty()) && categoryId > 0) {
 				// カテゴリのみで検索
 				System.out.println("カテゴリのみで検索: カテゴリID=" + categoryId);
-				books = bookRepository.findByCategoryId(categoryId);
+				books = bookRepository.findByCategoryIdAndDeleteJudgeFalse(categoryId);
 				System.out.println("検索結果: " + books.size() + "冊");
 
 			} else {
 				// 検索条件がない場合は全件取得
 				System.out.println("検索条件がない → すべての本を表示");
-				books = bookRepository.findAll();
+				books = bookRepository.findByDeleteJudgeFalse();
 				System.out.println("全本取得: " + books.size() + "冊");
 			}
 		} catch (Exception e) {
@@ -126,6 +134,7 @@ public class AdminBookController {
 		return "AdminBookSearch";
 	}
 
+	//本登録画面表示
 	@GetMapping("/books/add")
 	public String addForm(Model model) {
 		List<Category> categoryList = categoryRepository.findAll();
@@ -133,6 +142,7 @@ public class AdminBookController {
 		return "AdminBooksAdd";
 	}
 
+	//本登録処理
 	@PostMapping("/books")
 	public String store(
 			@RequestParam String title,
@@ -166,9 +176,19 @@ public class AdminBookController {
 
 	@GetMapping("/books/{book_id}/delete")
 	public String delete(
-			@PathVariable Integer book_id) {
+			@PathVariable Integer book_id,
+			Model model) {
 
-		bookRepository.deleteById(book_id);
+		try {
+			Book book = bookRepository.findById(book_id).orElse(null);
+			book.setDeleteJudge(true);
+			bookRepository.save(book);
+
+		} catch (Exception e) {
+			System.out.println("本詳細取得エラー: " + e.getMessage());
+			e.printStackTrace();
+			model.addAttribute("error", "本の詳細情報取得中にエラーが発生しました。");
+		}
 
 		return "redirect:/admin/search";
 	}
