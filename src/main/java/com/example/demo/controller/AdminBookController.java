@@ -164,18 +164,37 @@ public class AdminBookController {
 		return "AdminHome";
 	}
 
-	@GetMapping("/books/{book_id}")
-	public String show() {
-		return "AdminBookDetail";
-
-	}
-
-	@PostMapping("/books/{book_id}/delete")
+	@GetMapping("/books/{book_id}/delete")
 	public String delete(
 			@PathVariable Integer book_id) {
 
 		bookRepository.deleteById(book_id);
 
 		return "redirect:/admin/search";
+	}
+
+	@GetMapping("/books/{book_id}")
+	public String show(
+			@PathVariable Integer book_id,
+			HttpSession session, Model model) {
+
+		try {
+			Book book = bookRepository.findById(book_id).orElse(null);
+
+			if (book == null) {
+				System.out.println("本が見つかりません: book_id=" + book_id);
+				model.addAttribute("error", "本が見つかりませんでした。");
+				return "UserSearch";
+			}
+
+			model.addAttribute("book", book);
+
+		} catch (Exception e) {
+			System.out.println("本詳細取得エラー: " + e.getMessage());
+			e.printStackTrace();
+			model.addAttribute("error", "本の詳細情報取得中にエラーが発生しました。");
+		}
+
+		return "AdminBookDetail";
 	}
 }
