@@ -117,7 +117,7 @@ public class WriterController {
 	@GetMapping("/writers/list")
 	public String writerList(Model model) {
 
-		List<Writer> writerList = writerRepository.findAll();
+		List<Writer> writerList = writerRepository.findByDeleteJudgeFalse();
 
 		model.addAttribute("writerList", writerList);
 
@@ -145,7 +145,9 @@ public class WriterController {
 			}
 
 			if (books.size() == count) {
-				writerRepository.deleteById(id);
+				Writer writer = writerRepository.findById(id).orElse(null);
+				writer.setDeleteJudge(true);
+				writerRepository.save(writer);
 			}
 		}
 

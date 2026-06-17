@@ -31,6 +31,9 @@ public class Writer {
 	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Book> books;
 
+	@Column(name = "delete_judge")
+	private boolean deleteJudge;
+
 	//コンストラクタ
 	public Writer() {
 	}
@@ -71,6 +74,22 @@ public class Writer {
 
 	public void setWriterDescription(String writerDescription) {
 		this.writerDescription = writerDescription;
+	}
+
+	public List<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(List<Book> books) {
+		this.books = books;
+	}
+
+	public boolean isDeleteJudge() {
+		return deleteJudge;
+	}
+
+	public void setDeleteJudge(boolean deleteJudge) {
+		this.deleteJudge = deleteJudge;
 	}
 
 }
