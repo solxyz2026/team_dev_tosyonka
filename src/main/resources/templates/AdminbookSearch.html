@@ -190,8 +190,14 @@
 	<div th:if="${books.isEmpty()}">
 		<p>本が見つかりませんでした。</p>
 	</div>
+	<div class="button-group">
 
-	<a th:href="@{/user/}">← ユーザーメニューに戻る</a>
-	<a th:href="@{/user/search}">← 検索に戻る</a>
+		<a class="btn" th:href="@{/admin/books}">
+		    検索ページに戻る
+		</a>
+		<a class="btn" th:href="@{/admin/}">
+			ユーザメニューに戻る
+		</a>
+	</div>
 </body>
 </html>
