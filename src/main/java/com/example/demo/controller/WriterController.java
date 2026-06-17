@@ -131,17 +131,34 @@ public class WriterController {
 			Model model) {
 
 		List<Book> books = bookRepository.findByWriterId(id);
+		int count = 0;
+		for (Book book : books) {
 
-		if (books.size() >= 1) {
-			List<Writer> writerList = writerRepository.findAll();
-			model.addAttribute("writerList", writerList);
-			model.addAttribute("message", "この著者は削除できません");
+			if (book.getDeleteJudge() == false) {
+				List<Writer> writerList = writerRepository.findAll();
+				model.addAttribute("writerList", writerList);
+				model.addAttribute("message", "この著者は削除できません");
 
-			return "WriterShow";
-			//			return "redirect:/admin/writers/list";
+				return "WriterShow";
+			} else {
+				count++;
+			}
+
+			if (books.size() == count) {
+				writerRepository.deleteById(id);
+			}
 		}
 
-		writerRepository.deleteById(id);
+		//		if (books.size() >= 1) {
+		//			List<Writer> writerList = writerRepository.findAll();
+		//			model.addAttribute("writerList", writerList);
+		//			model.addAttribute("message", "この著者は削除できません");
+		//
+		//			return "WriterShow";
+		//			//			return "redirect:/admin/writers/list";
+		//		}
+
+		//		writerRepository.deleteById(id);
 
 		return "redirect:/admin/writers/list";
 	}

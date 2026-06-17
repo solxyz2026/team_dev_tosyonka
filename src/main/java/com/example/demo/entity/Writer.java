@@ -1,10 +1,14 @@
 package com.example.demo.entity;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -23,6 +27,9 @@ public class Writer {
 
 	@Column(name = "writer_description")
 	private String writerDescription; //著者説明
+
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Book> books;
 
 	//コンストラクタ
 	public Writer() {
