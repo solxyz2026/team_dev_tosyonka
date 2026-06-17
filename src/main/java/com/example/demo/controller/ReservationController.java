@@ -35,6 +35,8 @@ public class ReservationController {
 		this.reservationRepository = reservationRepository;
 	}
 
+	//本詳細から予約カートに本を追加する
+
 	//予約画面の表示
 	@GetMapping("/reservations")
 	public String store() {
