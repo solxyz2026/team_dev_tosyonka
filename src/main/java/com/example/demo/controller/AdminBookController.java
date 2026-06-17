@@ -190,7 +190,7 @@ public class AdminBookController {
 			model.addAttribute("error", "本の詳細情報取得中にエラーが発生しました。");
 		}
 
-		return "redirect:/admin/search";
+		return "redirect:/admin/books";
 	}
 
 	@GetMapping("/{book_id}")
