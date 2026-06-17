@@ -43,6 +43,11 @@ public class Reservation {
 	public Reservation() {
 	}
 
+	public Reservation(User user, LocalDate reservationDate) {
+		this.user = user;
+		this.reservationDate = reservationDate;
+	}
+
 	public Reservation(Integer id, User user, LocalDate reservationDate) {
 		this.id = id;
 		this.user = user;
