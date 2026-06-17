@@ -161,6 +161,7 @@
 			<button type="submit">検索</button>
 	    </form>
 	</div>
+	<a class="btn" th:href="@{/admin/}">管理者メニューに戻る</a>
 
 	<!-- 本一覧 -->
 	<table th:if="${!books.isEmpty()}">
@@ -191,7 +192,6 @@
 		<p>本が見つかりませんでした。</p>
 	</div>
 
-	<a th:href="@{/user/}">← ユーザーメニューに戻る</a>
-	<a th:href="@{/user/search}">← 検索に戻る</a>
+	
 </body>
 </html>
