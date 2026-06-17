@@ -188,8 +188,8 @@ public class UserAccountController {
 
 		account.setName(name);
 
-		return "redirect:/user/mypage";
-		//マイページのURLは？
+		return "redirect:/mypage";
+
 	}
 
 }

@@ -19,16 +19,10 @@
 			出版社<input type="text" name="publisher"><br>
 			出版月<input type="date" name="date"><br>
 			<select name="categoryName">
-				<option value="">IT</option>
-				<option value="">歴史</option>
-				<option value="">科学</option>
-				<option value="">ビジネス</option>
-				<option value="">文学</option>
-				<option value="">旅行</option>
-				<option value="">健康</option>
-				<option value="">スポーツ</option>
-				<option value="">語学</option>
-				<option value="">芸術</option>
+				<option th:each = "category : ${categoryList}" 
+								th:value = "${category.categoryName}">
+								[[${category.categoryName}]]
+				</option>
 			</select><br>
 			本の要約文<input type="text" name="summary">
 			<button>登録</button>
