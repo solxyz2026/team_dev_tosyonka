@@ -165,7 +165,7 @@ public class AdminBookController {
 	@GetMapping("/books/{book_id}")
 	public String show() {
 		//		session.invalidate();
-		return "●●●";
+		return "AdminBookDetail";
 		//管理者用の本詳細HTMLがなかったのでとりあえず●●●で
 
 	}

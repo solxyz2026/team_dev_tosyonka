@@ -153,7 +153,7 @@ public class UserAccountController {
 	}
 
 	//会員情報変更画面を表示
-	@GetMapping("/users/edit")
+	@GetMapping("/edit")
 	public String edit(Model model) {
 
 		Integer id = account.getId();
@@ -166,7 +166,7 @@ public class UserAccountController {
 	}
 
 	//会員情報の変更
-	@PostMapping("/users/edit")
+	@PostMapping("/edit")
 	public String change(
 			@RequestParam(defaultValue = "") String name,
 			@RequestParam(defaultValue = "") String birthday,
@@ -188,7 +188,7 @@ public class UserAccountController {
 
 		account.setName(name);
 
-		return "redirect:/●●●";
+		return "redirect:/user/mypage";
 		//マイページのURLは？
 	}
 
