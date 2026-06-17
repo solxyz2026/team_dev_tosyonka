@@ -188,7 +188,7 @@ public class UserAccountController {
 
 		account.setName(name);
 
-		return "redirect:/mypage";
+		return "redirect:/user/mypage";
 
 	}
 

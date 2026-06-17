@@ -166,9 +166,7 @@ public class AdminBookController {
 
 	@GetMapping("/books/{book_id}")
 	public String show() {
-		//		session.invalidate();
 		return "AdminBookDetail";
-		//管理者用の本詳細HTMLがなかったのでとりあえず●●●で
 
 	}
 
@@ -178,6 +176,6 @@ public class AdminBookController {
 
 		bookRepository.deleteById(book_id);
 
-		return "redirect:/admin/serarch";
+		return "redirect:/admin/search";
 	}
 }
