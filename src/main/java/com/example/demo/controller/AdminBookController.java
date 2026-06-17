@@ -26,7 +26,7 @@ import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.WriterRepository;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/books")
 public class AdminBookController {
 
 	private final Reservationdetail reservationdetail;
@@ -53,8 +53,8 @@ public class AdminBookController {
 		this.reservationdetail = reservationdetail;
 	}
 
-	@GetMapping("/books")
-	public String searchGet(HttpSession session, Model model) {
+	@GetMapping("")
+	public String index(HttpSession session, Model model) {
 
 		try {
 			// すべての本を取得
@@ -81,7 +81,7 @@ public class AdminBookController {
 		return "AdminBookSearch";
 	}
 
-	@PostMapping("/books/search")
+	@PostMapping("/search")
 	public String search(@RequestParam(value = "keyword", required = false) String keyword,
 			@RequestParam(value = "categoryId", required = false, defaultValue = "0") Integer categoryId,
 			HttpSession session, Model model) {
@@ -135,7 +135,7 @@ public class AdminBookController {
 	}
 
 	//本登録画面表示
-	@GetMapping("/books/add")
+	@GetMapping("/add")
 	public String addForm(Model model) {
 		List<Category> categoryList = categoryRepository.findAll();
 		model.addAttribute("categoryList", categoryList);
@@ -143,7 +143,7 @@ public class AdminBookController {
 	}
 
 	//本登録処理
-	@PostMapping("/books")
+	@PostMapping("")
 	public String store(
 			@RequestParam String title,
 			@RequestParam String writer,
@@ -174,7 +174,7 @@ public class AdminBookController {
 		return "AdminHome";
 	}
 
-	@GetMapping("/books/{book_id}/delete")
+	@GetMapping("/{book_id}/delete")
 	public String delete(
 			@PathVariable Integer book_id,
 			Model model) {
@@ -193,7 +193,7 @@ public class AdminBookController {
 		return "redirect:/admin/search";
 	}
 
-	@GetMapping("/books/{book_id}")
+	@GetMapping("/{book_id}")
 	public String show(
 			@PathVariable Integer book_id,
 			HttpSession session, Model model) {
@@ -204,7 +204,7 @@ public class AdminBookController {
 			if (book == null) {
 				System.out.println("本が見つかりません: book_id=" + book_id);
 				model.addAttribute("error", "本が見つかりませんでした。");
-				return "UserSearch";
+				return "AdminBookSearch";
 			}
 
 			model.addAttribute("book", book);
