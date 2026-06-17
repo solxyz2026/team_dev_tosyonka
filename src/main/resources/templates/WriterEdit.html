@@ -11,7 +11,7 @@
 	<ul>
 		<li th:each="data:${list}" style="color:red;">[[${data}]]</li>
 	</ul>
-
+	<a class="btn" th:href="@{/admin/}">管理者メニューに戻る</a>
 	<form th:action="@{/admin/writers/{writer_id}(writer_id=${writer.id})}" method="post">
 		
 

@@ -8,7 +8,7 @@
 <h1>カテゴリーの追加</h1>
 
 <span th:text="${message}" style="color:red;"></span>
-
+<a class="btn" th:href="@{/admin/}">管理者メニューに戻る</a>
 	<form action="/admin/categories" method="post">		
 
 		カテゴリー<input type="text" name="categoryName"><br>

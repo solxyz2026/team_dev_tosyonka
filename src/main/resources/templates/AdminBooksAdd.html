@@ -11,7 +11,7 @@
 	<main>
 		<h1>本の追加</h1>
 		<p th:each="error:${errors}" id="error">[[${error}]]</p>
-
+		<a class="btn" th:href="@{/admin/}">管理者メニューに戻る</a>
 
 		<form action="/admin/books" method="post">
 			タイトル<input type="text" name="title"><br>
