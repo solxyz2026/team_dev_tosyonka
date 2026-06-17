@@ -6,7 +6,7 @@ VALUES
 
 ('【夏休み特別企画】児童向け読書スタンプラリーを開催中です。期間は8月31日までとなります。');
 
-
+INSERT INTO writers (writer_name,writer_description,delete_judge)
 VALUES
 -- IT系
 ('山田太郎', 'JavaやPythonなどのプログラミング入門書を執筆するIT講師。初心者向け解説が得意。', false),
