@@ -121,7 +121,7 @@ public class WriterController {
 
 		model.addAttribute("writerList", writerList);
 
-		return "writerList";
+		return "WriterShow";
 	}
 
 	//著者削除
@@ -133,9 +133,12 @@ public class WriterController {
 		List<Book> books = bookRepository.findByWriterId(id);
 
 		if (books.size() >= 1) {
-
+			List<Writer> writerList = writerRepository.findAll();
+			model.addAttribute("writerList", writerList);
 			model.addAttribute("message", "この著者は削除できません");
-			return "redirect:/admin/writers/list";
+
+			return "WriterShow";
+			//			return "redirect:/admin/writers/list";
 		}
 
 		writerRepository.deleteById(id);

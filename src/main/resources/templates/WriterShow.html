@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>著者一覧</title>
+	
+	
+</head>
+
+<body>
+	<h1>著者一覧</h1>
+	
+	<p>[[${message}]]</p>
+	
+	<table border="1">
+		<tr>
+			<th>著者ID</th>
+			<th>著者</th>
+			<th>著者紹介文</th>
+<!--			<th>本の冊数</th>-->
+			<th>削除</th>
+		</tr>
+		
+		<tr th:each="writer:${writerList}">
+			<td th:text="${writer.id}"></td>
+			<td th:text="${writer.writerName}"></td>
+			<td th:text="${writer.writerDescription}"></td>
+			
+<!--			<td></td>-->
+<!--↑th:textで本の冊数を表示-->
+			<td>
+				<form th:action="@{/admin/writers/list/{id}/delete(id=${writer.id})}" method="post">
+					<input type="hidden" name="writerName" th:value="${writer.writerName}">
+					<button>削除</button>
+				</form>
+			</td>
+
+		</tr>
+	</table>
+
+		
+</body>
+
+</html>
