@@ -153,7 +153,7 @@ public class AdminBookController {
 			@RequestParam LocalDate date,
 			Model model) {
 
-		Optional<Writer> optionalWriter = writerRepository.findByWriterName(writer);
+		Optional<Writer> optionalWriter = writerRepository.findByWriterNameAndDeleteJudgeFalse(writer);
 		if (optionalWriter.isEmpty()) {
 			model.addAttribute("error", "著者「" + writer + "」は登録されていません。");
 			return "AdminBookAdd";
