@@ -2,21 +2,213 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>ログイン</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理者ログイン</title>
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	body {
+		font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+		background: linear-gradient(135deg, #e8f4f8 0%, #f0f7ff 100%);
+		color: #333;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 100vh;
+		padding: 20px;
+	}
+
+	.container {
+		background-color: #ffffff;
+		padding: 40px;
+		border-radius: 8px;
+		box-shadow: 0 4px 12px rgba(0, 151, 212, 0.2);
+		max-width: 400px;
+		width: 100%;
+		border: 2px solid #0097D4;
+	}
+
+	h1 {
+		font-size: 28px;
+		color: #0097D4;
+		text-align: center;
+		margin-bottom: 10px;
+		font-weight: bold;
+	}
+
+	.subtitle {
+		text-align: center;
+		color: #999;
+		margin-bottom: 30px;
+		font-size: 14px;
+	}
+
+	/* エラーメッセージ */
+	.error-list {
+		background-color: #ffebee;
+		border: 2px solid #d32f2f;
+		color: #d32f2f;
+		padding: 15px;
+		border-radius: 4px;
+		margin-bottom: 20px;
+		list-style-position: inside;
+	}
+
+	.error-list li {
+		margin: 5px 0;
+		font-weight: 500;
+	}
+
+	.error-message {
+		color: #d32f2f;
+		text-align: center;
+		margin-bottom: 20px;
+		font-weight: 500;
+		padding: 10px;
+		background-color: #ffebee;
+		border-radius: 4px;
+		border: 1px solid #ef5350;
+	}
+
+	/* フォーム */
+	form {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.form-group {
+		margin-bottom: 20px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	label {
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 8px;
+		font-size: 14px;
+	}
+
+	input[type="text"],
+	input[type="password"],
+	input[type="email"] {
+		padding: 12px;
+		border: 2px solid #0097D4;
+		border-radius: 4px;
+		font-size: 14px;
+		color: #333;
+		background-color: #f9f9f9;
+		transition: all 0.3s ease;
+	}
+
+	input[type="text"]:focus,
+	input[type="password"]:focus,
+	input[type="email"]:focus {
+		outline: none;
+		border-color: #0077B6;
+		background-color: #ffffff;
+		box-shadow: 0 0 8px rgba(0, 119, 182, 0.3);
+	}
+
+	/* ボタン */
+	button {
+		padding: 12px;
+		background-color: #0097D4;
+		color: #ffffff;
+		border: 2px solid #0077B6;
+		border-radius: 4px;
+		font-weight: bold;
+		font-size: 16px;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		margin-top: 10px;
+	}
+
+	button:hover {
+		background-color: #0077B6;
+		box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+	}
+
+	button:active {
+		transform: scale(0.98);
+	}
+
+	/* テストアカウント情報 */
+	.test-account {
+		background-color: #e8f4f8;
+		border: 2px solid #0097D4;
+		padding: 15px;
+		border-radius: 4px;
+		margin: 20px 0;
+		font-size: 13px;
+		color: #333;
+	}
+
+	.test-account strong {
+		display: block;
+		color: #0097D4;
+		margin-bottom: 8px;
+		font-size: 14px;
+	}
+
+	.test-account p {
+		margin: 5px 0;
+		font-family: 'Courier New', monospace;
+		background-color: #ffffff;
+		padding: 8px;
+		border-radius: 3px;
+		border: 1px solid #0097D4;
+	}
+
+	@media (max-width: 600px) {
+		.container {
+			padding: 30px 20px;
+		}
+
+		h1 {
+			font-size: 24px;
+		}
+	}
+</style>
 </head>
 <body>
-<h1>ログイン</h1>
+	<div class="container">
+		<h1>管理者ログイン</h1>
 
-<li th:each="data:${con}" style="color:red;">[[${data}]]</li>
-<span th:text="${message}" style="color:red;"></span>
-<form action="/admin/login" method="post">
-		メールアドレス<input type="text" name="email" th:value="${email}"><br>
-		パスワード<input type="text" name="password"  th:value="${password}"><br>
-		<button>ログイン</button>
-		<br>作業時コピペ用！<br>
-		master@example.com<br>
-		admin123
-	</form>
-	
+		<!-- エラーメッセージ -->
+		<ul th:if="${con != null && !con.isEmpty()}" class="error-list">
+			<li th:each="data:${con}">[[${data}]]</li>
+		</ul>
+
+		<div th:if="${message}" class="error-message">
+			[[${message}]]
+		</div>
+
+		<!-- ログインフォーム -->
+		<form action="/admin/login" method="post">
+			<div class="form-group">
+				<label for="email">メールアドレス</label>
+				<input type="text" id="email" name="email" placeholder="メールアドレスを入力" th:value="${email}" required>
+			</div>
+
+			<div class="form-group">
+				<label for="password">パスワード</label>
+				<input type="password" id="password" name="password" placeholder="パスワードを入力" th:value="${password}" required>
+			</div>
+
+			<button type="submit">ログイン</button>
+		</form>
+
+		<!-- テストアカウント情報 -->
+		<div class="test-account">
+			<strong>📋 テストアカウント</strong>
+			<p>master@example.com</p>
+			<p>admin123</p>
+		</div>
+	</div>
 </body>
 </html>
