@@ -135,7 +135,7 @@ public class AdminBookController {
 	}
 
 	//本登録画面表示
-	@GetMapping("books/add")
+	@GetMapping("/books/add")
 	public String addForm(Model model) {
 		List<Category> categoryList = categoryRepository.findAll();
 		model.addAttribute("categoryList", categoryList);
@@ -143,7 +143,7 @@ public class AdminBookController {
 	}
 
 	//本登録処理
-	@PostMapping("")
+	@PostMapping("/books")
 	public String store(
 			@RequestParam String title,
 			@RequestParam String writer,
