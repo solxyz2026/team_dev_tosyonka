@@ -2,82 +2,116 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>本詳細</title>
 <style>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
 	body {
-		font-family: 'Arial', sans-serif;
+		font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+		background-color: #f5f5f5;
+		color: #333;
+	}
+
+	.container {
 		max-width: 800px;
 		margin: 0 auto;
 		padding: 20px;
 		background-color: #ffffff;
+		border-radius: 8px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 	}
-	
-	.container {
-		padding: 20px;
-	}
-	
+
 	h1 {
 		font-size: 24px;
 		margin: 0 0 20px 0;
-		border-bottom: 1px solid #000;
+		border-bottom: 3px solid #0097D4;
 		padding-bottom: 10px;
+		color: #0097D4;
 	}
-	
+
 	/* 詳細情報テーブル */
 	table {
 		width: 100%;
 		border-collapse: collapse;
 		margin: 20px 0;
 	}
-	
+
 	table tr {
 		border-bottom: 1px solid #ccc;
 	}
-	
+
 	table tr:last-child {
 		border-bottom: 1px solid #000;
 	}
-	
+
 	table th {
 		border: 1px solid #000;
 		padding: 12px;
 		text-align: left;
 		font-weight: bold;
 		width: 20%;
-		background-color: #ffffff;
+		background-color: #f5f5f5;
 	}
-	
+
 	table td {
 		border: 1px solid #000;
 		padding: 12px;
 	}
-	
+
 	/* 説明セクション */
 	.summary-section {
 		margin: 20px 0;
 		padding: 15px;
-		border: 1px solid #000;
+		border-left: 4px solid #0097D4;
+		background-color: #f9f9f9;
+		border-radius: 4px;
 	}
-	
+
 	.summary-section h3 {
 		margin: 0 0 10px 0;
 		font-size: 16px;
+		color: #333;
 	}
-	
+
 	.summary-section p {
 		margin: 0;
 		line-height: 1.6;
 		white-space: pre-wrap;
 		word-break: break-word;
 	}
-	
+
+	/* メッセージ */
+	.message {
+		background-color: #e8f5e9;
+		border: 2px solid #4CAF50;
+		color: #2e7d32;
+		padding: 15px;
+		border-radius: 4px;
+		margin-bottom: 20px;
+	}
+
+	.error {
+		background-color: #ffebee;
+		border: 2px solid #d32f2f;
+		color: #d32f2f;
+		padding: 15px;
+		border-radius: 4px;
+		margin-bottom: 20px;
+	}
+
 	/* ボタングループ */
 	.button-group {
 		display: flex;
 		gap: 10px;
 		margin-top: 20px;
+		flex-wrap: wrap;
 	}
-	
+
 	.btn {
 		padding: 10px 20px;
 		border: 1px solid #000;
@@ -87,26 +121,51 @@
 		text-decoration: none;
 		display: inline-block;
 		font-size: 14px;
+		border-radius: 4px;
+		transition: background-color 0.3s;
 	}
-	
+
 	.btn:hover {
 		background-color: #f5f5f5;
 	}
-	
-	/* エラーメッセージ */
-	.error {
-		border: 1px solid #000;
-		padding: 15px;
-		margin-bottom: 20px;
+
+	.btn-reserve {
+		background-color: #ff9800;
+		color: white;
+		border-color: #ff9800;
+	}
+
+	.btn-reserve:hover {
+		background-color: #f57c00;
+	}
+
+	@media (max-width: 600px) {
+		.container {
+			padding: 10px;
+		}
+
+		.button-group {
+			flex-direction: column;
+		}
+
+		.btn {
+			width: 100%;
+			text-align: center;
+		}
 	}
 </style>
 </head>
 <body>
 	<div class="container">
+		<!-- メッセージ表示 -->
+		<div th:if="${message}" class="message">
+			✅ [[${message}]]
+		</div>
+
 		<!-- エラーメッセージ -->
 		<div th:if="${error}" class="error">
-			<p th:text="${error}"></p>
-			<a class="btn" th:href="@{/user/search}">検索ページに戻る</a>
+			❌ [[${error}]]
+			<a class="btn" th:href="@{/user/search}" style="margin-top: 10px;">検索ページに戻る</a>
 		</div>
 
 		<!-- 本の詳細情報 -->
@@ -143,8 +202,8 @@
 				<tr>
 					<th>貸出状況</th>
 					<td>
-						<span th:if="${book.loans}">貸出中</span>
-						<span th:unless="${book.loans}">利用可能</span>
+						<span th:if="${book.loans}" style="color: red; font-weight: bold;">貸出中</span>
+						<span th:unless="${book.loans}" style="color: green; font-weight: bold;">利用可能</span>
 					</td>
 				</tr>
 			</table>
@@ -157,9 +216,20 @@
 
 			<!-- ボタングループ -->
 			<div class="button-group">
+				<!-- ★★★ 【修正】Thymeleaf タグを正しく使用 ★★★ -->
+				<a th:if="!${book.loans}" 
+				   class="btn btn-reserve" 
+				   th:href="@{/user/reservation/{book_id}(book_id=${book.id})}"
+				   onclick="return confirm('この本を予約カートに追加しますか？')">
+					📌 予約カートに追加
+				</a>
+				
+				<button th:if="${book.loans}" class="btn" disabled style="background-color: #ccc;">
+					🔴 貸出中（予約できません）
+				</button>
+
 				<a class="btn" th:href="@{/user/search}">検索ページに戻る</a>
 				<a class="btn" th:href="@{/user/}">ユーザーメニューに戻る</a>
-				<a class="btn" th:href="|/user/${book.id}/reservaion|">予約カートに追加</a>
 			</div>
 		</div>
 	</div>

@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +19,6 @@ import com.example.demo.entity.Reservation;
 import com.example.demo.entity.Reservationdetail;
 import com.example.demo.entity.User;
 import com.example.demo.model.Account;
-import com.example.demo.model.ReservationsCart;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.ReservationRepository;
 import com.example.demo.repository.ReservationdetailRepository;
@@ -29,102 +30,170 @@ import com.example.demo.repository.UserRepository;
 public class ReservationController {
 
 	private final Account account;
-	private final ReservationsCart reservationsCart;
 	private final BookRepository bookRepository;
 	private final ReservationRepository reservationRepository;
 	private final UserRepository userRepository;
 	private final ReservationdetailRepository reservationdetailRepository;
 
-	public ReservationController(Account account, ReservationsCart reservationsCart, BookRepository bookRepository,
+	private static final String SESSION_RESERVATION_CART = "reservationCart";
+
+	public ReservationController(Account account, BookRepository bookRepository,
 			ReservationRepository reservationRepository, UserRepository userRepository,
 			ReservationdetailRepository reservationdetailRepository) {
 		this.account = account;
-		this.reservationsCart = reservationsCart;
 		this.bookRepository = bookRepository;
 		this.reservationRepository = reservationRepository;
 		this.userRepository = userRepository;
 		this.reservationdetailRepository = reservationdetailRepository;
 	}
 
-	//本詳細から予約カートに本を追加する
-	@GetMapping("/{id}/reservaion")
-	public String delete(
-			@PathVariable Integer id,
+	@GetMapping("/reservation/{book_id}")
+	public String addToReservationCart(
+			@PathVariable Integer book_id,
+			HttpSession session,
 			Model model) {
+		try {
+			// 1. 本を取得
+			Book book = bookRepository.findById(book_id)
+					.orElseThrow(() -> new IllegalArgumentException("Book not found: " + book_id));
 
-		//ここにモデルReservationsCartに予約したい本のidを格納していく
-		Book book = bookRepository.findById(id).get();
-		reservationsCart.add(book);
+			System.out.println("✅ 本を取得: " + book.getTitle());
 
-		return "redirect:/user/book/" + id;
+			// 2. セッションから予約カートを取得
+			@SuppressWarnings("unchecked")
+			List<Book> reservationCart = 
+				(List<Book>) session.getAttribute(SESSION_RESERVATION_CART);
+
+			if (reservationCart == null) {
+				reservationCart = new ArrayList<>();
+				session.setAttribute(SESSION_RESERVATION_CART, reservationCart);
+			}
+
+			// 3. 重複チェック
+			boolean exists = reservationCart.stream()
+					.anyMatch(b -> b.getId().equals(book_id));
+
+			if (exists) {
+				
+				session.setAttribute("error", "この本は既に予約カートに入っています");
+				return "redirect:/user/books/" + book_id;
+			}
+
+			// 4. 予約カートに追加
+			reservationCart.add(book);
+
+			session.setAttribute("message", "「" + book.getTitle() + "」を予約カートに追加しました");
+
+		} catch (IllegalArgumentException e) {
+			session.setAttribute("error", "本が見つかりません");
+			return "redirect:/user/search";
+		} catch (Exception e) {
+			return "redirect:/user/search";
+		}
+		return "redirect:/user/books/" + book_id;
 	}
 
-	// 指定した商品をカートから削除
-	@PostMapping("/{id}/delete")
-	public String deleteCart(@PathVariable Integer id) {
-		// カート情報から削除
-		System.out.println("本のID＝" + id);
-		reservationsCart.delete(id);
+	//カートから削除
+	 
+	@PostMapping("/reservation/{book_id}/delete")
+	public String deleteCart(
+			@PathVariable Integer book_id,
+			HttpSession session) {
+		@SuppressWarnings("unchecked")
+		List<Book> reservationCart = 
+			(List<Book>) session.getAttribute(SESSION_RESERVATION_CART);
+
+		if (reservationCart != null) {
+			boolean removed = reservationCart.removeIf(b -> b.getId().equals(book_id));
+			if (removed) {
+				session.setAttribute("message", "カートから削除しました");
+			}
+		}
 		return "redirect:/user/reservations";
 	}
 
-	//予約カート画面の表示
+	//GET /user/reservations - 予約カート画面の表示
+	 
 	@GetMapping("/reservations")
-	public String store(Model model) {
+	public String store(HttpSession session, Model model) {
 
-		//カートの中身を取得
-		List<Book> books = reservationsCart.getBooks();
-		model.addAttribute("books", books);
+		// セッションからカートを取得
+		@SuppressWarnings("unchecked")
+		List<Book> books = (List<Book>) session.getAttribute(SESSION_RESERVATION_CART);
 
-		if (books.size() == 0) {
-			model.addAttribute("msg", "・予約カートは空です。");
+		if (books == null) {
+			books = new ArrayList<>();
 		}
 
+		model.addAttribute("books", books);
+
+		if (books.isEmpty()) {
+			
+			model.addAttribute("msg", "・予約カートは空です。");
+		} else {
+		
+		}
 		return "myReservations";
 	}
 
-	//予約カートの中身を確定させる
+	/**
+	 * POST /user/reservations - 予約カートの中身を確定させる
+	 */
 	@PostMapping("/reservations")
-	public String myReservations(Model model) {
-		List<Book> books = reservationsCart.getBooks();
+	public String myReservations(HttpSession session, Model model) {
 
-		if (books.size() == 0 || books.isEmpty()) {
+	
+		// セッションからカートを取得
+		@SuppressWarnings("unchecked")
+		List<Book> books = (List<Book>) session.getAttribute(SESSION_RESERVATION_CART);
+
+		if (books == null || books.isEmpty()) {
+			
 			return "redirect:/user/reservations";
 		}
 
-		LocalDate today = LocalDate.now();
-		User user = userRepository.findById(account.getId()).get();
+		try {
+			LocalDate today = LocalDate.now();
+			User user = userRepository.findById(account.getId())
+					.orElseThrow(() -> new IllegalArgumentException("User not found"));
+			// Reservation に本以外の情報を登録
+			Reservation reservation = new Reservation(user, today);
+			reservationRepository.save(reservation);
 
-		//Reservationに本以外の情報を登録し、idを確定させる
-		Reservation reservation = new Reservation(user, today);
-		reservationRepository.save(reservation);
 
-		//確定したidを利用しカートの中身をReservationに登録する
-		List<Reservationdetail> details = new ArrayList<>();
-		for (Book book : books) {
-			details.add(new Reservationdetail(reservation, book, !book.isLoans()));
+			// 確定したidを利用してカートの中身をReservationdetailに登録
+			List<Reservationdetail> details = new ArrayList<>();
+			for (Book book : books) {
+				// reservation_status: true = 予約可能, false = 貸出中
+				details.add(new Reservationdetail(reservation, book, !book.isLoans()));
+				
+			}
+			reservationdetailRepository.saveAll(details);
+			// セッションのカートをクリア
+			session.removeAttribute(SESSION_RESERVATION_CART);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.setAttribute("error", "予約確定中にエラーが発生しました");
+			return "redirect:/user/reservations";
 		}
-		reservationdetailRepository.saveAll(details);
-
-		//カートの中身を削除
-		reservationsCart.clear();
 
 		return "redirect:/user/reservations/confirmed";
 	}
 
-	//予約カート確定後の詳細ページを表示
+	//予約確定後の詳細ページを表示
+	
 	@GetMapping("/reservations/confirmed")
 	public String myReservationsConfirmed(Model model) {
-		//今日の日付
+
 		LocalDate today = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日");
 		model.addAttribute("today", today.format(formatter));
 
-		//確定した予約詳細を取得
-		List<Reservation> reservatonsConfirmed = reservationRepository.findByReservationDate(today);
-		model.addAttribute("reservatonsConfirmed", reservatonsConfirmed);
+		// 確定した予約詳細を取得
+		List<Reservation> reservationsConfirmed = reservationRepository.findByReservationDate(today);
 
+		model.addAttribute("reservationsConfirmed", reservationsConfirmed);
 		return "myReservationsConfirmed";
 	}
-
 }
