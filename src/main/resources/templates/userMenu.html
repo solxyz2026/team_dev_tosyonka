@@ -3,140 +3,627 @@
 <head>
 <meta charset="UTF-8">
 <title>ユーザメイン画面</title>
+<style>
+	/* ========================================
+	   図書館利用者ホーム CSS
+	   左固定ナビゲーション＆2カラムレイアウト＆森の緑を基調
+	   ======================================== */
+
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	html, body {
+		height: 100%;
+	}
+
+	body {
+		font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+		background-color: #f1f8f3;
+		color: #1B5E20;
+		display: flex;
+	}
+
+	/* ========================================
+	   ヘッダー（フルスクリーン）
+	   ======================================== */
+
+	h1 {
+		position: fixed;
+		top: 0;
+		left: 220px;
+		right: 0;
+		background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+		color: #1B5E20;
+		padding: 20px;
+		text-align: center;
+		font-size: 32px;
+		letter-spacing: 2px;
+		border-bottom: 3px solid #558B2F;
+		margin: 0;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		z-index: 99;
+		height: 80px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	/* ========================================
+	   左サイドバー（ナビゲーション）
+	   ======================================== */
+
+	.sidebar {
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 220px;
+		height: 100vh;
+		background: linear-gradient(180deg, #1B5E20 0%, #2E7D32 100%);
+		padding: 20px 0;
+		overflow-y: auto;
+		box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+		z-index: 100;
+	}
+
+	.sidebar a {
+		display: block;
+		color: #ffffff;
+		text-decoration: none;
+		padding: 15px 20px;
+		border-left: 4px solid transparent;
+		transition: all 0.3s ease;
+		font-weight: 500;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.sidebar a:hover {
+		background-color: rgba(255, 255, 255, 0.1);
+		border-left-color: #a5d6a7;
+		padding-left: 25px;
+		color: #c8e6c9;
+	}
+
+	/* ========================================
+	   メインコンテンツエリア
+	   ======================================== */
+
+	.main-container {
+		margin-left: 220px;
+		margin-top: 80px;
+		flex: 1;
+		padding: 20px;
+		display: flex;
+		gap: 20px;
+		min-width: 0;
+	}
+
+	/* ========================================
+	   2カラムレイアウト
+	   ======================================== */
+
+	.column {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		min-width: 0;
+	}
+
+	.column-left {
+		flex: 1;
+		min-width: 300px;
+	}
+
+	.column-right {
+		flex: 1.1;
+		min-width: 300px;
+	}
+
+	/* ========================================
+	   テーブル
+	   ======================================== */
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		background-color: #ffffff;
+		border-radius: 6px;
+		overflow: hidden;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	}
+
+	table th {
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		color: #ffffff;
+		padding: 12px 15px;
+		text-align: left;
+		font-weight: bold;
+		border-right: 1px solid #1B5E20;
+	}
+
+	table th:last-child {
+		border-right: none;
+	}
+
+	table td {
+		padding: 12px 15px;
+		border-bottom: 1px solid #c8e6c9;
+		background-color: #f9fff8;
+	}
+
+	table tbody tr:nth-child(odd) td {
+		background-color: #ffffff;
+	}
+
+	table tbody tr:hover td {
+		background-color: #e8f5e9;
+		transition: background-color 0.2s ease;
+	}
+
+	/* テーブルボーダー */
+	table[border="1"] {
+		border: 1px solid #a5d6a7;
+	}
+
+	table[border="1"] tr {
+		border-color: #a5d6a7;
+	}
+
+	/* ========================================
+	   セクションタイトル
+	   ======================================== */
+
+	.section-title {
+		font-size: 18px;
+		font-weight: bold;
+		color: #ffffff;
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		padding: 12px 15px;
+		border-radius: 4px 4px 0 0;
+		margin: 0;
+		border-bottom: 3px solid #558B2F;
+	}
+
+	/* ========================================
+	   カレンダー
+	   ======================================== */
+
+	.calendar-wrap {
+		background-color: #ffffff;
+		padding: 20px;
+		border-radius: 6px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		overflow-x: auto;
+		border: 2px solid #a5d6a7;
+	}
+
+	.calendar {
+		width: 100%;
+		border-collapse: collapse;
+		background-color: #ffffff;
+	}
+
+	.calendar th {
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		color: #ffffff;
+		padding: 10px;
+		text-align: center;
+		font-weight: bold;
+		border: 1px solid #a5d6a7;
+	}
+
+	.calendar td {
+		background-color: #ffffff;
+		border: 1px solid #c8e6c9;
+		padding: 12px;
+		text-align: center;
+		height: 45px;
+		line-height: 21px;
+		font-weight: 500;
+		color: #1B5E20;
+	}
+
+	/* 日曜日 */
+	.calendar th.sun {
+		color: #ffcdd2;
+	}
+
+	.calendar td.sun {
+		color: #d32f2f;
+		font-weight: bold;
+	}
+
+	/* 土曜日 */
+	.calendar th.sat {
+		color: #bbdefb;
+	}
+
+	.calendar td.sat {
+		color: #1976d2;
+		font-weight: bold;
+	}
+
+	/* 今日の日付 */
+	.calendar td.today {
+		background-color: #fff9c4;
+		border: 3px solid #558B2F;
+		font-weight: bold;
+		color: #1B5E20;
+	}
+
+	/* 定休日（月曜日） */
+	.calendar td.off {
+		background-color: #ffebee;
+		color: #c62828;
+		font-weight: bold;
+	}
+
+	/* 前月・翌月 */
+	.calendar td.mute {
+		color: #999;
+		background-color: #e8f5e9;
+	}
+
+	/* ========================================
+	   詳細情報ボックス（リマインド・図書館情報）
+	   ======================================== */
+
+	.info-box {
+		background-color: #ffffff;
+		padding: 20px;
+		border-radius: 6px;
+		border: 3px solid #558B2F;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		line-height: 1.8;
+	}
+
+	.info-box p,
+	.info-box li {
+		color: #1B5E20;
+		font-size: 14px;
+		margin: 8px 0;
+	}
+
+	.info-box strong {
+		color: #2E7D32;
+		font-weight: bold;
+	}
+
+	/* ========================================
+	   リンク（一般）
+	   ======================================== */
+
+	a {
+		color: #2E7D32;
+		text-decoration: underline;
+		transition: color 0.2s ease;
+	}
+
+	a:hover {
+		color: #1B5E20;
+	}
+
+	/* ========================================
+	   レスポンシブ
+	   ======================================== */
+
+	@media (max-width: 1200px) {
+		.main-container {
+			flex-direction: column;
+		}
+
+		.column {
+			width: 100%;
+		}
+	}
+
+	@media (max-width: 1024px) {
+		h1 {
+			font-size: 24px;
+			left: 180px;
+		}
+
+		.sidebar {
+			width: 180px;
+		}
+
+		.main-container {
+			margin-left: 180px;
+			flex-direction: column;
+		}
+
+		table th,
+		table td {
+			padding: 10px 12px;
+			font-size: 13px;
+		}
+	}
+
+	@media (max-width: 768px) {
+		h1 {
+			position: relative;
+			left: 0;
+			right: 0;
+			font-size: 20px;
+			padding: 15px;
+			height: auto;
+		}
+
+		/* サイドバーをトグル化 */
+		.sidebar {
+			width: 100%;
+			height: auto;
+			position: relative;
+			top: 0;
+			background: linear-gradient(90deg, #1B5E20 0%, #2E7D32 100%);
+			padding: 10px 0;
+			overflow-y: visible;
+			display: flex;
+			flex-wrap: wrap;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+
+		.sidebar a {
+			flex: 1 1 25%;
+			padding: 10px 5px;
+			text-align: center;
+			border: none;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+			min-width: 100px;
+		}
+
+		.main-container {
+			margin-left: 0;
+			margin-top: 0;
+			padding: 15px;
+			flex-direction: column;
+		}
+
+		table th,
+		table td {
+			padding: 8px 10px;
+			font-size: 12px;
+		}
+
+		.calendar-wrap {
+			padding: 10px;
+			overflow-x: auto;
+		}
+
+		.calendar td {
+			padding: 8px;
+			height: 35px;
+			line-height: 19px;
+			font-size: 12px;
+		}
+
+		.info-box {
+			padding: 15px;
+			border-width: 2px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		h1 {
+			font-size: 18px;
+			padding: 10px;
+		}
+
+		.sidebar {
+			padding: 5px 0;
+		}
+
+		.sidebar a {
+			flex: 1 1 50%;
+			padding: 8px 3px;
+			font-size: 12px;
+		}
+
+		.main-container {
+			padding: 10px;
+		}
+
+		table th,
+		table td {
+			padding: 6px 8px;
+			font-size: 11px;
+		}
+
+		.calendar-wrap {
+			padding: 5px;
+		}
+
+		.calendar td {
+			padding: 5px;
+			height: 30px;
+			line-height: 20px;
+			font-size: 10px;
+		}
+
+		.info-box {
+			padding: 12px;
+			border-width: 2px;
+			font-size: 12px;
+			line-height: 1.6;
+		}
+	}
+
+	/* ========================================
+	   スクロール
+	   ======================================== */
+
+	::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: #f1f8f3;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: #558B2F;
+		border-radius: 4px;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: #2E7D32;
+	}
+</style>
 <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-	<!--大森-->
+	<!--左ナビゲーション-->
+	<div class="sidebar">
+		<a href="/user/logout">ログアウト</a>
+		<a href="/user/mypage">マイページ</a>
+		<a href="/user/reservations">予約</a>
+		<a href="/user/search">本検索</a>
+		
+	</div>
+
+	<!--ヘッダー-->
 	<h1>としょんか</h1>
+
+	<!--メインコンテンツ（2列レイアウト）-->
+	<div class="main-container">
 		
-		<!--リンク-->
-		<div>
-			<a href="/user/logout">ログアウト</a><br>
-			<a href="/user/mypage">マイページ</a><br>
-			<a href="/user/reservations">予約</a><br>
-			<a href="/user/search">本検索</a>
-		</div>
-		<br>
-		
-		<!--お知らせ表示-->
-		<table border="1">
-			<tr>
-				<th>お知らせ</th>
-			</tr>
-			<tr th:each="news:${newsList}">
-				<td>[[${news.content}]]</td>
-			</tr>
-		</table>
-		<br>
-				
-		<!--予約状況-->
-		<div>予約状況</div>
-		<table border="1">
-			<tr>
-				<th>本のタイトル</th>
-				<th>状況</th>
-			</tr>
-			<th:block th:each="reservationList:${reservationsList}">
-				<tr th:each="reservationdetails:${reservationList.reservationdetails}">
-					<td>[[${reservationdetails.book.title}]]</td>
-					<td>[[${reservationdetails.status}]]</td>
+		<!--左列：お知らせ＆カレンダー-->
+		<div class="column column-left">
+			<div class="section-title">お知らせ</div>
+			<table border="1">
+				<tr th:each="news:${newsList}">
+					<td>[[${news.content}]]</td>
 				</tr>
-			</th:block>
-		</table>
-		<br>
-				
-		<!--カレンダー-->
-		<div id="calendar" class="calendar-wrap"></div>
-		
-		<script>
-			const date = new Date();
-			const today = date.getDate();
-			const currentMonth = date.getMonth();
+			</table>
 
-			function createCalendar(month) {
-			    const monthDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-			    let calendarHTML = '<table class="calendar"><thead><tr>';
-
-			    for (let i = 0; i < 7; i++) {
-			        if (i === 0) {
-			            calendarHTML += `<th class="sun">${monthDays[i]}</th>`;
-			        } else if (i === 6) {
-			            calendarHTML += `<th class="sat">${monthDays[i]}</th>`;
-			        } else {
-			            calendarHTML += `<th>${monthDays[i]}</th>`;
-			        }
-			    }
-
-			    calendarHTML += '</tr></thead><tbody>';
-
-			    const daysInMonth = new Date(date.getFullYear(), month + 1, 0).getDate();
-			    const firstDay = new Date(date.getFullYear(), month, 1).getDay();
-
-			    const daysInPrevMonth = new Date(date.getFullYear(), month, 0).getDate();
-
-			    let dayCount = 1;
-			    let prevDayCount = daysInPrevMonth - firstDay + 1;
-
-			    for (let i = 0; i < 6; i++) {
-			        calendarHTML += '<tr>';
-
-			        for (let j = 0; j < 7; j++) {
-			            if (i === 0 && j < firstDay) {
-			                calendarHTML += `<td class="mute">${prevDayCount}</td>`;
-			                prevDayCount++;
-			            } else if (dayCount > daysInMonth) {
-			                let nextMonthDayCount = dayCount - daysInMonth;
-			                calendarHTML += `<td class="mute">${nextMonthDayCount}</td>`;
-			                dayCount++;
-			            } else {
-			                // 今日の日付にclassを付ける
-			                if (dayCount === today && month === currentMonth) {
-			                    calendarHTML += `<td class="today">${dayCount}</td>`;
-			                } 
-			                // 月曜日にclassを付ける
-			                else if (j === 1) {
-			                    calendarHTML += `<td class="off">${dayCount}</td>`;
-			                } else {
-			                    calendarHTML += `<td>${dayCount}</td>`;
-			                }
-			                dayCount++;
-			            }
-			        }
-
-			        calendarHTML += '</tr>';
-
-			        if (dayCount - daysInMonth > 7) {
-			            break;
-			        }
-			    }
-
-			    calendarHTML += '</tbody></table>';
-
-			    return calendarHTML;
-			}
-
-			document.getElementById('calendar').innerHTML = createCalendar(currentMonth);
-		</script>
-		
-				
-		<!--としょんかの詳細情報-->
-		<br>
-		<div>
-			アクセス　東京都港区芝５丁目３３<br>
-			営業時間　9:00 ～ 20:00<br>
-			定休日　月曜日<br>
-			概要　広々とした読書スペースがあり、ゆったりとした時間が過ごせます。<br>
+			<div id="calendar" class="calendar-wrap"></div>
 		</div>
-		
-		<!--リマインド-->
-		<script th:inline="javascript">
-			var Size = /*[[${rentalSize}]]*/0;
-	
-			if(Size !== 0){
-				const message = /*[[${msg}]]*/"";
-				alert(message);
-				
-			}
-		</script>
+
+		<!--右列：予約状況・リマインド・図書館情報-->
+		<div class="column column-right">
+			
+			<!--リマインド-->
+			<div class="info-box" id="reminder-box" style="display: none;">
+				<strong>リマインド</strong><br>
+				<span id="reminder-message">明日までに以下の本を返却してください。</span>
+				<ul id="reminder-list" style="margin: 10px 0 0 20px;">
+					<!-- JavaScriptで動的に追加 -->
+				</ul>
+			</div>
+
+			<!--予約状況-->
+			<div class="section-title">予約状況</div>
+			<table border="1">
+				<tr>
+					<th>本のタイトル</th>
+					<th>状況</th>
+				</tr>
+				<th:block th:each="reservationList:${reservationsList}">
+					<tr th:each="reservationdetails:${reservationList.reservationdetails}">
+						<td>[[${reservationdetails.book.title}]]</td>
+						<td>[[${reservationdetails.status}]]</td>
+					</tr>
+				</th:block>
+			</table>
+
+			<!--アクセス情報-->
+			<div class="info-box">
+				<strong>アクセス</strong>&nbsp;&nbsp;○○県○○町1－1－1<br>
+				<strong>営業時間</strong>&nbsp;&nbsp;9:00 ～ 17:00<br>
+				<strong>定休日</strong>&nbsp;&nbsp;月曜日（祝日除く）、第二木曜日
+			</div>
+
+			<!--図書館説明-->
+			<div class="info-box">
+				<strong>図書館の説明</strong><br>
+				広々とした読書スペースがあり、ゆったりとした時間が過ごせます。
+			</div>
+
+		</div>
+
+	</div>
+
+	<script>
+		const date = new Date();
+		const today = date.getDate();
+		const currentMonth = date.getMonth();
+
+		function createCalendar(month) {
+		    const monthDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+		    let calendarHTML = '<table class="calendar"><thead><tr>';
+
+		    for (let i = 0; i < 7; i++) {
+		        if (i === 0) {
+		            calendarHTML += `<th class="sun">${monthDays[i]}</th>`;
+		        } else if (i === 6) {
+		            calendarHTML += `<th class="sat">${monthDays[i]}</th>`;
+		        } else {
+		            calendarHTML += `<th>${monthDays[i]}</th>`;
+		        }
+		    }
+
+		    calendarHTML += '</tr></thead><tbody>';
+
+		    const daysInMonth = new Date(date.getFullYear(), month + 1, 0).getDate();
+		    const firstDay = new Date(date.getFullYear(), month, 1).getDay();
+
+		    const daysInPrevMonth = new Date(date.getFullYear(), month, 0).getDate();
+
+		    let dayCount = 1;
+		    let prevDayCount = daysInPrevMonth - firstDay + 1;
+
+		    for (let i = 0; i < 6; i++) {
+		        calendarHTML += '<tr>';
+
+		        for (let j = 0; j < 7; j++) {
+		            if (i === 0 && j < firstDay) {
+		                calendarHTML += `<td class="mute">${prevDayCount}</td>`;
+		                prevDayCount++;
+		            } else if (dayCount > daysInMonth) {
+		                let nextMonthDayCount = dayCount - daysInMonth;
+		                calendarHTML += `<td class="mute">${nextMonthDayCount}</td>`;
+		                dayCount++;
+		            } else {
+		                // 今日の日付にclassを付ける
+		                if (dayCount === today && month === currentMonth) {
+		                    calendarHTML += `<td class="today">${dayCount}</td>`;
+		                } 
+		                // 月曜日にclassを付ける
+		                else if (j === 1) {
+		                    calendarHTML += `<td class="off">${dayCount}</td>`;
+		                } else {
+		                    calendarHTML += `<td>${dayCount}</td>`;
+		                }
+		                dayCount++;
+		            }
+		        }
+
+		        calendarHTML += '</tr>';
+
+		        if (dayCount - daysInMonth > 7) {
+		            break;
+		        }
+		    }
+
+		    calendarHTML += '</tbody></table>';
+
+		    return calendarHTML;
+		}
+
+		document.getElementById('calendar').innerHTML = createCalendar(currentMonth);
+
+		// リマインド表示
+		var Size = /*[[${rentalSize}]]*/0;
+
+		if(Size !== 0){
+			const message = /*[[${msg}]]*/"";
+			document.getElementById('reminder-box').style.display = 'block';
+			document.getElementById('reminder-message').textContent = message;
+		}
+	</script>
 </body>
 </html>

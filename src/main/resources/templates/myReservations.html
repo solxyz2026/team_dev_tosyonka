@@ -3,31 +3,185 @@
 <head>
 <meta charset="UTF-8">
 <title>予約</title>
+<style>
+	body {
+		font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+		margin: 0;
+		padding: 20px;
+		background-color: #f1f8f3;
+		color: #1B5E20;
+	}
+
+	.container {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	h1 {
+		font-size: 32px;
+		color: #1B5E20;
+		border-bottom: 3px solid #558B2F;
+		padding-bottom: 15px;
+		margin: 0 0 20px 0;
+	}
+
+	.site-title {
+		font-size: 18px;
+		color: #2E7D32;
+		margin-bottom: 20px;
+		font-weight: bold;
+	}
+
+	/* ナビゲーションリンク */
+	.nav-links {
+		background-color: #ffffff;
+		padding: 15px 20px;
+		border-radius: 6px;
+		margin-bottom: 20px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+		border-left: 4px solid #558B2F;
+	}
+
+	.nav-links a {
+		color: #2E7D32;
+		text-decoration: none;
+		margin-right: 20px;
+		transition: color 0.2s ease;
+		font-weight: 500;
+	}
+
+	.nav-links a:hover {
+		color: #1B5E20;
+		text-decoration: underline;
+	}
+
+	.nav-links br {
+		display: none;
+	}
+
+	/* メッセージ */
+	.message {
+		background-color: #e8f5e9;
+		color: #1B5E20;
+		padding: 15px;
+		margin: 20px 0;
+		border-left: 4px solid #558B2F;
+		border-radius: 4px;
+	}
+
+	/* セクションタイトル */
+	.section-title {
+		font-size: 18px;
+		font-weight: bold;
+		color: #ffffff;
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		padding: 12px 15px;
+		margin: 20px 0 10px 0;
+		border-radius: 4px 4px 0 0;
+		border-bottom: 3px solid #558B2F;
+	}
+
+	/* テーブル */
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		background-color: #ffffff;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		margin-bottom: 20px;
+		border-radius: 6px;
+		overflow: hidden;
+	}
+
+	table th {
+		padding: 12px 15px;
+		text-align: left;
+		font-weight: bold;
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		color: #ffffff;
+		border-right: 1px solid #1B5E20;
+	}
+
+	table th:last-child {
+		border-right: none;
+	}
+
+	table td {
+		padding: 12px 15px;
+		border: 1px solid #c8e6c9;
+		color: #1B5E20;
+		background-color: #f9fff8;
+	}
+
+	table tbody tr:nth-child(odd) td {
+		background-color: #ffffff;
+	}
+
+	table tbody tr:hover td {
+		background-color: #e8f5e9;
+		transition: background-color 0.2s ease;
+	}
+
+	/* フォーム要素 */
+	form {
+		display: inline-block;
+	}
+
+	button {
+		padding: 10px 20px;
+		border: 2px solid #558B2F;
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		color: #ffffff;
+		cursor: pointer;
+		font-weight: bold;
+		border-radius: 4px;
+		transition: all 0.3s ease;
+	}
+
+	button:hover {
+		background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+		box-shadow: 0 2px 8px rgba(27, 94, 32, 0.3);
+	}
+
+	/* 削除ボタンのマージン */
+	form button {
+		padding: 6px 12px;
+		font-size: 13px;
+	}
+
+	/* 予約確定ボタン */
+	.confirm-button {
+		margin-top: 15px;
+		padding: 12px 30px;
+		font-size: 16px;
+	}
+</style>
 </head>
 <body>
-	<!--大森-->
-	<h1>予約</h1>
-	<div>としょんか</div>
-			
-	<!--リンク-->
-	<div>
-		<a href="/user/logout">ログアウト</a><br>
-		<a href="/user/">トップページ</a><br>
-		<a href="/user/mypage">マイページ</a><br>
-		<a href="/user/search">本検索</a>
-	</div>
-	<br>
-	
-	<div>[[${msg}]]</div>
-	
-	<!--予約一覧-->
-	<div>予約する本一覧</div>
+	<div class="container">
+		<h1>予約</h1>
+		<div class="site-title">としょんか</div>
+
+		<!-- ナビゲーションリンク -->
+		<div class="nav-links">
+			<a href="/user/logout">ログアウト</a>
+			<a href="/user/">トップページ</a>
+			<a href="/user/mypage">マイページ</a>
+			<a href="/user/search">本検索</a>
+		</div>
+
+		<!-- メッセージ -->
+		<div th:if="${msg}" class="message">
+			<span th:text="${msg}"></span>
+		</div>
+
+		<!-- 予約一覧 -->
+		<div class="section-title">予約する本一覧</div>
 		<table border="1">
 			<tr>
-				<td>タイトル</td>
-				<td>著者</td>
-				<td>カテゴリー</td>
-				<td>削除</td>
+				<th>タイトル</th>
+				<th>著者</th>
+				<th>カテゴリー</th>
+				<th>削除</th>
 			</tr>
 			<tr th:each="book:${books}">
 				<td>[[${book.title}]]</td>
@@ -35,15 +189,16 @@
 				<td>[[${book.category.categoryName}]]</td>
 				<td>
 					<form th:action="|/user/${book.id}/delete|" method="post">
-						<button>削除</button>
+						<button type="submit">削除</button>
 					</form>
 				</td>
 			</tr>
-		</table><br>
-	<form action="/user/reservations" method="post">
-		<button>予約確定</button>
-	</form>
-	
+		</table>
 
+		<!-- 予約確定ボタン -->
+		<form action="/user/reservations" method="post">
+			<button type="submit" class="confirm-button">予約確定</button>
+		</form>
+	</div>
 </body>
 </html>
