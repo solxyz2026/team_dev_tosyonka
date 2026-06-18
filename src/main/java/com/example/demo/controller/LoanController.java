@@ -33,6 +33,8 @@ public class LoanController {
 
 		System.out.println("========== ページ表示 ==========\n");
 
+		System.out.println(rentalList.size());
+
 		return "Rentalshow";
 	}
 }

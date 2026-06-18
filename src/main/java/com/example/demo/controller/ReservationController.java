@@ -216,6 +216,10 @@ public class ReservationController {
 			Model model) {
 
 		reservationdetailRepository.deleteById(id);
+		List<Reservationdetail> checkList = reservationdetailRepository.findByReservationId(id);
+		if (checkList.isEmpty()) {
+			reservationRepository.deleteById(id);
+		}
 		return "redirect:/admin/reservations";
 
 	}
