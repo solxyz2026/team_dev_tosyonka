@@ -174,7 +174,7 @@ public class AdminBookController {
 		return "AdminHome";
 	}
 
-	@GetMapping("/{book_id}/delete")
+	@PostMapping("/{book_id}/delete")
 	public String delete(
 			@PathVariable Integer book_id,
 			Model model) {

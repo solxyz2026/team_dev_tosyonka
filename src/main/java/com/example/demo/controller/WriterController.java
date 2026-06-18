@@ -118,6 +118,7 @@ public class WriterController {
 	public String writerList(Model model) {
 
 		List<Writer> writerList = writerRepository.findByDeleteJudgeFalse();
+		System.out.println(writerList.size());
 
 		model.addAttribute("writerList", writerList);
 
@@ -143,12 +144,13 @@ public class WriterController {
 			} else {
 				count++;
 			}
+		}
 
-			if (books.size() == count) {
-				Writer writer = writerRepository.findById(id).orElse(null);
-				writer.setDeleteJudge(true);
-				writerRepository.save(writer);
-			}
+		if (books.size() == count) {
+			System.out.println("削除処理通過");
+			Writer writer = writerRepository.findById(id).orElse(null);
+			writer.setDeleteJudge(true);
+			writerRepository.save(writer);
 		}
 
 		//		if (books.size() >= 1) {
