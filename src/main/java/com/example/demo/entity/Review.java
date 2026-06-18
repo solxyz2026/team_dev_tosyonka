@@ -31,6 +31,11 @@ public class Review {
 	public Review() {
 	}
 
+	public Review(Book book, String bookReview) {
+		this.book = book;
+		this.bookReview = bookReview;
+	}
+
 	public Review(Integer id, Book book, String bookReview) {
 		this.id = id;
 		this.book = book;

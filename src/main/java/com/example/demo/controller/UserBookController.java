@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Category;
+import com.example.demo.entity.Review;
 import com.example.demo.model.Account;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.CategoryRepository;
+import com.example.demo.repository.ReviewRepository;
 
 @Controller
 @RequestMapping("/user")
@@ -32,6 +34,9 @@ public class UserBookController {
 
 	@Autowired
 	private Account account;
+
+	@Autowired
+	private ReviewRepository reviewRepository;
 
 	@GetMapping("/search")
 	public String searchGet(HttpSession session, Model model) {
@@ -155,7 +160,9 @@ public class UserBookController {
 				return "UserSearch";
 			}
 
+			List<Review> reviews = reviewRepository.findByBookId(book_id);
 			model.addAttribute("book", book);
+			model.addAttribute("reviews", reviews);
 
 		} catch (Exception e) {
 			System.out.println("本詳細取得エラー: " + e.getMessage());

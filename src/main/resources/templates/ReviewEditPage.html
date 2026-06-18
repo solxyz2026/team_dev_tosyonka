@@ -6,12 +6,11 @@
 </head>
 <body>
 <h1>レビュー投稿フォーム</h1>
-<form action="/user/reviews" method="post">
-	<input type="hidden" name="bookId" th:value="${bookId}">
+<form th:action="|/user/reviews/${review.id}/edit|" method="post">
 	レビュー：<br>
-	<textarea name="bookReview" rows="10" cols="30"></textarea>
+	<textarea name="bookReview" rows="10" cols="30">[[${review.bookReview}]]</textarea>
 	<br>
-	<button>投稿</button>
+	<button>変更</button>
 </form>
 </body>
 </html>
