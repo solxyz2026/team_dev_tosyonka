@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Reservation;
@@ -25,7 +24,6 @@ import com.example.demo.repository.ReservationdetailRepository;
 import com.example.demo.repository.UserRepository;
 
 @Controller
-@RequestMapping("/user")
 public class ReservationController {
 
 	private final Account account;
@@ -52,7 +50,7 @@ public class ReservationController {
 	/**
 	 * 予約カートに追加
 	 */
-	@GetMapping("/reservation/{book_id}")
+	@GetMapping("/user/reservation/{book_id}")
 	public String addToReservationCart(@PathVariable Integer book_id,
 			HttpSession session) {
 
@@ -95,7 +93,7 @@ public class ReservationController {
 	/**
 	 * カート削除
 	 */
-	@PostMapping("/reservation/{book_id}/delete")
+	@PostMapping("/user/reservation/{book_id}/delete")
 	public String deleteCart(@PathVariable Integer book_id,
 			HttpSession session) {
 
@@ -113,7 +111,7 @@ public class ReservationController {
 	/**
 	 * カート画面表示（前と同じView名）
 	 */
-	@GetMapping("/reservations")
+	@GetMapping("/user/reservations")
 	public String showCart(HttpSession session, Model model) {
 
 		@SuppressWarnings("unchecked")
@@ -135,7 +133,7 @@ public class ReservationController {
 	/**
 	 * 予約確定
 	 */
-	@PostMapping("/reservations")
+	@PostMapping("/user/reservations")
 	public String confirmReservation(HttpSession session, Model model) {
 
 		@SuppressWarnings("unchecked")
@@ -189,7 +187,7 @@ public class ReservationController {
 	/**
 	 * 確定画面（前のView名に戻す）
 	 */
-	@GetMapping("/reservations/confirmed")
+	@GetMapping("/user/reservations/confirmed")
 	public String confirmed(Model model) {
 
 		LocalDate today = LocalDate.now();
@@ -202,5 +200,23 @@ public class ReservationController {
 		model.addAttribute("reservationsConfirmed", list);
 
 		return "myReservationsConfirmed"; // ← 前のまま
+	}
+
+	@GetMapping("/admin/reservations")
+	public String showReservations(Model model) {
+		List<Reservation> reservationsList = reservationRepository.findAll();
+		System.out.println(reservationsList.size());
+		model.addAttribute("reservationsList", reservationsList);
+		return "AdminReservationList";
+	}
+
+	@PostMapping("/admin/reservation/delete/{id}")
+	public String cancel(
+			@PathVariable Integer id,
+			Model model) {
+
+		reservationdetailRepository.deleteById(id);
+		return "redirect:/admin/reservations";
+
 	}
 }

@@ -352,33 +352,34 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:if="${rentalList != null && !rentalList.isEmpty()}" th:each="rental : ${rentalList}">
-						<!-- 本はまとめて表示 -->
-						<td>
-							<ul>
-								<li th:each="detail : ${rental.rentaldetail}">
-									[[${detail.book.title}]]
-								</li>
-							</ul>
-						</td>
+					<th:block th:if="${reservationsList != null}">
+					    <th:block th:each="reservation : ${reservationsList}">
 
-						<td>[[${rental.user.id}]]</td>
-						<td>[[${rental.user.name}]]</td>
-						<td>[[${#temporals.format(rental.dropDate, 'yyyy-MM-dd')}]]</td>
+					        <tr th:each="detail : ${reservation.reservationdetails}">
 
-						<td>
-							<form th:action="@{/admin/rental/{rentalId}/return(rentalId=${rental.id})}" method="post" onsubmit="return confirm('返却処理を実行しますか？');">
-								<button type="submit" class="btn-return">返却</button>
-							</form>
-						</td>
-					</tr>
+					            <td>[[${detail.book.title}]]</td>
+					            <td>[[${reservation.user.id}]]</td>
+					            <td>[[${reservation.user.name}]]</td>
 
-					<!-- 貸出がない場合 -->
-					<tr th:if="${rentalList == null || rentalList.isEmpty()}">
-						<td colspan="5" class="empty-message">
-							<p>現在、貸し出し中の本はありません</p>
-						</td>
-					</tr>
+					            <td>
+					                <form th:action="@{/admin/reservation/delete/{id}(id=${reservation.id})}" method="post">
+					                    <button type="submit">削除</button>
+					                </form>
+					            </td>
+
+					        </tr>
+							
+
+
+					    </th:block>
+					</th:block>
+					
+	<!-- 貸出がない場合 -->
+						<tr th:if="${reservationsList.isEmpty()}">
+							<td colspan="5" class="empty-message">
+								<p>現在、予約中の本はありません</p>
+							</td>
+						</tr>
 				</tbody>
 			</table>
 		</div>
