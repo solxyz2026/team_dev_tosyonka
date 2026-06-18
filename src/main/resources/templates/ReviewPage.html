@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th = "http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset = "UTF-8">
-<title>レビュー投稿フォーム</title>
+	<meta charset="UTF-8">
+	<title>レビュー投稿フォーム</title>
 </head>
+
 <body>
-<h1>レビュー投稿フォーム</h1>
-<form action="/user/reviews" method="post">
-	<input type="hidden" name="bookId" th:value="${bookId}">
-	レビュー：<br>
-	<textarea name="bookReview" rows="10" cols="30"></textarea>
-	<br>
-	<button>投稿</button>
-</form>
+	<h1>レビュー投稿フォーム</h1>
+	<form action="/user/reviews" method="post">
+		<input type="hidden" name="bookId" th:value="${bookId}">
+		レビュー：<br>
+		<textarea name="bookReview" rows="10" cols="30"></textarea>
+		<br>
+		<button>投稿</button>
+
+	</form>
 </body>
+
 </html>
