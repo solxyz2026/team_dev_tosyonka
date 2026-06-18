@@ -160,7 +160,6 @@
 	<div class="container">
 		<h1>予約</h1>
 		<div class="site-title">としょんか</div>
-
 		<!-- ナビゲーションリンク -->
 		<div class="nav-links">
 			<a href="/user/logout">ログアウト</a>
@@ -188,12 +187,14 @@
 				<td>[[${book.writer.writerName}]]</td>
 				<td>[[${book.category.categoryName}]]</td>
 				<td>
-					<form th:action="|/user/${book.id}/delete|" method="post">
+					<form th:action="|/user/reservation/${book.id}/delete|" method="post">
 						<button type="submit">削除</button>
 					</form>
 				</td>
 			</tr>
 		</table>
+		
+		<p th:text = "${error}"></p>
 
 		<!-- 予約確定ボタン -->
 		<form action="/user/reservations" method="post">
