@@ -1,35 +1,231 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>本の追加</title>
-	<link rel="stylesheet" href="/css/style.css">
-</head>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
 
+		body {
+			font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+			background-color: #f5f5f5;
+			color: #333;
+			padding: 20px;
+		}
+
+		main {
+			max-width: 600px;
+			margin: 0 auto;
+			background-color: #ffffff;
+			padding: 30px;
+			border-radius: 8px;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			color: #0097D4;
+			font-size: 28px;
+			margin-bottom: 30px;
+			border-bottom: 3px solid #0097D4;
+			padding-bottom: 15px;
+			font-weight: bold;
+		}
+
+		/* エラーメッセージ */
+		#error {
+			background-color: #ffebee;
+			border: 2px solid #d32f2f;
+			color: #d32f2f;
+			padding: 12px 15px;
+			border-radius: 4px;
+			margin-bottom: 20px;
+			font-weight: 500;
+		}
+
+		/* 戻るボタン */
+		.btn {
+			display: inline-block;
+			padding: 10px 20px;
+			background-color: #0097D4;
+			color: #ffffff;
+			border: 2px solid #0077B6;
+			text-decoration: none;
+			border-radius: 4px;
+			font-weight: bold;
+			transition: all 0.3s ease;
+			cursor: pointer;
+			margin-bottom: 20px;
+		}
+
+		.btn:hover {
+			background-color: #0077B6;
+			box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+		}
+
+		/* フォーム */
+		form {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.form-group {
+			margin-bottom: 20px;
+			display: flex;
+			flex-direction: column;
+		}
+
+		label {
+			font-weight: bold;
+			color: #333;
+			margin-bottom: 8px;
+			font-size: 14px;
+		}
+
+		input[type="text"],
+		input[type="date"],
+		select,
+		textarea {
+			padding: 12px;
+			border: 2px solid #0097D4;
+			border-radius: 4px;
+			font-size: 14px;
+			color: #333;
+			background-color: #f9f9f9;
+			transition: all 0.3s ease;
+			font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+		}
+
+		input[type="text"]:focus,
+		input[type="date"]:focus,
+		select:focus,
+		textarea:focus {
+			outline: none;
+			border-color: #0077B6;
+			background-color: #ffffff;
+			box-shadow: 0 0 8px rgba(0, 119, 182, 0.3);
+		}
+
+		textarea {
+			resize: vertical;
+			min-height: 80px;
+		}
+
+		/* ボタン */
+		button {
+			padding: 12px;
+			background-color: #0097D4;
+			color: #ffffff;
+			border: 2px solid #0077B6;
+			border-radius: 4px;
+			font-weight: bold;
+			font-size: 16px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			margin-top: 10px;
+		}
+
+		button:hover {
+			background-color: #0077B6;
+			box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+		}
+
+		button:active {
+			transform: scale(0.98);
+		}
+
+		/* デモ情報 */
+		.demo-info {
+			background-color: #e8f4f8;
+			border: 2px solid #0097D4;
+			padding: 15px;
+			border-radius: 4px;
+			margin-top: 30px;
+			font-size: 13px;
+			color: #333;
+		}
+
+		.demo-info strong {
+			color: #0097D4;
+			font-weight: bold;
+		}
+
+		@media (max-width: 600px) {
+			main {
+				padding: 20px;
+			}
+
+			h1 {
+				font-size: 24px;
+			}
+
+			input,
+			select {
+				width: 100%;
+			}
+		}
+	</style>
+</head>
 <body>
 	<main>
 		<h1>本の追加</h1>
+
+		<!-- エラーメッセージ -->
 		<p th:each="error:${errors}" id="error">[[${error}]]</p>
+
+		<!-- 戻るボタン -->
 		<a class="btn" th:href="@{/admin/}">管理者メニューに戻る</a>
 
+		<!-- 本追加フォーム -->
 		<form action="/admin/books" method="post">
-			タイトル<input type="text" name="title"><br>
-			著者<input type="text" name="writer"><br>
-			出版社<input type="text" name="publisher"><br>
-			出版月<input type="date" name="date"><br>
-			<select name="categoryName">
-				<option th:each = "category : ${categoryList}" 
-								th:value = "${category.categoryName}">
-								[[${category.categoryName}]]
-				</option>
-			</select><br>
-			本の要約文<input type="text" name="summary">
-			<button>登録</button>
-		</form>
-	</main>
-	
-	<p>デモ入力著者 : 山田太郎</p>
-</body>
+			<div class="form-group">
+				<label for="title">タイトル <span style="color: #d32f2f;">*</span></label>
+				<input type="text" id="title" name="title" placeholder="本のタイトルを入力" required>
+			</div>
 
+			<div class="form-group">
+				<label for="writer">著者 <span style="color: #d32f2f;">*</span></label>
+				<input type="text" id="writer" name="writer" placeholder="著者名を入力（例：山田太郎）" required>
+			</div>
+
+			<div class="form-group">
+				<label for="publisher">出版社 <span style="color: #d32f2f;">*</span></label>
+				<input type="text" id="publisher" name="publisher" placeholder="出版社名を入力" required>
+			</div>
+
+			<div class="form-group">
+				<label for="date">出版月 <span style="color: #d32f2f;">*</span></label>
+				<input type="date" id="date" name="date" required>
+			</div>
+
+			<div class="form-group">
+				<label for="categoryName">カテゴリー <span style="color: #d32f2f;">*</span></label>
+				<select id="categoryName" name="categoryName" required>
+					<option value="">カテゴリーを選択</option>
+					<option th:each="category : ${categoryList}" 
+							th:value="${category.categoryName}">
+							[[${category.categoryName}]]
+					</option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label for="summary">本の要約文</label>
+				<textarea id="summary" name="summary" placeholder="本の概要を入力してください"></textarea>
+			</div>
+
+			<button type="submit">登録</button>
+		</form>
+
+		<!-- デモ情報 -->
+		<div class="demo-info">
+			<strong>📝 デモ入力情報</strong><br>
+			著者例：山田太郎
+		</div>
+	</main>
+</body>
 </html>
