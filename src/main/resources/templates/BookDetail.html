@@ -13,8 +13,8 @@
 
 	body {
 		font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
-		background-color: #f5f5f5;
-		color: #333;
+		background-color: #f1f8f3;
+		color: #1B5E20;
 	}
 
 	.container {
@@ -29,9 +29,9 @@
 	h1 {
 		font-size: 24px;
 		margin: 0 0 20px 0;
-		border-bottom: 3px solid #0097D4;
+		border-bottom: 3px solid #558B2F;
 		padding-bottom: 10px;
-		color: #0097D4;
+		color: #1B5E20;
 	}
 
 	/* 詳細情報テーブル */
@@ -42,40 +42,54 @@
 	}
 
 	table tr {
-		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid #c8e6c9;
 	}
 
 	table tr:last-child {
-		border-bottom: 1px solid #000;
+		border-bottom: 2px solid #558B2F;
 	}
 
 	table th {
-		border: 1px solid #000;
+		border: 1px solid #a5d6a7;
 		padding: 12px;
 		text-align: left;
 		font-weight: bold;
 		width: 20%;
-		background-color: #f5f5f5;
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		color: #ffffff;
 	}
 
 	table td {
-		border: 1px solid #000;
+		border: 1px solid #a5d6a7;
 		padding: 12px;
+		background-color: #f9fff8;
+		color: #1B5E20;
+	}
+
+	table tbody tr:nth-child(odd) td {
+		background-color: #ffffff;
+	}
+
+	table tbody tr:hover td {
+		background-color: #e8f5e9;
+		transition: background-color 0.2s ease;
 	}
 
 	/* 説明セクション */
 	.summary-section {
 		margin: 20px 0;
 		padding: 15px;
-		border-left: 4px solid #0097D4;
-		background-color: #f9f9f9;
+		border-left: 4px solid #558B2F;
+		background-color: #f9fff8;
 		border-radius: 4px;
+		border: 1px solid #c8e6c9;
 	}
 
 	.summary-section h3 {
 		margin: 0 0 10px 0;
 		font-size: 16px;
-		color: #333;
+		color: #1B5E20;
+		font-weight: bold;
 	}
 
 	.summary-section p {
@@ -83,16 +97,18 @@
 		line-height: 1.6;
 		white-space: pre-wrap;
 		word-break: break-word;
+		color: #1B5E20;
 	}
 
 	/* メッセージ */
 	.message {
 		background-color: #e8f5e9;
-		border: 2px solid #4CAF50;
-		color: #2e7d32;
+		border: 2px solid #558B2F;
+		color: #1B5E20;
 		padding: 15px;
 		border-radius: 4px;
 		margin-bottom: 20px;
+		font-weight: 500;
 	}
 
 	.error {
@@ -102,6 +118,12 @@
 		padding: 15px;
 		border-radius: 4px;
 		margin-bottom: 20px;
+		font-weight: 500;
+	}
+
+	.error a {
+		color: #d32f2f;
+		text-decoration: underline;
 	}
 
 	/* ボタングループ */
@@ -114,29 +136,50 @@
 
 	.btn {
 		padding: 10px 20px;
-		border: 1px solid #000;
+		border: 2px solid #558B2F;
 		background-color: #ffffff;
+		color: #1B5E20;
 		cursor: pointer;
 		font-weight: bold;
 		text-decoration: none;
 		display: inline-block;
 		font-size: 14px;
 		border-radius: 4px;
-		transition: background-color 0.3s;
+		transition: all 0.3s ease;
 	}
 
 	.btn:hover {
-		background-color: #f5f5f5;
+		background-color: #e8f5e9;
+		color: #1B5E20;
 	}
 
 	.btn-reserve {
-		background-color: #ff9800;
-		color: white;
-		border-color: #ff9800;
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		color: #ffffff;
+		border-color: #558B2F;
 	}
 
 	.btn-reserve:hover {
-		background-color: #f57c00;
+		background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+		box-shadow: 0 2px 8px rgba(27, 94, 32, 0.3);
+	}
+
+	.btn:disabled {
+		background-color: #d0d0d0;
+		color: #666;
+		cursor: not-allowed;
+		border-color: #999;
+	}
+
+	/* 貸出状況 */
+	.status-available {
+		color: #2E7D32;
+		font-weight: bold;
+	}
+
+	.status-borrowed {
+		color: #d32f2f;
+		font-weight: bold;
 	}
 
 	@media (max-width: 600px) {
@@ -151,6 +194,16 @@
 		.btn {
 			width: 100%;
 			text-align: center;
+		}
+
+		h1 {
+			font-size: 20px;
+		}
+
+		table th,
+		table td {
+			padding: 8px;
+			font-size: 13px;
 		}
 	}
 </style>
@@ -202,8 +255,8 @@
 				<tr>
 					<th>貸出状況</th>
 					<td>
-						<span th:if="${book.loans}" style="color: red; font-weight: bold;">貸出中</span>
-						<span th:unless="${book.loans}" style="color: green; font-weight: bold;">利用可能</span>
+						<span th:if="${book.loans}" class="status-borrowed">貸出中</span>
+						<span th:unless="${book.loans}" class="status-available">利用可能</span>
 					</td>
 				</tr>
 			</table>
@@ -216,7 +269,6 @@
 
 			<!-- ボタングループ -->
 			<div class="button-group">
-				<!-- ★★★ 【修正】Thymeleaf タグを正しく使用 ★★★ -->
 				<a th:if="!${book.loans}" 
 				   class="btn btn-reserve" 
 				   th:href="@{/user/reservation/{book_id}(book_id=${book.id})}"
@@ -224,7 +276,7 @@
 					📌 予約カートに追加
 				</a>
 				
-				<button th:if="${book.loans}" class="btn" disabled style="background-color: #ccc;">
+				<button th:if="${book.loans}" class="btn" disabled>
 					🔴 貸出中（予約できません）
 				</button>
 

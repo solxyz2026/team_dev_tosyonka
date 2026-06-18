@@ -2,30 +2,215 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>新規会員登録</title>
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	body {
+		font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+		background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f3 100%);
+		color: #1B5E20;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 100vh;
+		padding: 20px;
+	}
+
+	.container {
+		background-color: #ffffff;
+		padding: 40px;
+		border-radius: 8px;
+		box-shadow: 0 4px 12px rgba(27, 94, 32, 0.2);
+		max-width: 500px;
+		width: 100%;
+		border: 2px solid #a5d6a7;
+	}
+
+	h1 {
+		font-size: 28px;
+		color: #1B5E20;
+		text-align: center;
+		margin-bottom: 30px;
+		font-weight: bold;
+		border-bottom: 3px solid #558B2F;
+		padding-bottom: 15px;
+	}
+
+	/* エラーメッセージ */
+	.error-list {
+		background-color: #ffebee;
+		border: 2px solid #d32f2f;
+		color: #d32f2f;
+		padding: 15px;
+		border-radius: 4px;
+		margin-bottom: 20px;
+		list-style-position: inside;
+	}
+
+	.error-list li {
+		margin: 5px 0;
+		font-weight: 500;
+	}
+
+	/* フォーム */
+	form {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.form-group {
+		margin-bottom: 20px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	label {
+		font-weight: bold;
+		color: #1B5E20;
+		margin-bottom: 8px;
+		font-size: 14px;
+	}
+
+	input[type="text"],
+	input[type="email"],
+	input[type="password"],
+	input[type="date"],
+	input[type="tel"] {
+		padding: 12px;
+		border: 2px solid #a5d6a7;
+		border-radius: 4px;
+		font-size: 14px;
+		color: #1B5E20;
+		background-color: #f9fff8;
+		transition: all 0.3s ease;
+		font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+	}
+
+	input[type="text"]:focus,
+	input[type="email"]:focus,
+	input[type="password"]:focus,
+	input[type="date"]:focus,
+	input[type="tel"]:focus {
+		outline: none;
+		border-color: #558B2F;
+		background-color: #ffffff;
+		box-shadow: 0 0 8px rgba(85, 139, 47, 0.3);
+	}
+
+	/* ボタン */
+	button {
+		padding: 12px;
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		color: #ffffff;
+		border: 2px solid #558B2F;
+		border-radius: 4px;
+		font-weight: bold;
+		font-size: 16px;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		margin-top: 10px;
+	}
+
+	button:hover {
+		background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+		box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
+	}
+
+	button:active {
+		transform: scale(0.98);
+	}
+
+	/* リンク */
+	.back-link {
+		text-align: center;
+		margin-top: 20px;
+	}
+
+	.back-link a {
+		color: #2E7D32;
+		text-decoration: none;
+		font-weight: 500;
+		transition: color 0.2s ease;
+	}
+
+	.back-link a:hover {
+		color: #1B5E20;
+		text-decoration: underline;
+	}
+
+	/* 入力ガイド */
+	.form-hint {
+		font-size: 12px;
+		color: #558B2F;
+		margin-top: 5px;
+		font-style: italic;
+	}
+
+	@media (max-width: 600px) {
+		.container {
+			padding: 30px 20px;
+		}
+
+		h1 {
+			font-size: 24px;
+		}
+	}
+</style>
 </head>
 <body>
-<h1>新規会員登録</h1>
+	<div class="container">
+		<h1>新規会員登録</h1>
 
-<ul>
-		<li th:each="data:${con}" style="color:red;">[[${data}]]</li>
-	</ul>
-	
-	<form action="/user/register" method="post">
-		
+		<!-- エラーメッセージ -->
+		<ul th:if="${con != null && !con.isEmpty()}" class="error-list">
+			<li th:each="data:${con}">[[${data}]]</li>
+		</ul>
 
-		名前<input type="text" name="name"th:value="${name}"><br>
-		生年月日<input type="date" name="birthday" th:value="${birthday}"><br>
-<!--		生年月日<input type="text" name="birthday" th:value="${birthday}"><br>-->
-		電話番号<input type="text" name="telNumber" th:value=${telNumber}><br>
-		メールアドレス<input type="text" name="email"th:value="${email}"><br>
-		パスワード<input type="text" name="password"th:value="${password}"><br>
-		
-			<button>登録</button>
-	</form>
-	
-	<br>
-	<a href="/user/login">ログイン画面に戻る</a><br>
-	
+		<!-- 登録フォーム -->
+		<form action="/user/register" method="post">
+			
+			<div class="form-group">
+				<label for="name">名前</label>
+				<input type="text" id="name" name="name" placeholder="山田太郎" th:value="${name}" required>
+				<div class="form-hint">※ 全角文字で入力してください</div>
+			</div>
+
+			<div class="form-group">
+				<label for="birthday">生年月日</label>
+				<input type="date" id="birthday" name="birthday" th:value="${birthday}" required>
+			</div>
+
+			<div class="form-group">
+				<label for="telNumber">電話番号</label>
+				<input type="tel" id="telNumber" name="telNumber" placeholder="09012345678" th:value="${telNumber}" required>
+				<div class="form-hint">※ ハイフンなしで入力してください</div>
+			</div>
+
+			<div class="form-group">
+				<label for="email">メールアドレス</label>
+				<input type="text" id="email" name="email" placeholder="yamada@example.com" th:value="${email}" required>
+				<div class="form-hint">※ ログイン時に使用します</div>
+			</div>
+
+			<div class="form-group">
+				<label for="password">パスワード</label>
+				<input type="password" id="password" name="password" placeholder="8文字以上" th:value="${password}" required>
+				<div class="form-hint">※ 8文字以上で設定してください</div>
+			</div>
+
+			<button type="submit">登録</button>
+		</form>
+
+		<!-- ログイン画面へのリンク -->
+		<div class="back-link">
+			<a href="/user/login">ログイン画面に戻る</a>
+		</div>
+	</div>
 </body>
 </html>
