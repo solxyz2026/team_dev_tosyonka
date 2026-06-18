@@ -3,104 +3,256 @@
 <head>
 <meta charset="UTF-8">
 <title>マイページ</title>
+<style>
+	body {
+		font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+		margin: 0;
+		padding: 20px;
+		background-color: #f1f8f3;
+		color: #1B5E20;
+	}
+
+	.container {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	h1 {
+		font-size: 32px;
+		color: #1B5E20;
+		border-bottom: 3px solid #558B2F;
+		padding-bottom: 15px;
+		margin: 0 0 20px 0;
+	}
+
+	.site-title {
+		font-size: 18px;
+		color: #2E7D32;
+		margin-bottom: 20px;
+		font-weight: bold;
+	}
+
+	/* ユーザー情報エリア */
+	.user-info {
+		background-color: #ffffff;
+		padding: 15px 20px;
+		border-left: 4px solid #558B2F;
+		border-radius: 6px;
+		margin-bottom: 20px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	}
+
+	.user-info p {
+		margin: 10px 0;
+		font-size: 16px;
+	}
+
+	.user-info a {
+		color: #2E7D32;
+		text-decoration: none;
+		margin-right: 15px;
+		transition: color 0.2s ease;
+		font-weight: 500;
+	}
+
+	.user-info a:hover {
+		color: #1B5E20;
+		text-decoration: underline;
+	}
+
+	/* ナビゲーションリンク */
+	.nav-links {
+		background-color: #ffffff;
+		padding: 15px 20px;
+		border-radius: 6px;
+		margin-bottom: 20px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+		border-left: 4px solid #558B2F;
+	}
+
+	.nav-links a {
+		color: #2E7D32;
+		text-decoration: none;
+		margin-right: 20px;
+		transition: color 0.2s ease;
+		font-weight: 500;
+	}
+
+	.nav-links a:hover {
+		color: #1B5E20;
+		text-decoration: underline;
+	}
+
+	.nav-links br {
+		display: none;
+	}
+
+	/* セクションタイトル */
+	.section-title {
+		font-size: 18px;
+		font-weight: bold;
+		color: #ffffff;
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		padding: 12px 15px;
+		margin: 25px 0 10px 0;
+		border-radius: 4px 4px 0 0;
+		border-bottom: 3px solid #558B2F;
+	}
+
+	/* 警告メッセージ */
+	.warning-message {
+		color: #d32f2f;
+		font-weight: bold;
+		margin: 10px 0;
+		padding: 10px 15px;
+		background-color: #ffebee;
+		border-left: 4px solid #d32f2f;
+		border-radius: 4px;
+	}
+
+	/* テーブル */
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		background-color: #ffffff;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		margin-bottom: 20px;
+		border-radius: 6px;
+		overflow: hidden;
+	}
+
+	table th {
+		padding: 12px 15px;
+		text-align: left;
+		font-weight: bold;
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		color: #ffffff;
+		border-right: 1px solid #1B5E20;
+	}
+
+	table th:last-child {
+		border-right: none;
+	}
+
+	table td {
+		padding: 12px 15px;
+		border: 1px solid #c8e6c9;
+		color: #1B5E20;
+		background-color: #f9fff8;
+	}
+
+	table tbody tr:nth-child(odd) td {
+		background-color: #ffffff;
+	}
+
+	table tbody tr:hover td {
+		background-color: #e8f5e9;
+		transition: background-color 0.2s ease;
+	}
+
+	/* 期限切れのテーブル */
+	table td.expired {
+		color: #d32f2f;
+		font-weight: bold;
+	}
+</style>
 </head>
 <body>
-	<!--大森-->
-	<h1>マイページ</h1>
-	<div>としょんか</div>
-	
-	<a href="/user/edit">会員情報の変更</a>
-	
-	<div>[[${userName}]]さん、ようこそ</div><br>
-	
-	<!--リンク-->
-	<div>
-		<a href="/user/logout">ログアウト</a><br>
-		<a href="/user/">トップページ</a><br>
-		<a href="/user/reservations">予約</a><br>
-		<a href="/user/search">本検索</a>
+	<div class="container">
+		<h1>マイページ</h1>
+		<div class="site-title">としょんか</div>
+
+		<!-- ユーザー情報エリア -->
+		<div class="user-info">
+			<p><span th:text="${userName}"></span>さん、ようこそ</p>
+			<a href="/user/edit">会員情報の変更</a>
+		</div>
+
+		<!-- ナビゲーションリンク -->
+		<div class="nav-links">
+			<a href="/user/logout">ログアウト</a>
+			<a href="/user/">トップページ</a>
+			<a href="/user/reservations">予約</a>
+			<a href="/user/search">本検索</a>
+		</div>
+
+		<!-- 返却期限切れリスト -->
+		<div class="section-title">返却期限切れの本一覧</div>
+		<div th:if="${expiredList != null && !expiredList.isEmpty()}" class="warning-message">
+			至急、以下の本を返却してください。<br>
+			返却されない場合はアカウントが停止し、本を借りれなくなります。
+		</div>
+		<table border="1">
+			<tr>
+				<th>タイトル</th>
+				<th>著者</th>
+				<th>カテゴリー</th>
+				<th>返却期限</th>
+			</tr>
+			<th:block th:each="rental:${expiredList}">
+				<tr th:each="rentaldetails:${rental.rentaldetail}">
+					<td>[[${rentaldetails.book.title}]]</td>
+					<td>[[${rentaldetails.book.writer.writerName}]]</td>
+					<td>[[${rentaldetails.book.category.categoryName}]]</td>
+					<td class="expired">[[${rental.dropDate}]]</td>
+				</tr>
+			</th:block>
+		</table>
+
+		<!-- 貸し出し中リスト -->
+		<div class="section-title">借りてる本</div>
+		<table border="1">
+			<tr>
+				<th>タイトル</th>
+				<th>著者</th>
+				<th>カテゴリー</th>
+				<th>返却期限</th>
+			</tr>
+			<th:block th:each="rentalNow:${rentalList}">
+				<tr th:each="rentaldetailNow:${rentalNow.rentaldetail}">
+					<td>[[${rentaldetailNow.book.title}]]</td>
+					<td>[[${rentaldetailNow.book.writer.writerName}]]</td>
+					<td>[[${rentaldetailNow.book.category.categoryName}]]</td>
+					<td>[[${rentalNow.dropDate}]]</td>
+				</tr>
+			</th:block>	
+		</table>
+
+		<!-- 予約済みリスト -->
+		<div class="section-title">予約済みの本</div>
+		<table border="1">
+			<tr>
+				<th>タイトル</th>
+				<th>著者</th>
+				<th>カテゴリー</th>
+			</tr>
+			<th:block th:each="reservationList:${reservationsList}">
+				<tr th:each="reservationdetails:${reservationList.reservationdetails}">
+					<td>[[${reservationdetails.book.title}]]</td>
+					<td>[[${reservationdetails.book.writer.writerName}]]</td>
+					<td>[[${reservationdetails.book.category.categoryName}]]</td>
+				</tr>
+			</th:block>
+		</table>
+
+		<!-- 貸し出し履歴リスト -->
+		<div class="section-title">貸し出し履歴</div>
+		<table border="1">
+			<tr>
+				<th>タイトル</th>
+				<th>著者</th>
+				<th>カテゴリー</th>
+				<th>返却日</th>
+			</tr>
+			<th:block th:each="rentalAll:${rentalAllList}">
+				<tr th:each="rentaldetailAll:${rentalAll.rentaldetail}">
+					<td>[[${rentaldetailAll.book.title}]]</td>
+					<td>[[${rentaldetailAll.book.writer.writerName}]]</td>
+					<td>[[${rentaldetailAll.book.category.categoryName}]]</td>
+					<td>[[${rentalAll.returnDate}]]</td>
+				</tr>
+			</th:block>	
+		</table>
 	</div>
-	<br>
-	
-	<!--返却期限切れリスト-->
-	<div>返却期限切れの本一覧</div>
-	<div th:if="${expiredList != null && !expiredList.isEmpty()}" 
-	     style="color: rgb(255, 128, 128);">
-	    至急、以下の本を返却してください。<br>
-	    返却されない場合はアカウントが停止し、本を借りれなくなります。
-	</div>
-	<table border="1">
-		<tr>
-			<th>タイトル</th>
-			<th>著者</th>
-			<th>カテゴリー</th>
-			<th>返却期限</th>
-		</tr>
-		
-		<th:block th:each="rental:${expiredList}">
-			<tr th:each="rentaldetails:${rental.rentaldetail}">
-				<td>[[${rentaldetails.book.title}]]</td>
-				<td>[[${rentaldetails.book.writer.writerName}]]</td>
-				<td>[[${rentaldetails.book.category.categoryName}]]</td>
-				<td style="color: rgb(255, 128, 128);">[[${rental.dropDate}]]</td>
-			</tr>
-		</th:block>
-	</table><br>
-	
-	<!--貸し出し中リスト-->
-	<div>借りてる本</div>
-	<table border="1">
-		<tr>
-			<th>タイトル</th>
-			<th>著者</th>
-			<th>カテゴリー</th>
-			<th>返却期限</th>
-		</tr>
-		<th:block th:each="rentalNow:${rentalList}">
-			<tr th:each="rentaldetailNow:${rentalNow.rentaldetail}">
-				<td>[[${rentaldetailNow.book.title}]]</td>
-				<td>[[${rentaldetailNow.book.writer.writerName}]]</td>
-				<td>[[${rentaldetailNow.book.category.categoryName}]]</td>
-				<td>[[${rentalNow.dropDate}]]</td>
-			</tr>
-		</th:block>	
-	</table><br>
-	
-	<!--予約済みリスト-->
-	<div>予約済みの本</div>
-	<table border="1">
-		<tr>
-			<th>タイトル</th>
-			<th>著者</th>
-			<th>カテゴリー</th>
-		</tr>
-		<th:block th:each="reservationList:${reservationsList}">
-			<tr th:each="reservationdetails:${reservationList.reservationdetails}">
-				<td>[[${reservationdetails.book.title}]]</td>
-				<td>[[${reservationdetails.book.writer.writerName}]]</td>
-				<td>[[${reservationdetails.book.category.categoryName}]]</td>
-			</tr>
-		</th:block>
-	</table><br>
-	
-	<!--貸し出し履歴リスト-->
-	<div>貸し出し履歴</div>
-	<table border="1">
-		<tr>
-			<th>タイトル</th>
-			<th>著者</th>
-			<th>カテゴリー</th>
-			<th>返却日</th>
-		</tr>
-		<th:block th:each="rentalAll:${rentalAllList}">
-			<tr th:each="rentaldetailAll:${rentalAll.rentaldetail}">
-				<td>[[${rentaldetailAll.book.title}]]</td>
-				<td>[[${rentaldetailAll.book.writer.writerName}]]</td>
-				<td>[[${rentaldetailAll.book.category.categoryName}]]</td>
-				<td>[[${rentalAll.returnDate}]]</td>
-			</tr>
-		</th:block>	
-	</table>
-	
 </body>
 </html>

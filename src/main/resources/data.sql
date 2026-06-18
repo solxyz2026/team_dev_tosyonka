@@ -213,20 +213,20 @@ INSERT INTO reservations
 (user_id, reservation_date)
 VALUES
 (1, '2026-06-11'),
-(4, '2026-06-11'),
-(5, '2026-06-12'),
-(6, '2026-06-12'),
-(7, '2026-06-13'),
-(8, '2026-06-13'),
-(9, '2026-06-14'),
-(10, '2026-06-14');
+(2, '2026-06-11'),
+(3, '2026-06-12'),
+(4, '2026-06-12'),
+(5, '2026-06-13'),
+(6, '2026-06-13'),
+(7, '2026-06-14'),
+(8, '2026-06-14');
 
 INSERT INTO reservationdetails
 (reservation_id, book_id, reservation_status)
 VALUES
 (1, 2, FALSE),
-(1, 8, FALSE),
-(1, 22, FALSE),
+(2, 8, FALSE),
+(3, 22, FALSE),
 (4, 30, FALSE),
 (5, 34, FALSE),
 (6, 36, FALSE),
