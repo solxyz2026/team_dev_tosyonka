@@ -69,9 +69,6 @@
 
 			<!-- レビュー -->
 			<table border="1">
-				<h1>
-			<a th:href="|/user/${book.id}/review|">レビュー</a>
-			</h1>
 			<tr th:each="review:${reviews}">
 				<td><img src="/image/kkrn_icon_user_1.png" alt="画像なし" class="icon">　[[${review.bookReview}]]</td>
 			</tr>
@@ -79,6 +76,7 @@
 
 			<!-- ボタングループ -->
 			<div class="button-group">
+				<a th:href="|/user/${book.id}/review|" class="btn btn-reserve">✒️レビューを書く</a>
 				<a class="btn btn-reserve"
 					th:href="@{/user/reservation/{book_id}(book_id=${book.id})}"
 					onclick="return confirm('この本を予約カートに追加しますか？')">
