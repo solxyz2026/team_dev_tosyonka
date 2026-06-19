@@ -157,6 +157,17 @@
 				<p th:text="${book.summary}">本の説明文がここに表示されます。</p>
 			</div>
 
+			<!-- レビュー -->
+			<p>レビュー</p><br>
+			<tr th:each="review:${reviews}">
+				<td>[[${review.bookReview}]]</td>
+				<td>
+					<form th:action="|/user/reviews/${review.id}/delete|" method="post">
+						<button>削除</button>
+					</form>
+				</td>
+			</tr>
+
 			<!-- ボタングループ -->
 			<div class="button-group">
 

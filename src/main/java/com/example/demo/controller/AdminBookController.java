@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Category;
 import com.example.demo.entity.Reservationdetail;
+import com.example.demo.entity.Review;
 import com.example.demo.entity.Writer;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.CategoryRepository;
+import com.example.demo.repository.ReviewRepository;
 import com.example.demo.repository.WriterRepository;
 
 @Controller
@@ -45,6 +47,9 @@ public class AdminBookController {
 
 	@Autowired
 	private Writer writer;
+
+	@Autowired
+	private ReviewRepository reviewRepository;
 
 	AdminBookController(AdminAccountController adminAccountController, UserAccountController userAccountController,
 			Reservationdetail reservationdetail) {
@@ -207,7 +212,12 @@ public class AdminBookController {
 				return "AdminBookSearch";
 			}
 
+			//↓山本変更箇所、レビュー機能追加
+			List<Review> reviews = reviewRepository.findByBookId(book_id);
+
 			model.addAttribute("book", book);
+			//↓山本変更箇所、レビュー機能追加
+			model.addAttribute("reviews", reviews);
 
 		} catch (Exception e) {
 			System.out.println("本詳細取得エラー: " + e.getMessage());

@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Book;
@@ -18,7 +17,6 @@ import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.ReviewRepository;
 
 @Controller
-@RequestMapping("/user")
 public class ReviewController {
 
 	@Autowired
@@ -27,7 +25,7 @@ public class ReviewController {
 	@Autowired
 	private ReviewRepository reviewRepository;
 
-	@GetMapping("{bookId}/review")
+	@GetMapping("/user/{bookId}/review")
 	public String showReviewPage(
 			@PathVariable Integer bookId,
 			Model model) {
@@ -37,13 +35,12 @@ public class ReviewController {
 		return "ReviewPage";
 	}
 
-	@PostMapping("/{bookId}/review")
+	@PostMapping("/user/{bookId}/review")
 	public String addReview() {
 		return "BookDetail";
-
 	}
 
-	@GetMapping("/books/{book_id}/reviews")
+	@GetMapping("/user/books/{book_id}/reviews")
 	public String index(
 			@PathVariable Integer bookId,
 			Model model) {
@@ -57,13 +54,11 @@ public class ReviewController {
 		return "BookDetail";
 	}
 
-	@PostMapping("/reviews")
+	@PostMapping("/user/reviews")
 	public String store(
 			@RequestParam Integer bookId,
 			@RequestParam String bookReview,
 			Model model) {
-
-		System.out.println("AAA");
 
 		Book book = bookRepository.findById(bookId).orElse(null);
 
@@ -73,7 +68,7 @@ public class ReviewController {
 		return "redirect:/user/books/" + bookId;
 	}
 
-	@PostMapping("reviews/{review_id}/delete")
+	@PostMapping("/user/reviews/{review_id}/delete")
 	public String delete(
 			@PathVariable Integer review_id) {
 
@@ -86,7 +81,7 @@ public class ReviewController {
 		return "redirect:/user/books/" + bookId;
 	}
 
-	@GetMapping("reviews/{review_id}/edit")
+	@GetMapping("/user/reviews/{review_id}/edit")
 	public String editPage(
 			@PathVariable Integer review_id,
 			Model model) {
@@ -95,7 +90,7 @@ public class ReviewController {
 		return "ReviewEditPage";
 	}
 
-	@PostMapping("reviews/{review_id}/edit")
+	@PostMapping("/user/reviews/{review_id}/edit")
 	public String edit(
 			@PathVariable Integer review_id,
 			@RequestParam String bookReview) {

@@ -4,11 +4,21 @@
 <head>
 	<meta charset="UTF-8">
 	<title>レビュー投稿フォーム</title>
+
+	<script>
+	function keikoku(){
+		let judge = confirm("これでいいですか？");
+	
+		return judge;
+			
+		}
+	</script>
+
 </head>
 
 <body>
 	<h1>レビュー投稿フォーム</h1>
-	<form action="/user/reviews" method="post">
+	<form action="/user/reviews" method="post" onsubmit="return keikoku();">
 		<input type="hidden" name="bookId" th:value="${bookId}">
 		レビュー：<br>
 		<textarea name="bookReview" rows="10" cols="30"></textarea>
