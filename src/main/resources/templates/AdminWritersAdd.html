@@ -7,18 +7,21 @@
 <link rel="stylesheet" href="/css/AdminWritersAddStyle.css">
 </head>
 <body>
+	
+	<header>としょんか　管理者</header>
+	
 	<div class="container">
 		<h1>著者の追加</h1>
 
-		<!-- エラーメッセージ -->
+		 エラーメッセージ 
 		<ul th:if="${errors != null && !errors.isEmpty()}" class="error-list">
 			<li th:each="data:${errors}">[[${data}]]</li>
 		</ul>
 
-		<!-- 戻るボタン -->
+		 戻るボタン 
 		<a class="btn-back" th:href="@{/admin/}">管理者メニューに戻る</a>
 
-		<!-- 著者追加フォーム -->
+		 著者追加フォーム 
 		<form action="/admin/writers" method="post">
 			<div class="form-group">
 				<label for="writerName">著者名 <span style="color: #d32f2f;">*</span></label>
