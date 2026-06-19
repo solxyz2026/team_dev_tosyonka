@@ -68,7 +68,7 @@ public class ReviewController {
 		return "redirect:/user/books/" + bookId;
 	}
 
-	@PostMapping("/user/reviews/{review_id}/delete")
+	@PostMapping("/admin/reviews/{review_id}/delete")
 	public String delete(
 			@PathVariable Integer review_id) {
 
@@ -78,17 +78,18 @@ public class ReviewController {
 
 		reviewRepository.delete(review);
 
-		return "redirect:/user/books/" + bookId;
+		return "redirect:/admin/books/" + bookId;
 	}
 
-	@GetMapping("/user/reviews/{review_id}/edit")
-	public String editPage(
-			@PathVariable Integer review_id,
-			Model model) {
-		Review review = reviewRepository.findById(review_id).orElse(null);
-		model.addAttribute("review", review);
-		return "ReviewEditPage";
-	}
+	//	↓ボツですが、コメント編集機能実装の機会があれば復活させます
+	//	@GetMapping("/user/reviews/{review_id}/edit")
+	//	public String editPage(
+	//			@PathVariable Integer review_id,
+	//			Model model) {
+	//		Review review = reviewRepository.findById(review_id).orElse(null);
+	//		model.addAttribute("review", review);
+	//		return "ReviewEditPage";
+	//	}
 
 	@PostMapping("/user/reviews/{review_id}/edit")
 	public String edit(

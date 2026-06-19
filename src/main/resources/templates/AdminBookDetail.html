@@ -5,6 +5,14 @@
 	<meta charset="UTF-8">
 	<title>本詳細</title>
 	<link rel="stylesheet" href="/css/AdminBookDetailStyle.css">
+	<script>
+		function keikoku(){
+			let judge = confirm("一度削除したら戻せません。本当に削除しますか？");
+		
+			return judge;
+				
+			}
+		</script>
 </head>
 
 <body>
@@ -62,25 +70,27 @@
 			</div>
 
 			<!-- レビュー -->
-			<p>レビュー</p><br>
-			<tr th:each="review:${reviews}">
-				<td>[[${review.bookReview}]]</td>
-				<td>
-					<form th:action="|/user/reviews/${review.id}/delete|" method="post">
-						<button>削除</button>
+			<p>レビュー</p>
+			<table border="1">
+				<tr th:each="review:${reviews}">
+					<td><img src="/image/kkrn_icon_user_1.png" alt="画像なし" class="icon">　[[${review.bookReview}]]</td>
+					<td>
+						<form th:action="|/admin/reviews/${review.id}/delete|" method="post" onsubmit="return keikoku();">
+							<button>削除</button>
+						</form>
+					</td>
+				</tr>
+				</table>
+
+				<!-- ボタングループ -->
+				<div class="button-group">
+
+					<a class="btn" th:href="@{/admin/search}">検索ページに戻る</a>
+					<form th:action="@{/admin/{book_id}/delete(book_id=${book.id})}" method="post">
+						<button class="btn">削除</button>
 					</form>
-				</td>
-			</tr>
 
-			<!-- ボタングループ -->
-			<div class="button-group">
-
-				<a class="btn" th:href="@{/admin/search}">検索ページに戻る</a>
-				<form th:action="@{/admin/{book_id}/delete(book_id=${book.id})}" method="post">
-					<button class="btn">削除</button>
-				</form>
-				
-			</div>
+				</div>
 		</div>
 	</div>
 </body>

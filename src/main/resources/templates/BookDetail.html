@@ -68,10 +68,12 @@
 			</div>
 
 			<!-- レビュー -->
+			<table border="1">
 			<a th:href="|/user/${book.id}/review|">レビュー</a><br>
 			<tr th:each="review:${reviews}">
-				<td>[[${review.bookReview}]]</td><br>
+				<td><img src="/image/kkrn_icon_user_1.png" alt="画像なし" class="icon">　[[${review.bookReview}]]</td>
 			</tr>
+			</table>
 
 			<!-- ボタングループ -->
 			<div class="button-group">
