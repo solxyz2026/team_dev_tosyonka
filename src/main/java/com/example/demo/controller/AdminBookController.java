@@ -150,24 +150,56 @@ public class AdminBookController {
 	//本登録処理
 	@PostMapping("/books")
 	public String store(
-			@RequestParam String title,
-			@RequestParam String writer,
-			@RequestParam String publisher,
-			@RequestParam String summary,
-			@RequestParam String categoryName,
-			@RequestParam LocalDate date,
+			@RequestParam(defaultValue = "") String title,
+			@RequestParam(defaultValue = "") String writer,
+			@RequestParam(defaultValue = "") String publisher,
+			@RequestParam(defaultValue = "") String summary,
+			@RequestParam(defaultValue = "") String categoryName,
+			@RequestParam(defaultValue = "") LocalDate date,
 			Model model) {
 
 		Optional<Writer> optionalWriter = writerRepository.findByWriterNameAndDeleteJudgeFalse(writer);
 		if (optionalWriter.isEmpty()) {
-			model.addAttribute("error", "著者「" + writer + "」は登録されていません。");
+			if (title.equals("")) {
+				model.addAttribute("errorTitle", "タイトルが入力されていません");
+			}
 
-			model.addAttribute("title", title);
-			model.addAttribute("writer", writer);
-			model.addAttribute("publisher", publisher);
-			model.addAttribute("summary", summary);
-			model.addAttribute("categoryName", categoryName);
-			model.addAttribute("date", date);
+			if (writer.equals("")) {
+				model.addAttribute("errorWriter", "著者が入力されていません");
+			}
+
+			else if (optionalWriter.isEmpty()) {
+				model.addAttribute("errorWriter", "入力された著者は登録されていません");
+			}
+
+			if (publisher.equals("")) {
+				model.addAttribute("errorPublisher", "出版社が入力されていません");
+			}
+
+			if (summary.equals("")) {
+				model.addAttribute("errorSummary", "本の要約文が入力されていません");
+			}
+
+			if (categoryName.equals("")) {
+				model.addAttribute("errorCategoryName", "カテゴリーが入力されていません");
+			}
+
+			if (date == null) {
+				model.addAttribute("errorDate", "日付が正しく入力されていません");
+			}
+
+			if (title.equals("") || writer.equals("") || summary.equals("") ||
+					optionalWriter.isEmpty() || publisher.equals("") || categoryName.equals("") || date == null) {
+				model.addAttribute("title", title);
+				model.addAttribute("writer", writer);
+				model.addAttribute("publisher", publisher);
+				model.addAttribute("summary", summary);
+				model.addAttribute("categoryName", categoryName);
+				model.addAttribute("date", date);
+				List<Category> categoryList = categoryRepository.findAll();
+				model.addAttribute("categoryList", categoryList);
+				return "AdminBooksAdd";
+			}
 
 			List<Category> categoryList = categoryRepository.findAll();
 			model.addAttribute("categoryList", categoryList);

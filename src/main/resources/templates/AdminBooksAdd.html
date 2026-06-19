@@ -20,39 +20,56 @@
 		<form action="/admin/books" method="post">
 			<div class="form-group">
 				<label for="title">タイトル <span style="color: #d32f2f;">*</span></label>
-				<input type="text" id="title" name="title" th:value="${title}" placeholder="本のタイトルを入力" required>
+				<input type="text" id="title" name="title" th:value="${title}" placeholder="本のタイトルを入力">
+				<div class="error-list" th:if="${errorTitle != null and !#strings.isEmpty(errorTitle)}">
+					[[${errorTitle}]]
+				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="writer">著者 <span style="color: #d32f2f;">*</span></label><span style="color: #d32f2f;">[[${error}]]</span><br>
-				<input type="text" id="writer" name="writer" th:value="${writer}" placeholder="著者名を入力（例：山田太郎）" required>
+				<input type="text" id="writer" name="writer" th:value="${writer}" placeholder="著者名を入力（例：山田太郎）">
+				<div class="error-list" th:if="${errorWriter != null and !#strings.isEmpty(errorWriter)}">
+					[[${errorWriter}]]
+				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="publisher">出版社 <span style="color: #d32f2f;">*</span></label>
-				<input type="text" id="publisher" name="publisher" th:value="${publisher}" placeholder="出版社名を入力" required>
+				<input type="text" id="publisher" name="publisher" th:value="${publisher}" placeholder="出版社名を入力">
+				<div class="error-list" th:if="${errorPublisher != null and !#strings.isEmpty(errorPublisher)}">
+					[[${errorPublisher}]]
+				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="date">出版月 <span style="color: #d32f2f;">*</span></label>
-				<input type="date" id="date" name="date" th:value="${date}" required>
+				<input type="date" id="date" name="date" th:value="${date}">
+				<div class="error-list" th:if="${errorDate != null and !#strings.isEmpty(errorDate)}">
+					[[${errorDate}]]
+				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="categoryName">カテゴリー <span style="color: #d32f2f;">*</span></label>
 				<select id="categoryName" name="categoryName" required>
-					<option value="">カテゴリーを選択</option>
 					<option th:each="category : ${categoryList}" 
 							th:value="${category.categoryName}"
 							th:selected="${category.categoryName == categoryName}">
 							[[${category.categoryName}]]
 					</option>
 				</select>
+				<div class="error-list" th:if="${errorCategoryName != null and !#strings.isEmpty(errorCategoryName)}">
+					[[${errorName}]]
+				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="summary">本の要約文</label>
 				<textarea id="summary" name="summary" placeholder="本の概要を入力してください">[[${summary}]]</textarea>
+				<div class="error-list" th:if="${errorSummary != null and !#strings.isEmpty(errorSummary)}">
+					[[${errorSummary}]]
+				</div>
 			</div>
 
 			<button type="submit">登録</button>
