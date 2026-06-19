@@ -106,38 +106,40 @@ public class UserAccountController {
 			@RequestParam(defaultValue = "") String email,
 			@RequestParam(defaultValue = "") String password,
 			Model model) {
-		ArrayList<String> list = new ArrayList<>();
 		Optional<User> record = userRepository.findByEmail(email);
 		//空欄に対するエラー
 		if (name.equals("")) {
-			list.add("名前を入力してください");
+			model.addAttribute("errorName", "名前を入力してください");
 
 		}
 		if (birthday == null) {
-			list.add("生年月日を入力してください");
+			model.addAttribute("errorBirthday", "生月日を入力してください");
 
 		}
 		if (telNumber.equals("")) {
-			list.add("電話番号を入力してください");
+			model.addAttribute("errorTelNumber", "電話番号を入力してください");
 
 		}
 		if (email.equals("")) {
-			list.add("メールを入力してください");
+			model.addAttribute("errorEmail", "メールアドレスを入力してください");
 		} else {
 
 			if (record.isEmpty() == false) {
-				list.add("このメールアドレスは既に登録されています");
+				model.addAttribute("errorEmail", "このメールアドレスは不適切です");
 			}
 
 		}
 
 		if (password.equals("")) {
-			list.add("パスワードを入力してください");
+			model.addAttribute("errorPassword", "パスワードを入力してください");
 
 		}
+		if (password.length() < 8 && password.length() > 0) {
+			model.addAttribute("errorPassword", "パスワードは8文字以上で入力してください");
+		}
 		if (name.equals("") || birthday == null || telNumber.equals("") || email.equals("") || password.equals("")
+				|| password.length() < 8
 				|| (record.isEmpty() == false)) {
-			model.addAttribute("con", list);
 			model.addAttribute("name", name);
 			model.addAttribute("birthday", birthday);
 			model.addAttribute("telNumber", telNumber);

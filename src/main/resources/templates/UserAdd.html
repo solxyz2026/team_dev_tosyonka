@@ -20,31 +20,41 @@
 			
 			<div class="form-group">
 				<label for="name">名前</label>
-				<input type="text" id="name" name="name" placeholder="山田太郎" th:value="${name}" required>
+				<input type="text" id="name" name="name" placeholder="山田太郎" th:value="${name}">
 				<div class="form-hint">※ 全角文字で入力してください</div>
+				<div class="error-list" th:if="${errorName != null and !#strings.isEmpty(errorName)}">
+					[[${errorName}]]
+				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="birthday">生年月日</label>
-				<input type="date" id="birthday" name="birthday" th:value="${birthday}" required>
+				<input type="date" id="birthday" name="birthday" th:value="${birthday}">
+				<div class="error-list"  th:if="${errorBirthday != null and !#strings.isEmpty(errorBirthday)}">
+					[[${errorBirthday}]]
+				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="telNumber">電話番号</label>
-				<input type="tel" id="telNumber" name="telNumber" placeholder="09012345678" th:value="${telNumber}" required>
+				<input type="tel" id="telNumber" name="telNumber" placeholder="09012345678" th:value="${telNumber}">
 				<div class="form-hint">※ ハイフンなしで入力してください</div>
+				<div class="error-list">[[${errorTelNumber}]]</div>
 			</div>
 
 			<div class="form-group">
 				<label for="email">メールアドレス</label>
-				<input type="text" id="email" name="email" placeholder="yamada@example.com" th:value="${email}" required>
+				<input type="text" id="email" name="email" placeholder="yamada@example.com" th:value="${email}">
 				<div class="form-hint">※ ログイン時に使用します</div>
+				<div class="error-list">[[${errorEmail}]]</div>
 			</div>
 
 			<div class="form-group">
 				<label for="password">パスワード</label>
-				<input type="password" id="password" name="password" placeholder="8文字以上" th:value="${password}" required>
+				<input type="password" id="password" name="password" placeholder="8文字以上" th:value="${password}">
 				<div class="form-hint">※ 8文字以上で設定してください</div>
+				
+					<div class="error-list">[[${errorPassword}]]</div>
 			</div>
 
 			<button type="submit">登録</button>
