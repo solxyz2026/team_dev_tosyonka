@@ -162,7 +162,19 @@ public class UserAccountController {
 
 		User user = userRepository.findById(id).get();
 
-		model.addAttribute("user", user);
+		//		model.addAttribute("user", user);
+
+		//		user.getName();
+		//		user.getBirthday(birthday);
+		//		user.getTelNumber(telNumber);
+		//		user.getEmail(email);
+		//		user.getPassword(password);
+
+		model.addAttribute("name", user.getName());
+		model.addAttribute("birthday", user.getBirthday());
+		model.addAttribute("telNumber", user.getTelNumber());
+		model.addAttribute("email", user.getEmail());
+		model.addAttribute("password", user.getPassword());
 
 		return "UserInfoChange";
 	}
@@ -179,6 +191,52 @@ public class UserAccountController {
 
 		Integer id = account.getId();
 		User user = userRepository.findById(id).get();
+
+		//ここから
+		//		Optional<User> record = userRepository.findByEmail(email);
+		Optional<User> record = userRepository.findByIdNotAndEmail(id, email);
+		//空欄に対するエラー
+		if (name.equals("")) {
+			model.addAttribute("errorName", "名前を入力してください");
+
+		}
+		if (birthday == null) {
+			model.addAttribute("errorBirthday", "生月日を入力してください");
+
+		}
+		if (telNumber.equals("")) {
+			model.addAttribute("errorTelNumber", "電話番号を入力してください");
+
+		}
+		if (email.equals("")) {
+			model.addAttribute("errorEmail", "メールアドレスを入力してください");
+		} else {
+
+			if (record.isEmpty() == false) {
+				model.addAttribute("errorEmail", "このメールアドレスは不適切です");
+			}
+
+		}
+
+		if (password.equals("")) {
+			model.addAttribute("errorPassword", "パスワードを入力してください");
+
+		}
+		if (password.length() < 8 && password.length() > 0) {
+			model.addAttribute("errorPassword", "パスワードは8文字以上で入力してください");
+		}
+		if (name.equals("") || birthday == null || telNumber.equals("") || email.equals("") || password.equals("")
+				|| password.length() < 8
+				|| (record.isEmpty() == false)) {
+			model.addAttribute("name", name);
+			model.addAttribute("birthday", birthday);
+			model.addAttribute("telNumber", telNumber);
+			model.addAttribute("email", email);
+			model.addAttribute("password", password);
+
+			return "UserInfoChange";
+		}
+		//ここまで
 
 		user.setName(name);
 		user.setBirthday(birthday);

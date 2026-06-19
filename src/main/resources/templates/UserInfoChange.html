@@ -27,15 +27,59 @@
     <div class="container">
         <h1>会員情報変更</h1>
 
-        <form action="/user/edit" method="post">
-            名前　<input type="text" name="name" th:value="${user.name}"><br>
-            生年月日 <input type="date" name="birthday" th:value="${user.birthday}"><br>
-            電話番号 <input type="text" name="telNumber" th:value="${user.telNumber}"><br>
-            メールアドレス　<input type="text" name="email" th:value="${user.email}"><br>
-            パスワード　<input type="text" name="password" th:value="${user.password}"><br>
-            <br>
-            <button>変更</button>
-        </form>
+<!--        <form action="/user/edit" method="post">-->
+<!--            名前　<input type="text" name="name" th:value="${user.name}"><br>-->
+<!--            生年月日 <input type="date" name="birthday" th:value="${user.birthday}"><br>-->
+<!--            電話番号 <input type="text" name="telNumber" th:value="${user.telNumber}"><br>-->
+<!--            メールアドレス　<input type="text" name="email" th:value="${user.email}"><br>-->
+<!--            パスワード　<input type="text" name="password" th:value="${user.password}"><br>-->
+<!--            <br>-->
+<!--            <button>変更</button>-->
+<!--        </form>-->
+
+<form action="/user/edit" method="post">
+			
+			<div class="form-group">
+				<label for="name">名前</label>
+				<input type="text" id="name" name="name" placeholder="山田太郎" th:value="${name}">
+				<div class="form-hint">※ 全角文字で入力してください</div>
+				<div class="error-list" th:if="${errorName != null and !#strings.isEmpty(errorName)}">
+					[[${errorName}]]
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="birthday">生年月日</label>
+				<input type="date" id="birthday" name="birthday" th:value="${birthday}">
+				<div class="error-list"  th:if="${errorBirthday != null and !#strings.isEmpty(errorBirthday)}">
+					[[${errorBirthday}]]
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="telNumber">電話番号</label>
+				<input type="tel" id="telNumber" name="telNumber" placeholder="09012345678" th:value="${telNumber}">
+				<div class="form-hint">※ ハイフンなしで入力してください</div>
+				<div class="error-list">[[${errorTelNumber}]]</div>
+			</div>
+
+			<div class="form-group">
+				<label for="email">メールアドレス</label>
+				<input type="text" id="email" name="email" placeholder="yamada@example.com" th:value="${email}">
+				<div class="form-hint">※ ログイン時に使用します</div>
+				<div class="error-list">[[${errorEmail}]]</div>
+			</div>
+
+			<div class="form-group">
+				<label for="password">パスワード</label>
+				<input type="password" id="password" name="password" placeholder="8文字以上" th:value="${password}">
+				<div class="form-hint">※ 8文字以上で設定してください</div>
+				
+					<div class="error-list">[[${errorPassword}]]</div>
+			</div>
+
+			<button type="submit">変更</button>
+		</form>
 
         <div class="back-link">
             <a href="/user/mypage">マイページに戻る</a>
