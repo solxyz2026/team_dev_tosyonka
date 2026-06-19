@@ -5,22 +5,42 @@
 	<meta charset="UTF-8">
 	<title>会員情報変更</title>
 <!--	<link rel="stylesheet" href="/css/style.css">-->
-	<link rel="stylesheet" href="/css/UserAddStyle.css">
+	<link rel="stylesheet" href="/css/UserInfoChangeStyle.css">
 </head>
 
+<!--<body>-->
+<!--	<h3>会員情報変更</h3>-->
+<!--	<form action="/user/edit" method="post">-->
+<!--		名前　<input type="text" name="name" th:value="${user.name}"><br>-->
+<!--		生年月日 <input type="date" name="birthday" th:value="${user.birthday}"><br>-->
+<!--		電話番号 <input type="text" name="telNumber" th:value="${user.telNumber}"><br>-->
+<!--		メールアドレス　<input type="text" name="email" th:value="${user.email}"><br>-->
+<!--		パスワード　<input type="text" name="password" th:value="${user.password}"><br>-->
+<!--		<br>-->
+<!--		<button>変更</button>-->
+<!--	</form>-->
+<!--	<br>-->
+<!--	<a href="/user/mypage">マイページに戻る</a><br>-->
+<!--</body>-->
+
 <body>
-	<h3>会員情報変更</h3>
-	<form action="/user/edit" method="post">
-		名前　<input type="text" name="name" th:value="${user.name}"><br>
-		生年月日 <input type="date" name="birthday" th:value="${user.birthday}"><br>
-		電話番号 <input type="text" name="telNumber" th:value="${user.telNumber}"><br>
-		メールアドレス　<input type="text" name="email" th:value="${user.email}"><br>
-		パスワード　<input type="text" name="password" th:value="${user.password}"><br>
-		<br>
-		<button>変更</button>
-	</form>
-	<br>
-	<a href="/user/mypage">マイページに戻る</a><br>
+    <div class="container">
+        <h1>会員情報変更</h1>
+
+        <form action="/user/edit" method="post">
+            名前　<input type="text" name="name" th:value="${user.name}"><br>
+            生年月日 <input type="date" name="birthday" th:value="${user.birthday}"><br>
+            電話番号 <input type="text" name="telNumber" th:value="${user.telNumber}"><br>
+            メールアドレス　<input type="text" name="email" th:value="${user.email}"><br>
+            パスワード　<input type="text" name="password" th:value="${user.password}"><br>
+            <br>
+            <button>変更</button>
+        </form>
+
+        <div class="back-link">
+            <a href="/user/mypage">マイページに戻る</a>
+        </div>
+    </div>
 </body>
 
 </html>
