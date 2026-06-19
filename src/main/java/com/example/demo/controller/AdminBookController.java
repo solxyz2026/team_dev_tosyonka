@@ -156,7 +156,18 @@ public class AdminBookController {
 		Optional<Writer> optionalWriter = writerRepository.findByWriterNameAndDeleteJudgeFalse(writer);
 		if (optionalWriter.isEmpty()) {
 			model.addAttribute("error", "著者「" + writer + "」は登録されていません。");
-			return "AdminBookAdd";
+
+			model.addAttribute("title", title);
+			model.addAttribute("writer", writer);
+			model.addAttribute("publisher", publisher);
+			model.addAttribute("summary", summary);
+			model.addAttribute("categoryName", categoryName);
+			model.addAttribute("date", date);
+
+			List<Category> categoryList = categoryRepository.findAll();
+			model.addAttribute("categoryList", categoryList);
+
+			return "AdminBooksAdd";
 		}
 		Optional<Category> optionalCategoryName = categoryRepository.findByCategoryName(categoryName);
 
