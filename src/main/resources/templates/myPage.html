@@ -6,9 +6,9 @@
 <link rel="stylesheet" href="/css/myPageStyle.css">
 </head>
 <body>
+	
 	<div class="container">
 		<h1>マイページ</h1>
-		<div class="site-title">としょんか</div>
 
 		<!-- ユーザー情報エリア -->
 		<div class="user-info">
@@ -16,14 +16,16 @@
 			<a href="/user/edit">会員情報の変更</a>
 		</div>
 
-		<!-- ナビゲーションリンク -->
-		<div class="nav-links">
+		
+		<!-- サイドバー -->
+		<div class="sidebar">
+			<div class="site-title">としょんか</div>
 			<a href="/user/logout">ログアウト</a>
 			<a href="/user/">トップページ</a>
 			<a href="/user/reservations">予約</a>
 			<a href="/user/search">本検索</a>
 		</div>
-
+	
 		<!-- 返却期限切れリスト -->
 		<div class="section-title">返却期限切れの本一覧</div>
 		<div th:if="${expiredList != null && !expiredList.isEmpty()}" class="warning-message">

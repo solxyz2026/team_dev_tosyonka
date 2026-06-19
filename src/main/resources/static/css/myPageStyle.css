@@ -6,12 +6,12 @@ body {
 		color: #1B5E20;
 	}
 
-	.container {
+.container {
 		max-width: 900px;
 		margin: 0 auto;
 	}
 
-	h1 {
+h1 {
 		font-size: 32px;
 		color: #1B5E20;
 		border-bottom: 3px solid #558B2F;
@@ -19,15 +19,16 @@ body {
 		margin: 0 0 20px 0;
 	}
 
-	.site-title {
-		font-size: 18px;
-		color: #2E7D32;
+.site-title {
+		font-size: 20px;
+		color: #ffffff;
 		margin-bottom: 20px;
+		padding-left: 20px;
 		font-weight: bold;
 	}
 
-	/* ユーザー情報エリア */
-	.user-info {
+/* ユーザー情報エリア */
+.user-info {
 		background-color: #ffffff;
 		padding: 15px 20px;
 		border-left: 4px solid #558B2F;
@@ -36,12 +37,12 @@ body {
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 	}
 
-	.user-info p {
+.user-info p {
 		margin: 10px 0;
 		font-size: 16px;
 	}
 
-	.user-info a {
+.user-info a {
 		color: #2E7D32;
 		text-decoration: none;
 		margin-right: 15px;
@@ -49,52 +50,14 @@ body {
 		font-weight: 500;
 	}
 
-	.user-info a:hover {
+.user-info a:hover {
 		color: #1B5E20;
 		text-decoration: underline;
 	}
 
-	/* ナビゲーションリンク */
-	.nav-links {
-		background-color: #ffffff;
-		padding: 15px 20px;
-		border-radius: 6px;
-		margin-bottom: 20px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-		border-left: 4px solid #558B2F;
-	}
 
-	.nav-links a {
-		color: #2E7D32;
-		text-decoration: none;
-		margin-right: 20px;
-		transition: color 0.2s ease;
-		font-weight: 500;
-	}
-
-	.nav-links a:hover {
-		color: #1B5E20;
-		text-decoration: underline;
-	}
-
-	.nav-links br {
-		display: none;
-	}
-
-	/* セクションタイトル */
-	.section-title {
-		font-size: 18px;
-		font-weight: bold;
-		color: #ffffff;
-		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
-		padding: 12px 15px;
-		margin: 25px 0 10px 0;
-		border-radius: 4px 4px 0 0;
-		border-bottom: 3px solid #558B2F;
-	}
-
-	/* 警告メッセージ */
-	.warning-message {
+/* 警告メッセージ */
+.warning-message {
 		color: #d32f2f;
 		font-weight: bold;
 		margin: 10px 0;
@@ -103,9 +66,21 @@ body {
 		border-left: 4px solid #d32f2f;
 		border-radius: 4px;
 	}
+	
+	/* セクションタイトル */
+		.section-title {
+			font-size: 18px;
+			font-weight: bold;
+			color: #ffffff;
+			background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+			padding: 12px 15px;
+			margin: 20px 0 10px 0;
+			border-radius: 4px 4px 0 0;
+			border-bottom: 3px solid #558B2F;
+		}
 
-	/* テーブル */
-	table {
+/* テーブル */
+table {
 		width: 100%;
 		border-collapse: collapse;
 		background-color: #ffffff;
@@ -115,7 +90,7 @@ body {
 		overflow: hidden;
 	}
 
-	table th {
+table th {
 		padding: 12px 15px;
 		text-align: left;
 		font-weight: bold;
@@ -124,28 +99,61 @@ body {
 		border-right: 1px solid #1B5E20;
 	}
 
-	table th:last-child {
+table th:last-child {
 		border-right: none;
 	}
 
-	table td {
+table td {
 		padding: 12px 15px;
 		border: 1px solid #c8e6c9;
 		color: #1B5E20;
 		background-color: #f9fff8;
 	}
 
-	table tbody tr:nth-child(odd) td {
+table tbody tr:nth-child(odd) td {
 		background-color: #ffffff;
 	}
 
-	table tbody tr:hover td {
+table tbody tr:hover td {
 		background-color: #e8f5e9;
 		transition: background-color 0.2s ease;
 	}
 
-	/* 期限切れのテーブル */
-	table td.expired {
+/* 期限切れのテーブル */
+table td.expired {
 		color: #d32f2f;
 		font-weight: bold;
 	}
+	
+/*サイドバー*/
+.sidebar {
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: 220px;
+			height: 100vh;
+			background: linear-gradient(180deg, #1B5E20 0%, #2E7D32 100%);
+			padding: 20px 0;
+			overflow-y: auto;
+			box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+			z-index: 100;
+		}
+
+.sidebar a {
+			display: block;
+			color: #ffffff;
+			text-decoration: none;
+			padding: 15px 20px;
+			border-left: 4px solid transparent;
+			transition: all 0.3s ease;
+			font-weight: 500;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+.sidebar a:hover {
+			background-color: rgba(255, 255, 255, 0.1);
+			border-left-color: #a5d6a7;
+			padding-left: 25px;
+			color: #c8e6c9;
+		}
+	

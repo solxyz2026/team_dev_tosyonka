@@ -21,36 +21,10 @@ body {
 
 	.site-title {
 		font-size: 18px;
-		color: #2E7D32;
+		color: rgb(255, 255, 255);
 		margin-bottom: 20px;
+		padding-left: 20px;
 		font-weight: bold;
-	}
-
-	/* ナビゲーションリンク */
-	.nav-links {
-		background-color: #ffffff;
-		padding: 15px 20px;
-		border-radius: 6px;
-		margin-bottom: 20px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-		border-left: 4px solid #558B2F;
-	}
-
-	.nav-links a {
-		color: #2E7D32;
-		text-decoration: none;
-		margin-right: 20px;
-		transition: color 0.2s ease;
-		font-weight: 500;
-	}
-
-	.nav-links a:hover {
-		color: #1B5E20;
-		text-decoration: underline;
-	}
-
-	.nav-links br {
-		display: none;
 	}
 
 	/* メッセージ */
@@ -148,3 +122,36 @@ body {
 		padding: 12px 30px;
 		font-size: 16px;
 	}
+	
+	/*サイドバー*/
+	.sidebar {
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 220px;
+				height: 100vh;
+				background: linear-gradient(180deg, #1B5E20 0%, #2E7D32 100%);
+				padding: 20px 0;
+				overflow-y: auto;
+				box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+				z-index: 100;
+			}
+
+	.sidebar a {
+				display: block;
+				color: #ffffff;
+				text-decoration: none;
+				padding: 15px 20px;
+				border-left: 4px solid transparent;
+				transition: all 0.3s ease;
+				font-weight: 500;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+			}
+
+	.sidebar a:hover {
+				background-color: rgba(255, 255, 255, 0.1);
+				border-left-color: #a5d6a7;
+				padding-left: 25px;
+				color: #c8e6c9;
+			}
+		
