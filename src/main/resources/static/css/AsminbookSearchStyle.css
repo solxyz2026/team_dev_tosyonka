@@ -1,0 +1,163 @@
+* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+			background-color: #f5f5f5;
+			color: #333;
+			padding: 20px;
+		}
+
+		main {
+			max-width: 600px;
+			margin: 0 auto;
+			background-color: #ffffff;
+			padding: 30px;
+			border-radius: 8px;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			color: #0097D4;
+			font-size: 28px;
+			margin-bottom: 30px;
+			border-bottom: 3px solid #0097D4;
+			padding-bottom: 15px;
+			font-weight: bold;
+		}
+
+		/* エラーメッセージ */
+		#error {
+			background-color: #ffebee;
+			border: 2px solid #d32f2f;
+			color: #d32f2f;
+			padding: 12px 15px;
+			border-radius: 4px;
+			margin-bottom: 20px;
+			font-weight: 500;
+		}
+
+		/* 戻るボタン */
+		.btn {
+			display: inline-block;
+			padding: 10px 20px;
+			background-color: #0097D4;
+			color: #ffffff;
+			border: 2px solid #0077B6;
+			text-decoration: none;
+			border-radius: 4px;
+			font-weight: bold;
+			transition: all 0.3s ease;
+			cursor: pointer;
+			margin-bottom: 20px;
+		}
+
+		.btn:hover {
+			background-color: #0077B6;
+			box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+		}
+
+		/* フォーム */
+		form {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.form-group {
+			margin-bottom: 20px;
+			display: flex;
+			flex-direction: column;
+		}
+
+		label {
+			font-weight: bold;
+			color: #333;
+			margin-bottom: 8px;
+			font-size: 14px;
+		}
+
+		input[type="text"],
+		input[type="date"],
+		select,
+		textarea {
+			padding: 12px;
+			border: 2px solid #0097D4;
+			border-radius: 4px;
+			font-size: 14px;
+			color: #333;
+			background-color: #f9f9f9;
+			transition: all 0.3s ease;
+			font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+		}
+
+		input[type="text"]:focus,
+		input[type="date"]:focus,
+		select:focus,
+		textarea:focus {
+			outline: none;
+			border-color: #0077B6;
+			background-color: #ffffff;
+			box-shadow: 0 0 8px rgba(0, 119, 182, 0.3);
+		}
+
+		textarea {
+			resize: vertical;
+			min-height: 80px;
+		}
+
+		/* ボタン */
+		button {
+			padding: 12px;
+			background-color: #0097D4;
+			color: #ffffff;
+			border: 2px solid #0077B6;
+			border-radius: 4px;
+			font-weight: bold;
+			font-size: 16px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			margin-top: 10px;
+		}
+
+		button:hover {
+			background-color: #0077B6;
+			box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+		}
+
+		button:active {
+			transform: scale(0.98);
+		}
+
+		/* デモ情報 */
+		.demo-info {
+			background-color: #e8f4f8;
+			border: 2px solid #0097D4;
+			padding: 15px;
+			border-radius: 4px;
+			margin-top: 30px;
+			font-size: 13px;
+			color: #333;
+		}
+
+		.demo-info strong {
+			color: #0097D4;
+			font-weight: bold;
+		}
+
+		@media (max-width: 600px) {
+			main {
+				padding: 20px;
+			}
+
+			h1 {
+				font-size: 24px;
+			}
+
+			input,
+			select {
+				width: 100%;
+			}
+		}
