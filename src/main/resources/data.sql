@@ -76,21 +76,21 @@ VALUES
 ('清水美穂', 'デザイン理論とレイアウト設計を専門とするデザイナー。', false);
 
 INSERT INTO users
-(email, name, password, tel_number, birthday,role)
+(email, name, password, tel_number, birthday,role,delete_judge)
 VALUES
-('yamada@example.com', '山田太郎', 'password123', '09012345678', '1995-04-12','User'),
-('sato@example.com', '佐藤花子', 'password123', '09023456789', '1998-07-25','User'),
-('suzuki@example.com', '鈴木一郎', 'password123', '08034567890', '1992-11-03','User'),
-('tanaka@example.com', '田中美咲', 'password123', '07045678901', '2000-01-15','User'),
-('kobayashi@example.com', '小林健太', 'password123', '09056789012', '1997-09-08','User'),
-('ito@example.com', '伊藤彩', 'password123', '08067890123', '1994-06-20','User'),
-('watanabe@example.com', '渡辺誠', 'password123', '07078901234', '1991-12-30','User'),
-('nakamura@example.com', '中村優子', 'password123', '09089012345', '1999-03-18','User'),
-('kato@example.com', '加藤翔', 'password123', '08090123456', '1996-08-05','User'),
-('yoshida@example.com', '吉田恵', 'password123', '07001234567', '1993-05-27','User'),
-('master@example.com', 'システム管理者', 'admin123', '09000000001', '1980-01-01','Admin'),
-('library01@example.com', '図書管理者A', 'admin123', '09000000002', '1985-02-15','Admin'),
-('library02@example.com', '図書管理者B', 'admin123', '09000000003', '1988-06-20','Admin');
+('yamada@example.com', '山田太郎', 'password123', '09012345678', '1995-04-12','User',false),
+('sato@example.com', '佐藤花子', 'password123', '09023456789', '1998-07-25','User',false),
+('suzuki@example.com', '鈴木一郎', 'password123', '08034567890', '1992-11-03','User',false),
+('tanaka@example.com', '田中美咲', 'password123', '07045678901', '2000-01-15','User',false),
+('kobayashi@example.com', '小林健太', 'password123', '09056789012', '1997-09-08','User',false),
+('ito@example.com', '伊藤彩', 'password123', '08067890123', '1994-06-20','User',false),
+('watanabe@example.com', '渡辺誠', 'password123', '07078901234', '1991-12-30','User',false),
+('nakamura@example.com', '中村優子', 'password123', '09089012345', '1999-03-18','User',false),
+('kato@example.com', '加藤翔', 'password123', '08090123456', '1996-08-05','User',false),
+('yoshida@example.com', '吉田恵', 'password123', '07001234567', '1993-05-27','User',false),
+('master@example.com', 'システム管理者', 'admin123', '09000000001', '1980-01-01','Admin',false),
+('library01@example.com', '図書管理者A', 'admin123', '09000000002', '1985-02-15','Admin',false),
+('library02@example.com', '図書管理者B', 'admin123', '09000000003', '1988-06-20','Admin',false);
 
 
 

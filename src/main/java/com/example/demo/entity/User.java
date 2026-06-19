@@ -32,6 +32,9 @@ public class User {
 	private LocalDate birthday; //誕生日
 	private String role; //ロール
 
+	@Column(name = "delete_judge")
+	private boolean deleteJudge;
+
 	@OneToMany(mappedBy = "user")
 	private List<Rental> rental;
 
@@ -124,6 +127,14 @@ public class User {
 
 	public void setRental(List<Rental> rental) {
 		this.rental = rental;
+	}
+
+	public boolean isDeleteJudge() {
+		return deleteJudge;
+	}
+
+	public void setDeleteJudge(boolean deleteJudge) {
+		this.deleteJudge = deleteJudge;
 	}
 
 }

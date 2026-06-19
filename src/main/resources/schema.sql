@@ -28,7 +28,8 @@ name VARCHAR(20),
 password VARCHAR(50),
 tel_number VARCHAR(50),
 birthday VARCHAR(50),
-role VARCHAR(50)
+role VARCHAR(50),
+delete_judge BOOLEAN
 );
 
 CREATE TABLE books(
