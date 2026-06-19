@@ -22,12 +22,12 @@
 		<form action="/admin/writers" method="post">
 			<div class="form-group">
 				<label for="writerName">著者名 <span style="color: #d32f2f;">*</span></label>
-				<input type="text" id="writerName" name="writerName" placeholder="著者の名前を入力" th:value="${writerName}" required>
+				<input type="text" id="writerName" name="writerName" placeholder="著者の名前を入力" th:value="${writerName}">
 			</div>
 
 			<div class="form-group">
-				<label for="writerDescription">著者紹介文</label>
-				<textarea id="writerDescription" name="writerDescription" placeholder="著者について説明してください" th:value="${writerDescription}"></textarea>
+				<label for="writerDescription">著者紹介文 <span style="color: #d32f2f;">*</span></label>
+				<textarea id="writerDescription" name="writerDescription" placeholder="著者について説明してください" >[[${writerDescription}]]</textarea>
 			</div>
 
 			<button type="submit">登録</button>
