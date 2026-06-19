@@ -158,7 +158,7 @@ public class ReservationController {
 
 				// ★ここが重要：すでに予約されている本はスキップ or エラー
 				boolean alreadyReserved = reservationdetailRepository
-						.existsByBookIdAndReservation_ReservationDate(book.getId(), today);
+						.existsByBookId(book.getId());
 
 				if (alreadyReserved) {
 					model.addAttribute("books", cart);
