@@ -14,6 +14,7 @@ article {
 	min-height: 100vh;
 }
 
+/*サイドバー*/
 .side {
 	width: 200px;
 	background: linear-gradient(135deg, #0097D4 0%, #0077B6 100%);
@@ -43,221 +44,222 @@ article {
 	padding: 30px;
 }
 
-		h1 {
-			color: #333;
-			margin-bottom: 10px;
-			font-size: 28px;
-		}
+h1 {
+	color: #333;
+	margin-bottom: 10px;
+	font-size: 28px;
+}
 
-		.subtitle {
-			color: #999;
-			margin-bottom: 30px;
-			font-size: 14px;
-		}
+.subtitle {
+	color: #999;
+	margin-bottom: 30px;
+	font-size: 14px;
+}
 
-		h2 {
-			color: #0097D4;
-			margin: 25px 0 15px 0;
-			border-bottom: 2px solid #0097D4;
-			padding-bottom: 8px;
-			font-size: 18px;
-		}
+h2 {
+	color: #0097D4;
+	margin: 25px 0 15px 0;
+	border-bottom: 2px solid #0097D4;
+	padding-bottom: 8px;
+	font-size: 18px;
+}
 
-		/* メッセージ */
-		.message {
-			padding: 12px;
-			margin: 10px 0;
-			border-radius: 4px;
-			font-weight: bold;
-		}
+/* メッセージ */
+.message {
+	padding: 12px;
+	margin: 10px 0;
+	border-radius: 4px;
+	font-weight: bold;
+}
 
-		.message.success {
-			background-color: #e8f5e9;
-			border-left: 4px solid #4CAF50;
-			color: #2e7d32;
-		}
+.message.success {
+	background-color: #e8f5e9;
+	border-left: 4px solid #4CAF50;
+	color: #2e7d32;
+}
 
-		.message.error {
-			background-color: #ffebee;
-			border-left: 4px solid #d32f2f;
-			color: #d32f2f;
-		}
+.message.error {
+	background-color: #ffebee;
+	border-left: 4px solid #d32f2f;
+	color: #d32f2f;
+}
 
-		/* フォーム */
-		.form-section {
-			background-color: #f9f9f9;
-			padding: 15px;
-			border: 1px solid #ddd;
-			border-radius: 4px;
-			margin-bottom: 15px;
-		}
+/* フォーム */
+.form-section {
+	background-color: #f9f9f9;
+	padding: 15px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	margin-bottom: 15px;
+}
 
-		.form-group {
-			display: flex;
-			gap: 10px;
-			align-items: center;
-			margin-bottom: 10px;
-		}
+.form-group {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	margin-bottom: 10px;
+}
 
-		.form-group label {
-			font-weight: bold;
-			min-width: 100px;
-			font-size: 14px;
-		}
+.form-group label {
+	font-weight: bold;
+	min-width: 100px;
+	font-size: 14px;
+}
 
-		.form-group input {
-			flex: 1;
-			padding: 8px;
-			border: 1px solid #999;
-			border-radius: 4px;
-			font-size: 14px;
-		}
+.form-group input {
+	flex: 1;
+	padding: 8px;
+	border: 1px solid #999;
+	border-radius: 4px;
+	font-size: 14px;
+}
 
-		.btn {
-			padding: 8px 15px;
-			background-color: #0097D4;
-			color: white;
-			border: none;
-			border-radius: 4px;
-			cursor: pointer;
-			font-weight: bold;
-			transition: background-color 0.3s;
-			font-size: 14px;
-		}
+/*ボタン*/
+.btn {
+	padding: 8px 15px;
+	background-color: #0097D4;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: bold;
+	transition: background-color 0.3s;
+	font-size: 14px;
+}
 
-		.btn:hover {
-			background-color: #0077B6;
-		}
+.btn:hover {
+	background-color: #0077B6;
+}
 
-		.btn-delete {
-			background-color: #d32f2f;
-			padding: 5px 10px;
-			font-size: 12px;
-		}
+.btn-delete {
+	background-color: #d32f2f;
+	padding: 5px 10px;
+	font-size: 12px;
+}
 
-		.btn-delete:hover {
-			background-color: #c62828;
-		}
+.btn-delete:hover {
+	background-color: #c62828;
+}
 
-		/* テーブル */
-		table {
-			width: 100%;
-			border-collapse: collapse;
-			margin: 15px 0;
-			background-color: white;
-		}
+/* テーブル */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 15px 0;
+	background-color: white;
+}
 
-		table thead {
-			background-color: #004B7A;
-			color: white;
-		}
+table thead {
+	background-color: #004B7A;
+	color: white;
+}
 
-		table th,
-		table td {
-			padding: 12px;
-			text-align: left;
-			border: 1px solid #ddd;
-			font-size: 14px;
-		}
+table th,
+table td {
+	padding: 12px;
+	text-align: left;
+	border: 1px solid #ddd;
+	font-size: 14px;
+}
 
-		table tbody tr:nth-child(even) {
-			background-color: #f9f9f9;
-		}
+table tbody tr:nth-child(even) {
+	background-color: #f9f9f9;
+}
 
-		table tbody tr:hover {
-			background-color: #e8e8e8;
-		}
+table tbody tr:hover {
+	background-color: #e8e8e8;
+}
 
-		.empty-row {
-			text-align: center;
-			color: #999;
-		}
+.empty-row {
+	text-align: center;
+	color: #999;
+}
 
-		/* カート情報 */
-		.cart-info {
-			background-color: #e8f4f8;
-			padding: 12px;
-			border-left: 4px solid #0097D4;
-			margin: 15px 0;
-			border-radius: 4px;
-			font-size: 14px;
-		}
+/* カート情報 */
+.cart-info {
+	background-color: #e8f4f8;
+	padding: 12px;
+	border-left: 4px solid #0097D4;
+	margin: 15px 0;
+	border-radius: 4px;
+	font-size: 14px;
+}
 
-		.cart-info strong {
-			color: #0097D4;
-			font-size: 18px;
-		}
+.cart-info strong {
+	color: #0097D4;
+	font-size: 18px;
+}
 
-		/* ユーザーセクション */
-		.user-section {
-			background-color: #f9f9f9;
-			padding: 15px;
-			border: 1px solid #ddd;
-			border-radius: 4px;
-			display: flex;
-			gap: 10px;
-			align-items: center;
-			margin-bottom: 20px;
-		}
+/* ユーザーセクション */
+.user-section {
+	background-color: #f9f9f9;
+	padding: 15px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	margin-bottom: 20px;
+}
 
-		.user-section label {
-			font-weight: bold;
-			font-size: 14px;
-		}
+.user-section label {
+	font-weight: bold;
+	font-size: 14px;
+}
 
-		.user-section input {
-			flex: 1;
-			max-width: 300px;
-			padding: 8px;
-			border: 1px solid #999;
-			border-radius: 4px;
-			font-size: 14px;
-		}
+.user-section input {
+	flex: 1;
+	max-width: 300px;
+	padding: 8px;
+	border: 1px solid #999;
+	border-radius: 4px;
+	font-size: 14px;
+}
 
-		form {
-			display: inline;
-		}
+form {
+	display: inline;
+}
 
-		/* 直近の貸し出し情報 */
-		.latest-rental-info {
-			background-color: #f0f7ff;
-			padding: 15px;
-			border-left: 4px solid #0097D4;
-			border-radius: 4px;
-			margin-bottom: 20px;
-		}
+/* 直近の貸し出し情報 */
+.latest-rental-info {
+	background-color: #f0f7ff;
+	padding: 15px;
+	border-left: 4px solid #0097D4;
+	border-radius: 4px;
+	margin-bottom: 20px;
+}
 
-		.latest-rental-info div {
-			margin-bottom: 10px;
-			font-size: 14px;
-		}
+.latest-rental-info div {
+	margin-bottom: 10px;
+	font-size: 14px;
+}
 
-		.latest-rental-info strong {
-			font-weight: bold;
-			color: #333;
-		}
+.latest-rental-info strong {
+	font-weight: bold;
+	color: #333;
+}
 
-		.empty-info {
-			background-color: #f9f9f9;
-			padding: 15px;
-			border-radius: 4px;
-			text-align: center;
-			color: #999;
-			margin-bottom: 20px;
-		}
+.empty-info {
+	background-color: #f9f9f9;
+	padding: 15px;
+	border-radius: 4px;
+	text-align: center;
+	color: #999;
+	margin-bottom: 20px;
+}
 
-		.status-lend {
-			color: #ff9800;
-			font-weight: bold;
-		}
+.status-lend {
+	color: #ff9800;
+	font-weight: bold;
+}
 
-		.status-return {
-			color: #4CAF50;
-			font-weight: bold;
-		}
+.status-return {
+	color: #4CAF50;
+	font-weight: bold;
+}
 		
-		.site-title {
-				font-size: 20px;
-				color: #ffffff;
-				font-weight: bold;
-			}
+.site-title {
+	font-size: 20px;
+	color: #ffffff;
+	font-weight: bold;
+}
