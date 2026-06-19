@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,15 +33,27 @@ public class UserManagementController {
 		return "adminUserManagement";
 	}
 
+	//ユーザの削除、パスワード、メールアドレスの暗号化処理
 	@PostMapping("/users/{userId}/delete")
 	public String delete(
 			@PathVariable Integer userId,
 			Model model) {
 
-		System.out.println("a");
+		String CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{},.<>/?";
+		Random random = new Random();
+		int RANDOMMIN = 15;
+		int RANDOMMAX = 25;
+		int StringLength = random.nextInt((RANDOMMAX - RANDOMMIN) + 1) + RANDOMMIN;
+		StringBuilder newPassword = new StringBuilder(StringLength);
+
+		for (int i = 0; i < StringLength; i++) {
+			newPassword.append((CHARSET.charAt(random.nextInt((CHARSET.length())))));
+		}
+
 		User user = userRepository.findById(userId).orElse(null);
-		System.out.println(user.isDeleteJudge());
 		user.setDeleteJudge(true);
+		user.setPassword(newPassword.toString());
+
 		userRepository.save(user);
 		return "redirect:/admin/users";
 
