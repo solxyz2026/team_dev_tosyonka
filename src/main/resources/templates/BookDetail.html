@@ -277,15 +277,15 @@
 
 			<!-- ボタングループ -->
 			<div class="button-group">
-				<a th:if="!${book.loans}" class="btn btn-reserve"
+				<a class="btn btn-reserve"
 					th:href="@{/user/reservation/{book_id}(book_id=${book.id})}"
 					onclick="return confirm('この本を予約カートに追加しますか？')">
 					📌 予約カートに追加
 				</a>
 
-				<button th:if="${book.loans}" class="btn" disabled>
-					🔴 貸出中（予約できません）
-				</button>
+<!--				<button th:if="${book.loans}" class="btn" disabled>-->
+<!--					🔴 貸出中（予約できません）-->
+<!--				</button>-->
 
 				<a class="btn" th:href="@{/user/search}">検索ページに戻る</a>
 				<a class="btn" th:href="@{/user/}">ユーザーメニューに戻る</a>

@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <title>ユーザメイン画面</title>
 <style>
+	
+	/* ============================================ */
+			/* 空の状態 */
+			/* ============================================ */
+			.empty-message {
+				text-align: center;
+				padding: 40px;
+				color: #999;
+				font-size: 16px;
+			}
+
+			.empty-message p {
+				margin: 10px 0;
+			}
 	/* ========================================
 	   図書館利用者ホーム CSS
 	   左固定ナビゲーション＆2カラムレイアウト＆森の緑を基調
@@ -515,19 +529,28 @@
 				</ul>
 			</div>
 
-			<!--予約状況-->
+			<!-- 予約状況 -->
 			<div class="section-title">予約状況</div>
 			<table border="1">
-				<tr>
-					<th>本のタイトル</th>
-					<th>状況</th>
-				</tr>
-				<th:block th:each="reservationList:${reservationsList}">
-					<tr th:each="reservationdetails:${reservationList.reservationdetails}">
-						<td>[[${reservationdetails.book.title}]]</td>
-						<td>[[${reservationdetails.status}]]</td>
-					</tr>
-				</th:block>
+			    <tr>
+			        <th>本のタイトル</th>
+			        <th>状況</th>
+			    </tr>
+
+			    <!-- 予約データ表示 -->
+			    <th:block th:each="reservationList : ${reservationsList}">
+			        <tr th:each="reservationdetails : ${reservationList.reservationdetails}">
+			            <td>[[${reservationdetails.book.title}]]</td>
+			            <td>[[${reservationdetails.status}]]</td>
+			        </tr>
+			    </th:block>
+
+			    <!-- 予約がない場合 -->
+			    <tr th:if="${reservationsList == null || reservationsList.isEmpty()}">
+			        <td colspan="2" class="empty-message">
+						<p>現在予約されている本はありません。</p>
+					</td>
+			    </tr>
 			</table>
 
 			<!--アクセス情報-->

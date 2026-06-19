@@ -197,6 +197,12 @@
 					<td class="expired">[[${rental.dropDate}]]</td>
 				</tr>
 			</th:block>
+			
+			<tr th:if="${expiredList == null || expiredList.isEmpty()}">
+		        <td colspan="4" class="empty-message">
+					<p>返却期限が切れている本はありません</p>
+				</td>
+		    </tr>	
 		</table>
 
 		<!-- 貸し出し中リスト -->
@@ -215,7 +221,13 @@
 					<td>[[${rentaldetailNow.book.category.categoryName}]]</td>
 					<td>[[${rentalNow.dropDate}]]</td>
 				</tr>
-			</th:block>	
+			</th:block>
+			
+			<tr th:if="${rentalList == null || rentalList.isEmpty()}">
+		        <td colspan="4" class="empty-message">
+					<p>現在、借りている本はありません</p>
+				</td>
+		    </tr>	
 		</table>
 
 		<!-- 予約済みリスト -->
@@ -233,6 +245,12 @@
 					<td>[[${reservationdetails.book.category.categoryName}]]</td>
 				</tr>
 			</th:block>
+			
+			<tr th:if="${reservationsList == null || reservationsList.isEmpty()}">
+		        <td colspan="3" class="empty-message">
+					<p>現在予約されている本はありません。</p>
+				</td>
+		    </tr>
 		</table>
 
 		<!-- 貸し出し履歴リスト -->
@@ -252,6 +270,12 @@
 					<td>[[${rentalAll.returnDate}]]</td>
 				</tr>
 			</th:block>	
+			
+			<tr th:if="${rentalAllList == null || rentalAllList.isEmpty()}">
+		        <td colspan="4" class="empty-message">
+					<p>本を借りた履歴なし</p>
+				</td>
+		    </tr>	
 		</table>
 	</div>
 </body>

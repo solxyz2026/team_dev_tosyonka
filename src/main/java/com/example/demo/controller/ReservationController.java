@@ -199,7 +199,7 @@ public class ReservationController {
 
 		model.addAttribute("reservationsConfirmed", list);
 
-		return "myReservationsConfirmed"; // ← 前のまま
+		return "myReservationsConfirmed"; //
 	}
 
 	@GetMapping("/admin/reservations")
