@@ -175,7 +175,7 @@
 		<h1>本の追加</h1>
 
 		<!-- エラーメッセージ -->
-		<p th:each="error:${errors}" id="error">[[${error}]]</p>
+<!--		<p th:each="error:${errors}" id="error">[[${error}]]</p>-->
 
 		<!-- 戻るボタン -->
 		<a class="btn" th:href="@{/admin/}">管理者メニューに戻る</a>
@@ -184,22 +184,22 @@
 		<form action="/admin/books" method="post">
 			<div class="form-group">
 				<label for="title">タイトル <span style="color: #d32f2f;">*</span></label>
-				<input type="text" id="title" name="title" placeholder="本のタイトルを入力" required>
+				<input type="text" id="title" name="title" th:value="${title}" placeholder="本のタイトルを入力" required>
 			</div>
 
 			<div class="form-group">
-				<label for="writer">著者 <span style="color: #d32f2f;">*</span></label>
-				<input type="text" id="writer" name="writer" placeholder="著者名を入力（例：山田太郎）" required>
+				<label for="writer">著者 <span style="color: #d32f2f;">*</span></label><span style="color: #d32f2f;">[[${error}]]</span><br>
+				<input type="text" id="writer" name="writer" th:value="${writer}" placeholder="著者名を入力（例：山田太郎）" required>
 			</div>
 
 			<div class="form-group">
 				<label for="publisher">出版社 <span style="color: #d32f2f;">*</span></label>
-				<input type="text" id="publisher" name="publisher" placeholder="出版社名を入力" required>
+				<input type="text" id="publisher" name="publisher" th:value="${publisher}" placeholder="出版社名を入力" required>
 			</div>
 
 			<div class="form-group">
 				<label for="date">出版月 <span style="color: #d32f2f;">*</span></label>
-				<input type="date" id="date" name="date" required>
+				<input type="date" id="date" name="date" th:value="${date}" required>
 			</div>
 
 			<div class="form-group">
@@ -207,7 +207,8 @@
 				<select id="categoryName" name="categoryName" required>
 					<option value="">カテゴリーを選択</option>
 					<option th:each="category : ${categoryList}" 
-							th:value="${category.categoryName}">
+							th:value="${category.categoryName}"
+							th:selected="${category.categoryName == categoryName}">
 							[[${category.categoryName}]]
 					</option>
 				</select>
@@ -215,7 +216,7 @@
 
 			<div class="form-group">
 				<label for="summary">本の要約文</label>
-				<textarea id="summary" name="summary" placeholder="本の概要を入力してください"></textarea>
+				<textarea id="summary" name="summary" placeholder="本の概要を入力してください">[[${summary}]]</textarea>
 			</div>
 
 			<button type="submit">登録</button>

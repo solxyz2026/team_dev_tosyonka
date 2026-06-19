@@ -215,6 +215,7 @@
 					<th>タイトル</th>
 					<th>著者</th>
 					<th>出版社</th>
+					<th>カテゴリー</th>
 					<th>貸出状況</th>
 				</tr>
 			</thead>
@@ -224,6 +225,7 @@
 					<td><a th:href="@{/user/books/{book_id}(book_id=${book.id})}" th:text="${book.title}"></a></td>
 					<td th:text="${book.writer.writerName}">著者名</td>
 					<td th:text="${book.publisher}">出版社</td>
+					<td th:text="${book.category.categoryName}">カテゴリー</td>
 					<td>
 						<span th:if="${book.loans}" class="status-borrowed">貸出中</span>
 						<span th:unless="${book.loans}" class="status-available">利用可能</span>
