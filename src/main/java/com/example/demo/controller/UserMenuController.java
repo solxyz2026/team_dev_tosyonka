@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -59,22 +60,33 @@ public class UserMenuController {
 		}
 
 		//翌日返却日の本の取得
-		LocalDate tomorrow = LocalDate.now().plusDays(1);
-		System.out.println(tomorrow);
-		List<Rental> rental = rentalRepository.findByUserIdAndDropDate(userId, tomorrow);
-		System.out.println(rental.size());
-		model.addAttribute("rentalSize", rental.size());
-
-		String msg = "リマインド\n明日までに以下の本を返却してください。\n\n";
-
-		for (Rental rent : rental) {
-			for (Rentaldetail detail : rent.getRentaldetail()) {
-				msg += "・" + detail.getBook().getTitle() + "\n";
-			}
-		}
-
-		model.addAttribute("msg", msg);
-
+		LocalDate today = LocalDate.now();
+        List<Rental> rental = rentalRepository.findByUserIdAndDropDateBeforeAndReturnDateIsNull(userId, today);
+ 
+        // 返却本数
+        model.addAttribute("rentalSize", rental.size());
+		
+		//リマインド用データをリスト化
+		List<String> reminderBooks = new ArrayList<>();
+        for (Rental rent : rental) {
+            List<Rentaldetail> rentalDetails = rent.getRentaldetail();
+            if (rentalDetails != null && !rentalDetails.isEmpty()) {
+                for (Rentaldetail detail : rentalDetails) {
+                    if (detail.getBook() != null && detail.getBook().getTitle() != null) {
+                        reminderBooks.add(detail.getBook().getTitle());
+                    }
+                }
+            }
+        }
+ 
+        System.out.println("=== リマインダーデバッグ情報 ===");
+        System.out.println("ユーザーID: " + userId);
+        System.out.println("今日の日付: " + today);
+        System.out.println("期限切れ本数: " + rental.size());
+        System.out.println("期限切れの本: " + reminderBooks);
+        System.out.println("================================");
+ 
+        model.addAttribute("reminderBooks", reminderBooks);
 		return "userMenu";
 	}
 }

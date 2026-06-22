@@ -569,7 +569,16 @@
 
 	</div>
 
-	<script>
+	<!-- ========================================
+	     リマインダー用の隠しデータ要素
+	     （Thymeleafでデータを埋め込む）
+	     ======================================== -->
+	<div id="data-container" 
+	     data-rental-size="[[${rentalSize}]]"
+	     data-reminder-books="[[${#lists.isEmpty(reminderBooks) ? '' : #lists.toList(reminderBooks)}]]"
+	     style="display:none;"></div>
+
+	<script th:inline="javascript">
 		const date = new Date();
 		const today = date.getDate();
 		const currentMonth = date.getMonth();
@@ -638,14 +647,48 @@
 
 		document.getElementById('calendar').innerHTML = createCalendar(currentMonth);
 
-		// リマインド表示
-		var Size = /*[[${rentalSize}]]*/0;
+		// ========================================
+		// リマインド表示（アラート版）
+		// ========================================
+		(function() {
+			// DOMContentLoadedで実行
+			function initReminder() {
+				// Thymeleafから直接取得
+				const rentalSize = /*[[${rentalSize}]]*/ 0;
+				const reminderBooks = /*[[${reminderBooks}]]*/ [];
 
-		if(Size !== 0){
-			const message = /*[[${msg}]]*/"";
-			document.getElementById('reminder-box').style.display = 'block';
-			document.getElementById('reminder-message').textContent = message;
-		}
+				console.log('【リマインダーデバッグ】');
+				console.log('rentalSize:', rentalSize);
+				console.log('reminderBooks:', reminderBooks);
+
+				// 返却本がある場合
+				if (rentalSize > 0 && reminderBooks && Array.isArray(reminderBooks) && reminderBooks.length > 0) {
+					console.log('✓ リマインダーアラートを表示します');
+					
+					// アラートメッセージを組立
+					let alertMessage = '【リマインド】\n明日までに以下の本を返却してください。\n\n';
+					
+					reminderBooks.forEach(function(bookTitle, index) {
+						alertMessage += '・' + bookTitle + '\n';
+						console.log('  対象:' + (index + 1) + '番目 - ' + bookTitle);
+					});
+
+					// アラートを表示
+					alert(alertMessage);
+					console.log('✓ リマインダーアラートを表示しました');
+				} else {
+					console.log('✗ リマインダーアラートは表示されません');
+					console.log('  理由:', rentalSize <= 0 ? '返却本がない' : 'データが空');
+				}
+			}
+
+			// ページ読み込み完了後に実行
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initReminder);
+			} else {
+				initReminder();
+			}
+		})();
 	</script>
 </body>
 </html>
