@@ -1,141 +1,141 @@
 * {
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-	}
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
 
-	body {
-		font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
-		background-color: #f1f8f3;
-		color: #1B5E20;
-		padding: 20px;
-	}
+body {
+	font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+	background-color: #f1f8f3;
+	color: #1B5E20;
+	padding: 20px;
+}
 
+.container {
+	max-width: 600px;
+	margin: 0 auto;
+	background-color: #ffffff;
+	padding: 40px;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(27, 94, 32, 0.15);
+	border: 2px solid #a5d6a7;
+	text-align: center;
+}
+
+h1 {
+	color: #1B5E20;
+	font-size: 32px;
+	margin-bottom: 20px;
+	border-bottom: 3px solid #558B2F;
+	padding-bottom: 15px;
+	font-weight: bold;
+}
+
+/* サイトタイトル */
+.site-title {
+	font-size: 20px;
+	color: #2E7D32;
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+
+/* 成功メッセージ */
+.success-message {
+	background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f3 100%);
+	border: 2px solid #558B2F;
+	color: #1B5E20;
+	padding: 20px;
+	border-radius: 6px;
+	margin: 30px 0;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 1.6;
+}
+
+.success-icon {
+	font-size: 48px;
+	margin-bottom: 15px;
+	display: block;
+}
+
+/* ナビゲーションリンク */
+.nav-links {
+	background-color: #ffffff;
+	padding: 20px;
+	border-radius: 6px;
+	margin-top: 30px;
+	border: 1px solid #c8e6c9;
+}
+
+.nav-links a {
+	display: block;
+	color: #2E7D32;
+	text-decoration: none;
+	padding: 10px 15px;
+	margin: 5px 0;
+	border-radius: 4px;
+	transition: all 0.3s ease;
+	font-weight: 500;
+	border-left: 4px solid transparent;
+}
+
+.nav-links a:hover {
+	background-color: #e8f5e9;
+	color: #1B5E20;
+	border-left-color: #558B2F;
+	padding-left: 20px;
+}
+
+.nav-links a:first-child {
+	border-top: 1px solid #c8e6c9;
+	padding-top: 15px;
+}
+
+/* ボタン */
+.btn-main {
+	display: inline-block;
+	margin-top: 20px;
+	padding: 12px 30px;
+	background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+	color: #ffffff;
+	text-decoration: none;
+	border-radius: 4px;
+	font-weight: bold;
+	border: 2px solid #558B2F;
+	transition: all 0.3s ease;
+	cursor: pointer;
+}
+
+.btn-main:hover {
+	background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+	box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
 	.container {
-		max-width: 600px;
-		margin: 0 auto;
-		background-color: #ffffff;
-		padding: 40px;
-		border-radius: 8px;
-		box-shadow: 0 4px 12px rgba(27, 94, 32, 0.15);
-		border: 2px solid #a5d6a7;
-		text-align: center;
+		padding: 25px;
+		margin: 10px;
 	}
 
 	h1 {
-		color: #1B5E20;
-		font-size: 32px;
-		margin-bottom: 20px;
-		border-bottom: 3px solid #558B2F;
-		padding-bottom: 15px;
-		font-weight: bold;
+		font-size: 26px;
 	}
 
-	/* サイトタイトル */
-	.site-title {
-		font-size: 20px;
-		color: #2E7D32;
-		margin-bottom: 20px;
-		font-weight: bold;
-	}
-
-	/* 成功メッセージ */
 	.success-message {
-		background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f3 100%);
-		border: 2px solid #558B2F;
-		color: #1B5E20;
-		padding: 20px;
-		border-radius: 6px;
-		margin: 30px 0;
-		font-size: 16px;
-		font-weight: 500;
-		line-height: 1.6;
+		font-size: 14px;
+		padding: 15px;
 	}
 
 	.success-icon {
-		font-size: 48px;
-		margin-bottom: 15px;
-		display: block;
-	}
-
-	/* ナビゲーションリンク */
-	.nav-links {
-		background-color: #ffffff;
-		padding: 20px;
-		border-radius: 6px;
-		margin-top: 30px;
-		border: 1px solid #c8e6c9;
+		font-size: 36px;
 	}
 
 	.nav-links a {
-		display: block;
-		color: #2E7D32;
-		text-decoration: none;
-		padding: 10px 15px;
-		margin: 5px 0;
-		border-radius: 4px;
-		transition: all 0.3s ease;
-		font-weight: 500;
-		border-left: 4px solid transparent;
+		padding: 8px 12px;
 	}
 
 	.nav-links a:hover {
-		background-color: #e8f5e9;
-		color: #1B5E20;
-		border-left-color: #558B2F;
-		padding-left: 20px;
+		padding-left: 15px;
 	}
-
-	.nav-links a:first-child {
-		border-top: 1px solid #c8e6c9;
-		padding-top: 15px;
-	}
-
-	/* ボタン */
-	.btn-main {
-		display: inline-block;
-		margin-top: 20px;
-		padding: 12px 30px;
-		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
-		color: #ffffff;
-		text-decoration: none;
-		border-radius: 4px;
-		font-weight: bold;
-		border: 2px solid #558B2F;
-		transition: all 0.3s ease;
-		cursor: pointer;
-	}
-
-	.btn-main:hover {
-		background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
-		box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
-	}
-
-	/* レスポンシブ */
-	@media (max-width: 600px) {
-		.container {
-			padding: 25px;
-			margin: 10px;
-		}
-
-		h1 {
-			font-size: 26px;
-		}
-
-		.success-message {
-			font-size: 14px;
-			padding: 15px;
-		}
-
-		.success-icon {
-			font-size: 36px;
-		}
-
-		.nav-links a {
-			padding: 8px 12px;
-		}
-
-		.nav-links a:hover {
-			padding-left: 15px;
-		}
-	}
+}
