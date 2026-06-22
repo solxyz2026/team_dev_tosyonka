@@ -1,16 +1,17 @@
 @charset "UTF-8";
 /* 空の状態 */
 		
-		.empty-message {
-			text-align: center;
-			padding: 40px;
-			color: #999;
-			font-size: 16px;
-		}
+.empty-message {
+	text-align: center;
+	padding: 40px;
+	color: #999;
+	font-size: 16px;
+}
 
-		.empty-message p {
-			margin: 10px 0;
-		}
+.empty-message p {
+	margin: 10px 0;
+}
+
 /* ========================================
    図書館利用者ホーム CSS
    左固定ナビゲーション＆2カラムレイアウト＆森の緑を基調
@@ -40,6 +41,7 @@ body {
 	padding-left: 20px;
 	font-weight: bold;
 }
+
 /* ========================================
    ヘッダー（フルスクリーン）
    ======================================== */
@@ -202,16 +204,42 @@ table[border="1"] tr {
 }
 
 /* ========================================
-   カレンダー
+   カレンダーコンテナ
    ======================================== */
+
+.calendar-section {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.calendar-header {
+	font-size: 16px;
+	font-weight: bold;
+	color: #2E7D32;
+	padding: 8px 0;
+	border-bottom: 2px solid #a5d6a7;
+	text-align: center;
+}
+
+.calendar-container {
+	display: flex;
+	gap: 15px;
+	align-items: flex-start;
+}
+
+.calendar-wrapper {
+	flex: 1;
+	position: relative;
+}
 
 .calendar-wrap {
 	background-color: #ffffff;
-	padding: 20px;
+	padding: 15px;
 	border-radius: 6px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-	overflow-x: auto;
 	border: 2px solid #a5d6a7;
+	overflow: visible;
 }
 
 .calendar {
@@ -223,21 +251,64 @@ table[border="1"] tr {
 .calendar th {
 	background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
 	color: #ffffff;
-	padding: 10px;
+	padding: 6px;
 	text-align: center;
 	font-weight: bold;
 	border: 1px solid #a5d6a7;
+	font-size: 12px;
 }
 
 .calendar td {
 	background-color: #ffffff;
 	border: 1px solid #c8e6c9;
-	padding: 12px;
+	padding: 8px;
 	text-align: center;
-	height: 45px;
-	line-height: 21px;
+	height: 36px;
+	line-height: 20px;
 	font-weight: 500;
 	color: #1B5E20;
+	font-size: 13px;
+}
+
+/* ========================================
+   カレンダーナビゲーション
+   ======================================== */
+
+.nav-button {
+	position: absolute;
+	background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+	color: #ffffff;
+	border: 1.5px solid #558B2F;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	font-size: 12px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	bottom: -8px;
+}
+
+.nav-prev {
+	left: 10px;
+}
+
+.nav-next {
+	right: 10px;
+}
+
+.nav-button:hover {
+	background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+	box-shadow: 0 2px 6px rgba(27, 94, 32, 0.3);
+	transform: scale(1.15);
+}
+
+.nav-button:active {
+	transform: scale(0.9);
 }
 
 /* 日曜日 */
@@ -279,6 +350,58 @@ table[border="1"] tr {
 .calendar td.mute {
 	color: #999;
 	background-color: #e8f5e9;
+}
+
+/* ========================================
+   日付情報ボックス
+   ======================================== */
+
+.date-info-box {
+	background-color: #ffffff;
+	padding: 20px 15px;
+	border-radius: 6px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	border: 2px solid #2E7D32;
+	flex-shrink: 0;
+	width: 170px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 12px;
+}
+
+.date-label {
+	font-size: 12px;
+	font-weight: bold;
+	color: #2E7D32;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	border-bottom: 2px solid #a5d6a7;
+	padding-bottom: 8px;
+}
+
+.date-display {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.date-text {
+	font-size: 14px;
+	font-weight: bold;
+	color: #1B5E20;
+	line-height: 1.5;
+}
+
+.day-of-week {
+	font-size: 18px;
+	font-weight: bold;
+	color: #2E7D32;
+	background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f3 100%);
+	padding: 10px;
+	border-radius: 4px;
+	border: 1px solid #c8e6c9;
 }
 
 /* ========================================
@@ -332,6 +455,14 @@ a:hover {
 	.column {
 		width: 100%;
 	}
+
+	.calendar-container {
+		flex-direction: column;
+	}
+
+	.date-info-box {
+		width: 100%;
+	}
 }
 
 @media (max-width: 1024px) {
@@ -353,6 +484,14 @@ a:hover {
 	table td {
 		padding: 10px 12px;
 		font-size: 13px;
+	}
+
+	.calendar-container {
+		flex-direction: column;
+	}
+
+	.date-info-box {
+		width: 100%;
 	}
 }
 
@@ -402,16 +541,55 @@ a:hover {
 		font-size: 12px;
 	}
 
+	.calendar-header {
+		font-size: 14px;
+		padding: 6px 0;
+	}
+
 	.calendar-wrap {
 		padding: 10px;
-		overflow-x: auto;
+		overflow: visible;
+	}
+
+	.calendar th {
+		padding: 5px;
+		font-size: 11px;
 	}
 
 	.calendar td {
-		padding: 8px;
-		height: 35px;
-		line-height: 19px;
+		padding: 6px;
+		height: 32px;
+		line-height: 20px;
 		font-size: 12px;
+	}
+
+	.calendar-container {
+		flex-direction: column;
+	}
+
+	.calendar-wrapper {
+		position: relative;
+	}
+
+	.nav-button {
+		width: 26px;
+		height: 26px;
+		font-size: 11px;
+		border-width: 1.5px;
+		bottom: -6px;
+	}
+
+	.date-info-box {
+		width: 100%;
+		padding: 15px;
+	}
+
+	.date-text {
+		font-size: 13px;
+	}
+
+	.day-of-week {
+		font-size: 16px;
 	}
 
 	.info-box {
@@ -446,15 +624,62 @@ a:hover {
 		font-size: 11px;
 	}
 
+	.calendar-header {
+		font-size: 13px;
+		padding: 5px 0;
+	}
+
 	.calendar-wrap {
-		padding: 5px;
+		padding: 8px;
+	}
+
+	.calendar th {
+		padding: 4px;
+		font-size: 10px;
 	}
 
 	.calendar td {
 		padding: 5px;
-		height: 30px;
-		line-height: 20px;
+		height: 28px;
+		line-height: 18px;
+		font-size: 11px;
+	}
+
+	.calendar-container {
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.calendar-wrapper {
+		position: relative;
+	}
+
+	.date-info-box {
+		width: 100%;
+		padding: 12px;
+		gap: 10px;
+	}
+
+	.date-label {
+		font-size: 11px;
+		padding-bottom: 6px;
+	}
+
+	.date-text {
+		font-size: 12px;
+	}
+
+	.day-of-week {
+		font-size: 16px;
+		padding: 8px;
+	}
+
+	.nav-button {
+		width: 24px;
+		height: 24px;
 		font-size: 10px;
+		border-width: 1px;
+		bottom: -5px;
 	}
 
 	.info-box {
@@ -487,61 +712,83 @@ a:hover {
 	background: #2E7D32;
 }
 
-/*カレンダー*/
-.calendar-wrap {
-  margin: 0 auto;
-  max-width: 1110px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 40px;
-}
-@media (max-width: 767.98px) {
-  .calendar-wrap {
-    display: flex;
-    flex-direction: column;
-  }
-}
-.calendar {
-  width: 100%;
-  border-collapse: collapse;
-}
-.calendar th,
-.calendar td {
-  border: 1px solid #000;
-  text-align: center;
-  padding: 10px;
-  font-size: 14px;
-  font-weight: bold;
-}
-.calendar th {
-  padding: 6px 10px;
-}
-.calendar td {}
-@media (max-width: 767.98px) {
-  .calendar th,
-  .calendar td {
-    padding: 6px;
-    font-size: 12px;
-  }
-  .calendar th {
-    padding: 3px 6px;
-  }
+/* ========================================
+   返却期限の冊数表示（追記用スタイル）
+   ※ userMenuStyle.css の末尾に追加してください
+   ======================================== */
+
+/* 期限マーク◆の横に出る冊数（×2 など） */
+.deadline-count {
+	font-size: 11px;
+	font-weight: bold;
+	color: #c62828;
+	margin-left: 2px;
+	vertical-align: super;
 }
 
-.calendar .sun {
-  color: #e17f7e;
-  background-color: #f8e4e2;
+
+/* ========================================
+   カレンダー表示の調整（追記・上書き用）
+   ※ userMenuStyle.css の末尾に追加してください
+   （既存の .calendar-table td 等より後ろに置くと確実に効きます）
+   ======================================== */
+
+/* すべてのセルの高さを固定して行の歪みをなくす */
+.calendar-table td {
+	height: 60px;          /* 全セル共通の高さ */
+	vertical-align: top;   /* 中身を上揃え */
+	box-sizing: border-box;
+	padding: 6px;
 }
-.calendar .sat {
-  color: #7ab6f3;
-  background-color: #e7f6fd;
+
+/* 日付番号 */
+.calendar-table .day-number {
+	line-height: 1.2;
 }
-.calendar .mute {
-  color: #aaa;
+
+/* 「今日」ラベル・期限マークが入っても高さが変わらないように */
+.calendar-table .today-indicator,
+.calendar-table .deadline-indicator {
+	line-height: 1.2;
+	margin-top: 2px;
 }
-.calendar .today {
-  background-color: rgb(128, 255, 128);
+
+/* 先月・翌月の日付を薄く表示 */
+.calendar-table td.other-month {
+	color: #c8c8c8;        /* 薄いグレー */
+	background-color: #fafafa;
 }
-.calendar .off {
-  background-color: rgb(222, 222, 222);
+
+.calendar-table td.other-month .day-number {
+	color: #c8c8c8;
+}
+
+/* 期限マーク◆の横に出る冊数（×2 など） */
+.deadline-count {
+	font-size: 11px;
+	font-weight: bold;
+	color: #c62828;
+	margin-left: 2px;
+	vertical-align: super;
+}
+
+/* ========================================
+   注意書き（◆＝返却期限）
+   ======================================== */
+.calendar-note {
+	padding: 10px 15px;
+	font-size: 13px;
+	color: #1B5E20;
+	background-color: #f9fff8;
+	border-top: 1px solid #c8e6c9;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+/* 注意書きの中の◆だけ赤くする */
+.calendar-note .note-mark {
+	color: #e53935;
+	font-weight: bold;
+	font-size: 15px;
 }

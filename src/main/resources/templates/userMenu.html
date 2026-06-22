@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>ユーザメイン画面</title>
 <link rel="stylesheet" href="/css/userMenuStyle.css">
-
 </head>
 <body>
 	<!--左ナビゲーション-->
@@ -14,7 +13,6 @@
 		<a href="/user/mypage">マイページ</a>
 		<a href="/user/reservations">予約</a>
 		<a href="/user/search">本検索</a>
-		
 	</div>
 
 	<!--ヘッダー-->
@@ -32,7 +30,30 @@
 				</tr>
 			</table>
 
-			<div id="calendar" class="calendar-wrap"></div>
+			<!-- ========================================
+			     カレンダーセクション
+			     ※ 期限データは data-deadlines 属性に埋め込む
+			     ======================================== -->
+			<div class="calendar-section">
+				<div class="calendar-wrap"
+				     id="calendar-data"
+				     th:attr="data-deadlines=${deadlinesJson}">
+					<!-- カレンダーヘッダー（月日表示） -->
+					<div class="calendar-header">
+						<button id="prev-month" class="nav-btn nav-prev" aria-label="前月">&#9664;</button>
+						<span id="calendar-month-year" class="month-year-display">2026年1月</span>
+						<button id="next-month" class="nav-btn nav-next" aria-label="翌月">&#9654;</button>
+					</div>
+
+					<!-- カレンダーテーブル -->
+					<div id="calendar-container"></div>
+
+					<!-- 注意書き（◆の説明） -->
+					<div class="calendar-note">
+						<span class="note-mark">◆</span>＝返却期限
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<!--右列：予約状況・リマインド・図書館情報-->
@@ -90,124 +111,229 @@
 
 	<!-- ========================================
 	     リマインダー用の隠しデータ要素
-	     （Thymeleafでデータを埋め込む）
 	     ======================================== -->
 	<div id="data-container" 
-	     data-rental-size="[[${rentalSize}]]"
-	     data-reminder-books="[[${#lists.isEmpty(reminderBooks) ? '' : #lists.toList(reminderBooks)}]]"
+	     th:attr="data-rental-size=${rentalSize}"
 	     style="display:none;"></div>
 
+	<!-- ========================================
+	     リマインダー用データ（th:inline版・単独scriptで隔離）
+	     ======================================== -->
 	<script th:inline="javascript">
-		const date = new Date();
-		const today = date.getDate();
-		const currentMonth = date.getMonth();
+		/*<![CDATA[*/
+		window.REMINDER_DATA = {
+			rentalSize: /*[[${rentalSize}]]*/ 0,
+			reminderBooks: /*[[${reminderBooks}]]*/ []
+		};
+		/*]]>*/
+	</script>
 
-		function createCalendar(month) {
-		    const monthDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-		    let calendarHTML = '<table class="calendar"><thead><tr>';
+	<!-- ========================================
+	     カレンダー機能（通常のscript・Thymeleaf非依存）
+	     ======================================== -->
+	<script>
+		// ========================================
+		// カレンダー月移動機能
+		// ========================================
+		class InteractiveCalendar {
+			constructor() {
+				this.currentDate = new Date();
+				this.todayDate = new Date();
 
-		    for (let i = 0; i < 7; i++) {
-		        if (i === 0) {
-		            calendarHTML += `<th class="sun">${monthDays[i]}</th>`;
-		        } else if (i === 6) {
-		            calendarHTML += `<th class="sat">${monthDays[i]}</th>`;
-		        } else {
-		            calendarHTML += `<th>${monthDays[i]}</th>`;
-		        }
-		    }
+				// DOM要素
+				this.monthYearDisplay = document.getElementById('calendar-month-year');
+				this.calendarContainer = document.getElementById('calendar-container');
+				this.prevBtn = document.getElementById('prev-month');
+				this.nextBtn = document.getElementById('next-month');
 
-		    calendarHTML += '</tr></thead><tbody>';
+				// 期限データを data属性から取得（JSON文字列をパース）
+				this.deadlinesByMonth = this.loadDeadlines();
 
-		    const daysInMonth = new Date(date.getFullYear(), month + 1, 0).getDate();
-		    const firstDay = new Date(date.getFullYear(), month, 1).getDay();
+				// イベントリスナー設定
+				this.prevBtn.addEventListener('click', () => this.previousMonth());
+				this.nextBtn.addEventListener('click', () => this.nextMonth());
 
-		    const daysInPrevMonth = new Date(date.getFullYear(), month, 0).getDate();
+				// 初期表示
+				this.render();
+			}
 
-		    let dayCount = 1;
-		    let prevDayCount = daysInPrevMonth - firstDay + 1;
+			// data-deadlines 属性から期限データを読み込む
+			loadDeadlines() {
+				const dataEl = document.getElementById('calendar-data');
+				if (!dataEl) {
+					console.warn('カレンダーデータ要素が見つかりません');
+					return {};
+				}
 
-		    for (let i = 0; i < 6; i++) {
-		        calendarHTML += '<tr>';
+				const raw = dataEl.getAttribute('data-deadlines');
+				console.log('【カレンダー】data-deadlines 生データ:', raw);
 
-		        for (let j = 0; j < 7; j++) {
-		            if (i === 0 && j < firstDay) {
-		                calendarHTML += `<td class="mute">${prevDayCount}</td>`;
-		                prevDayCount++;
-		            } else if (dayCount > daysInMonth) {
-		                let nextMonthDayCount = dayCount - daysInMonth;
-		                calendarHTML += `<td class="mute">${nextMonthDayCount}</td>`;
-		                dayCount++;
-		            } else {
-		                // 今日の日付にclassを付ける
-		                if (dayCount === today && month === currentMonth) {
-		                    calendarHTML += `<td class="today">${dayCount}</td>`;
-		                } 
-		                // 月曜日にclassを付ける
-		                else if (j === 1) {
-		                    calendarHTML += `<td class="off">${dayCount}</td>`;
-		                } else {
-		                    calendarHTML += `<td>${dayCount}</td>`;
-		                }
-		                dayCount++;
-		            }
-		        }
+				if (!raw || raw.trim() === '' || raw === 'null') {
+					console.log('【カレンダー】期限データなし');
+					return {};
+				}
 
-		        calendarHTML += '</tr>';
+				try {
+					const parsed = JSON.parse(raw);
+					console.log('【カレンダー】パース成功:', parsed);
+					return parsed;
+				} catch (e) {
+					console.error('【カレンダー】JSONパース失敗:', e.message);
+					console.error('  → 生データ:', raw);
+					return {};
+				}
+			}
 
-		        if (dayCount - daysInMonth > 7) {
-		            break;
-		        }
-		    }
+			previousMonth() {
+				this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+				this.render();
+			}
 
-		    calendarHTML += '</tbody></table>';
+			nextMonth() {
+				this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+				this.render();
+			}
 
-		    return calendarHTML;
+			updateHeader() {
+				const year = this.currentDate.getFullYear();
+				const month = this.currentDate.getMonth() + 1;
+				const monthStr = String(month).padStart(2, '0');
+				this.monthYearDisplay.textContent = `${year}年${monthStr}月`;
+			}
+
+			// その日に返却期限の本が何冊あるかを数える
+			getDeadlineCount(day, year, month) {
+				const monthKey = `${year}-${String(month + 1).padStart(2, '0')}`;
+				if (this.deadlinesByMonth[monthKey]) {
+					const list = this.deadlinesByMonth[monthKey];
+					// その日に一致する要素の数を数える（同日複数冊に対応）
+					return list.filter(d => d === String(day) || d === day).length;
+				}
+				return 0;
+			}
+
+			render() {
+				this.updateHeader();
+
+				const year = this.currentDate.getFullYear();
+				const month = this.currentDate.getMonth();
+				const firstDay = new Date(year, month, 1).getDay();
+				const lastDay = new Date(year, month + 1, 0).getDate();
+				const prevLastDay = new Date(year, month, 0).getDate();
+
+				let html = '<table class="calendar-table">';
+
+				// 曜日ヘッダー
+				html += '<thead><tr>';
+				const dayLabels = ['日', '月', '火', '水', '木', '金', '土'];
+				dayLabels.forEach((label, index) => {
+					if (index === 0) {
+						html += `<th class="day-header sunday">${label}</th>`;
+					} else if (index === 6) {
+						html += `<th class="day-header saturday">${label}</th>`;
+					} else {
+						html += `<th class="day-header">${label}</th>`;
+					}
+				});
+				html += '</tr></thead>';
+
+				// カレンダー本体
+				html += '<tbody>';
+				let dayCount = 1;
+				let isMonthStarted = false;
+
+				for (let week = 0; week < 6; week++) {
+					html += '<tr>';
+
+					for (let day = 0; day < 7; day++) {
+						if (!isMonthStarted && day < firstDay) {
+							const prevDate = prevLastDay - (firstDay - day - 1);
+							html += `<td class="other-month">${prevDate}</td>`;
+						} else if (dayCount <= lastDay) {
+							isMonthStarted = true;
+
+							let cellClass = 'calendar-day';
+							let cellContent = `<div class="day-number">${dayCount}</div>`;
+
+							if (this.isSameDate(dayCount, year, month)) {
+								cellClass += ' today';
+								cellContent += '<div class="today-indicator">今日</div>';
+							}
+
+							// 返却期限の本の冊数を取得
+							const count = this.getDeadlineCount(dayCount, year, month);
+							if (count > 0) {
+								cellClass += ' has-deadline';
+								// 2冊以上のときは冊数を表示
+								if (count >= 2) {
+									cellContent += `<div class="deadline-indicator">◆<span class="deadline-count">×${count}</span></div>`;
+								} else {
+									cellContent += '<div class="deadline-indicator">◆</div>';
+								}
+							}
+
+							if (day === 0) cellClass += ' sunday';
+							if (day === 6) cellClass += ' saturday';
+
+							html += `<td class="${cellClass}">${cellContent}</td>`;
+							dayCount++;
+						} else {
+							const nextDate = dayCount - lastDay;
+							html += `<td class="other-month">${nextDate}</td>`;
+							dayCount++;
+						}
+					}
+
+					html += '</tr>';
+
+					if (dayCount > lastDay && isMonthStarted) {
+						break;
+					}
+				}
+
+				html += '</tbody></table>';
+				this.calendarContainer.innerHTML = html;
+			}
+
+			isSameDate(day, year, month) {
+				return day === this.todayDate.getDate() &&
+					   year === this.todayDate.getFullYear() &&
+					   month === this.todayDate.getMonth();
+			}
 		}
-
-		document.getElementById('calendar').innerHTML = createCalendar(currentMonth);
 
 		// ========================================
 		// リマインド表示（アラート版）
 		// ========================================
-		(function() {
-			// DOMContentLoadedで実行
-			function initReminder() {
-				// Thymeleafから直接取得
-				const rentalSize = /*[[${rentalSize}]]*/ 0;
-				const reminderBooks = /*[[${reminderBooks}]]*/ [];
+		function initReminder() {
+			const data = window.REMINDER_DATA || { rentalSize: 0, reminderBooks: [] };
+			const rentalSize = data.rentalSize;
+			const reminderBooks = data.reminderBooks;
 
-				console.log('【リマインダーデバッグ】');
-				console.log('rentalSize:', rentalSize);
-				console.log('reminderBooks:', reminderBooks);
+			console.log('【リマインダー】rentalSize:', rentalSize, 'books:', reminderBooks);
 
-				// 返却本がある場合
-				if (rentalSize > 0 && reminderBooks && Array.isArray(reminderBooks) && reminderBooks.length > 0) {
-					console.log('✓ リマインダーアラートを表示します');
-					
-					// アラートメッセージを組立
-					let alertMessage = '【リマインド】\n明日までに以下の本を返却してください。\n\n';
-					
-					reminderBooks.forEach(function(bookTitle, index) {
-						alertMessage += '・' + bookTitle + '\n';
-						console.log('  対象:' + (index + 1) + '番目 - ' + bookTitle);
-					});
-
-					// アラートを表示
-					alert(alertMessage);
-					console.log('✓ リマインダーアラートを表示しました');
-				} else {
-					console.log('✗ リマインダーアラートは表示されません');
-					console.log('  理由:', rentalSize <= 0 ? '返却本がない' : 'データが空');
-				}
+			if (rentalSize > 0 && Array.isArray(reminderBooks) && reminderBooks.length > 0) {
+				let alertMessage = '【リマインド】\n明日までに以下の本を返却してください。\n\n';
+				reminderBooks.forEach(function(bookTitle) {
+					alertMessage += '・' + bookTitle + '\n';
+				});
+				alert(alertMessage);
 			}
+		}
 
-			// ページ読み込み完了後に実行
-			if (document.readyState === 'loading') {
-				document.addEventListener('DOMContentLoaded', initReminder);
-			} else {
-				initReminder();
+		// ========================================
+		// ページ読み込み完了時に初期化
+		// ========================================
+		document.addEventListener('DOMContentLoaded', () => {
+			console.log('【初期化】DOMContentLoaded');
+			try {
+				new InteractiveCalendar();
+				console.log('✓ カレンダー初期化成功');
+			} catch (e) {
+				console.error('✗ カレンダー初期化失敗:', e);
 			}
-		})();
+			initReminder();
+		});
 	</script>
 </body>
 </html>
