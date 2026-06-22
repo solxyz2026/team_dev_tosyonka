@@ -1,8 +1,12 @@
 package com.example.demo.controller;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +23,13 @@ import com.example.demo.repository.AnnouncementRepository;
 import com.example.demo.repository.RentalRepository;
 import com.example.demo.repository.ReservationRepository;
 
-//大森
+import tools.jackson.databind.ObjectMapper;
+
+/**
+ * ユーザーメニューコントローラー
+ * ・ユーザーのホーム画面を表示
+ * ・お知らせ、予約、返却リマインド、カレンダー期限表示
+ */
 @Controller
 @RequestMapping("/user")
 public class UserMenuController {
@@ -29,6 +39,9 @@ public class UserMenuController {
 	private final ReservationRepository reservationRepository;
 	private final RentalRepository rentalRepository;
 
+	// JSON変換用（Spring Boot標準のJackson）
+	private final ObjectMapper objectMapper = new ObjectMapper();
+
 	public UserMenuController(Account account, AnnouncementRepository announcementRepository,
 			ReservationRepository reservationRepository, RentalRepository rentalRepository) {
 		this.account = account;
@@ -37,56 +50,107 @@ public class UserMenuController {
 		this.rentalRepository = rentalRepository;
 	}
 
-	//メイン画面の表示
+	/**
+	 * ユーザーのメイン画面を表示
+	 */
 	@GetMapping("/")
 	public String index(Model model) {
 		int userId = account.getId();
 
-		//お知らせ内容の取得
+		// ========================================
+		// お知らせ内容の取得
+		// ========================================
 		List<Announcement> newsList = announcementRepository.findAll();
 		model.addAttribute("newsList", newsList);
-		System.out.println(12345678);
 
-		//予約内容の取得
-
+		// ========================================
+		// 予約内容の取得
+		// ========================================
 		List<Reservation> reservationsList = reservationRepository.findByUserId(userId);
 		model.addAttribute("reservationsList", reservationsList);
-		System.out.println(reservationsList.size());
 
 		if (reservationsList.size() != 0) {
 			List<Reservationdetail> detail = reservationsList.get(0).getReservationdetails();
-			System.out.println("a = " + detail.size());
 			model.addAttribute("detail", detail);
 		}
 
-		//翌日返却日の本の取得
+		// ========================================
+		// 翌日返却日の本の取得（リマインダー用）
+		// ========================================
 		LocalDate today = LocalDate.now();
-        List<Rental> rental = rentalRepository.findByUserIdAndDropDateBeforeAndReturnDateIsNull(userId, today);
+		List<Rental> rental = rentalRepository.findByUserIdAndDropDateBeforeAndReturnDateIsNull(userId, today);
 
-        // 返却本数
-        model.addAttribute("rentalSize", rental.size());
+		// 返却本数
+		model.addAttribute("rentalSize", rental.size());
 
-		//リマインド用データをリスト化
+		// リマインド用データをリスト化
 		List<String> reminderBooks = new ArrayList<>();
-        for (Rental rent : rental) {
-            List<Rentaldetail> rentalDetails = rent.getRentaldetail();
-            if (rentalDetails != null && !rentalDetails.isEmpty()) {
-                for (Rentaldetail detail : rentalDetails) {
-                    if (detail.getBook() != null && detail.getBook().getTitle() != null) {
-                        reminderBooks.add(detail.getBook().getTitle());
-                    }
-                }
-            }
-        }
+		for (Rental rent : rental) {
+			List<Rentaldetail> rentalDetails = rent.getRentaldetail();
+			if (rentalDetails != null && !rentalDetails.isEmpty()) {
+				for (Rentaldetail detail : rentalDetails) {
+					if (detail.getBook() != null && detail.getBook().getTitle() != null) {
+						reminderBooks.add(detail.getBook().getTitle());
+					}
+				}
+			}
+		}
+		model.addAttribute("reminderBooks", reminderBooks);
 
-        System.out.println("=== リマインダーデバッグ情報 ===");
-        System.out.println("ユーザーID: " + userId);
-        System.out.println("今日の日付: " + today);
-        System.out.println("期限切れ本数: " + rental.size());
-        System.out.println("期限切れの本: " + reminderBooks);
-        System.out.println("================================");
+		// ========================================
+		// カレンダー用：返却期限の日付データを抽出
+		// 形式: {"2026-01": ["5", "12", "20"], "2026-02": ["3", "15"]}
+		// ========================================
+		List<Rental> rentalList = rentalRepository.findByUserIdAndReturnDateIsNull(userId);
+		Map<String, List<String>> deadlinesByMonth = new HashMap<>();
 
-        model.addAttribute("reminderBooks", reminderBooks);
+		for (Rental rentalItem : rentalList) {
+			if (rentalItem.getDropDate() != null && rentalItem.getReturnDate() == null) {
+				LocalDate dropDate = rentalItem.getDropDate();
+				int day = dropDate.getDayOfMonth();
+				YearMonth yearMonth = YearMonth.from(dropDate);
+				String monthKey = yearMonth.toString(); // "2026-01" 形式
+
+				deadlinesByMonth.computeIfAbsent(monthKey, k -> new ArrayList<>())
+						.add(String.valueOf(day));
+			}
+		}
+
+		// ========================================
+		// 【重要】MapをJSON文字列に変換してModelに追加
+		// これにより、HTMLのdata属性に安全に埋め込める
+		// ========================================
+		String deadlinesJson = "{}";
+		try {
+			deadlinesJson = objectMapper.writeValueAsString(deadlinesByMonth);
+		} catch (Exception e) {
+			System.err.println("期限データのJSON変換に失敗: " + e.getMessage());
+		}
+		model.addAttribute("deadlinesJson", deadlinesJson);
+
+		// ========================================
+		// 現在の日付情報を追加
+		// ========================================
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日");
+		String formattedDate = today.format(dateFormatter);
+		String[] dayOfWeekJa = {"日", "月", "火", "水", "木", "金", "土"};
+		String dayOfWeekName = dayOfWeekJa[today.getDayOfWeek().getValue() % 7];
+
+		model.addAttribute("todayDate", formattedDate);
+		model.addAttribute("todayDayOfWeek", dayOfWeekName);
+
+		// ========================================
+		// デバッグログ出力
+		// ========================================
+		System.out.println("========== ユーザーメニュー情報 ==========");
+		System.out.println("  ユーザーID: " + userId);
+		System.out.println("  貸出中の本数: " + rentalList.size());
+		System.out.println("  期限切れの本数: " + rental.size());
+		System.out.println("  リマインダー対象: " + reminderBooks);
+		System.out.println("  カレンダー期限データ(Map): " + deadlinesByMonth);
+		System.out.println("  カレンダー期限データ(JSON): " + deadlinesJson);
+		System.out.println("==========================================");
+
 		return "userMenu";
 	}
 }

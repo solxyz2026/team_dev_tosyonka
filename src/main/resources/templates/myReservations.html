@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>予約</title>
-<link rel="stylesheet" href="/css/myReservationsStyle.css">
+	<meta charset="UTF-8">
+	<title>予約</title>
+	<link rel="stylesheet" href="/css/myReservationsStyle.css">
 </head>
 <body>
-	<div class="container">
-		
-		
-		<!-- サイドバー -->
-		<div class="sidebar">
-			<div class="site-title">としょんか</div>
-			<a href="/user/logout">ログアウト</a>
-			<a href="/user/">トップページ</a>
-			<a href="/user/mypage">マイページ</a>
-			<a href="/user/search">本検索</a>
-		</div>
+	<!-- サイドバー -->
+	<div class="sidebar">
+		<div class="site-title">としょんか</div>
+		<a href="/user/logout">ログアウト</a>
+		<a href="/user/">トップページ</a>
+		<a href="/user/mypage">マイページ</a>
+		<a href="/user/search">本検索</a>
+	</div>
 
-		<!--ヘッダー-->
-			<h1>としょんか</h1>
-			<h2>予約</h2>
+	<!-- ヘッダー -->
+	<header class="header">
+		<h1>としょんか</h1>
+	</header>
+
+	<!-- メインコンテンツ -->
+	<div class="container">
+		<h2>予約</h2>
+
 		<!-- メッセージ -->
 		<div th:if="${msg}" class="message">
 			<span th:text="${msg}"></span>
@@ -46,8 +49,8 @@
 				</td>
 			</tr>
 		</table>
-		
-		<p th:text = "${error}"></p>
+
+		<p th:text="${error}"></p>
 
 		<!-- 予約確定ボタン -->
 		<form action="/user/reservations" method="post">
