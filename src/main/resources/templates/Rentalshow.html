@@ -1,66 +1,71 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>貸し出し一覧</title>
 	<link rel="stylesheet" href="/css/RentalshowStyle.css">
 </head>
-
 <body>
-	<header>としょんか　管理者</header>
+	<div class="layout">
+		<div class="side">
+			<div class="site-title">としょんか</div>
+			<a href="/admin/logout">ログアウト</a>
+			<a href="/admin/">ホーム画面</a>
+			<a href="/admin/search">在庫一覧</a>
+			<a href="/admin/books/add">本追加</a>
+			<a href="/admin/writers">著者の追加</a>
+			<a href="/admin/categories">カテゴリー追加</a>
+			<a href="/admin/reservations">予約一覧</a>
+			<a href="/admin/writers/list">著者一覧</a>
+			<a href="/admin/users">利用者一覧</a>
+		</div>
 
-	<main>
-		<div class="header-section">
-			<h1>📖 貸し出し一覧</h1>
+		<div class="main">
+			<div class="header-section">
+				<h1>📖 貸し出し一覧</h1>
+			</div>
 			
+
+			<div class="table-container">
+				<table>
+					<thead>
+						<tr>
+							<th>📚 本一覧</th>
+							<th>ユーザID</th>
+							<th>利用者名</th>
+							<th>返却期限</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${rentalList != null && !rentalList.isEmpty()}" th:each="rental : ${rentalList}">
+							<td>
+								<ul>
+									<li th:each="detail : ${rental.rentaldetail}">
+										[[${detail.book.title}]]
+									</li>
+								</ul>
+							</td>
+							<td>[[${rental.user.id}]]</td>
+							<td>[[${rental.user.name}]]</td>
+							<td>[[${#temporals.format(rental.dropDate, 'yyyy-MM-dd')}]]</td>
+							<td>
+								<form th:action="@{/admin/rental/{rentalId}/return(rentalId=${rental.id})}" method="post" onsubmit="return confirm('返却処理を実行しますか？');">
+									<button type="submit" class="btn-return">返却</button>
+								</form>
+							</td>
+						</tr>
+
+						<tr th:if="${rentalList == null || rentalList.isEmpty()}">
+							<td colspan="5" class="empty-message">
+								<p>現在、貸し出し中の本はありません</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
-		<a class="btn-back" th:href="@{/admin/}">管理者メニューに戻る</a>
-
-		<div class="table-container">
-			<table>
-				<thead>
-					<tr>
-						<th>📚 本一覧</th>
-						<th>ユーザID</th>
-						<th>利用者名</th>
-						<th>返却期限</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:if="${rentalList != null && !rentalList.isEmpty()}" th:each="rental : ${rentalList}">
-						<!-- 本はまとめて表示 -->
-						<td>
-							<ul>
-								<li th:each="detail : ${rental.rentaldetail}">
-									[[${detail.book.title}]]
-								</li>
-							</ul>
-						</td>
-
-						<td>[[${rental.user.id}]]</td>
-						<td>[[${rental.user.name}]]</td>
-						<td>[[${#temporals.format(rental.dropDate, 'yyyy-MM-dd')}]]</td>
-
-						<td>
-							<form th:action="@{/admin/rental/{rentalId}/return(rentalId=${rental.id})}" method="post" onsubmit="return confirm('返却処理を実行しますか？');">
-								<button type="submit" class="btn-return">返却</button>
-							</form>
-						</td>
-					</tr>
-
-					<!-- 貸出がない場合 -->
-					<tr th:if="${rentalList == null || rentalList.isEmpty()}">
-						<td colspan="5" class="empty-message">
-							<p>現在、貸し出し中の本はありません</p>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</main>
+	</div>
 </body>
-
 </html>

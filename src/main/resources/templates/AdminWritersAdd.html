@@ -7,6 +7,18 @@
 <link rel="stylesheet" href="/css/AdminWritersAddStyle.css">
 </head>
 <body>
+	<div class="side">
+			<div class="site-title">としょんか</div>
+			<a href="/admin/logout">ログアウト</a>
+			<a href="/admin/">ホーム画面</a>
+			<a href="/admin/search">在庫一覧</a>
+			<a href="/admin/books/add">本追加</a>
+			<a href="/admin/categories">カテゴリー追加</a>
+			<a href="/admin/reservations">予約一覧</a>
+			<a href="/admin/rental">貸し出し状況</a>
+			<a href="/admin/writers/list">著者一覧</a>
+			<a href="/admin/users">利用者一覧</a>
+		</div>
 	
 	<header>としょんか　管理者</header>
 	
@@ -18,9 +30,7 @@
 			<li th:each="data:${errors}">[[${data}]]</li>
 		</ul>
 
-		 戻るボタン 
-		<a class="btn-back" th:href="@{/admin/}">管理者メニューに戻る</a>
-
+		
 		 著者追加フォーム 
 		<form action="/admin/writers" method="post">
 			<div class="form-group">

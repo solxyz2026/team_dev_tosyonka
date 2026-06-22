@@ -7,33 +7,50 @@
 <link rel="stylesheet" href="/css/WriterAddStyle.css">
 </head>
 <body>
-	<header>としょんか　管理者</header>
-	
-	<div class="container">
-		<h1>著者の追加</h1>
+	<div class="layout">
+		<!-- ▼▼▼ サイドバー ▼▼▼ -->
+		<div class="side">
+			<div class="site-title">としょんか</div>
+			<a href="/admin/logout">ログアウト</a>
+			<a href="/admin/">ホーム画面</a>
+			<a href="/admin/search">在庫一覧</a>
+			<a href="/admin/books/add">本追加</a>
+			<a href="/admin/categories">カテゴリー追加</a>
+			<a href="/admin/reservations">予約一覧</a>
+			<a href="/admin/rental">貸し出し状況</a>
+			<a href="/admin/writers/list">著者一覧</a>
+			<a href="/admin/users">利用者一覧</a>
+		</div>
+		<!-- ▲▲▲ サイドバー ▲▲▲ -->
 
-		<!-- エラーメッセージ -->
-		<ul th:if="${errors != null && !errors.isEmpty()}" class="error-list">
-			<li th:each="data:${errors}">[[${data}]]</li>
-		</ul>
+		<!-- ▼▼▼ 本文 ▼▼▼ -->
+		<div class="main">
+			<h1>著者の追加</h1>
 
-		<!-- 戻るボタン -->
-		<a class="btn-back" th:href="@{/admin/}">管理者メニューに戻る</a>
+			<!-- エラーメッセージ -->
+			<ul th:if="${errors != null && !errors.isEmpty()}" class="error-list">
+				<li th:each="data:${errors}">[[${data}]]</li>
+			</ul>
 
-		<!-- 著者追加フォーム -->
-		<form action="/admin/writers" method="post">
-			<div class="form-group">
-				<label for="writerName">著者名 <span style="color: #d32f2f;">*</span></label>
-				<input type="text" id="writerName" name="writerName" placeholder="著者の名前を入力" th:value="${writerName}">
-			</div>
+			<!-- 戻るボタン -->
+			<a class="btn-back" th:href="@{/admin/}">管理者メニューに戻る</a>
 
-			<div class="form-group">
-				<label for="writerDescription">著者紹介文 <span style="color: #d32f2f;">*</span></label>
-				<textarea id="writerDescription" name="writerDescription" placeholder="著者について説明してください" >[[${writerDescription}]]</textarea>
-			</div>
+			<!-- 著者追加フォーム -->
+			<form action="/admin/writers" method="post">
+				<div class="form-group">
+					<label for="writerName">著者名 <span style="color: #d32f2f;">*</span></label>
+					<input type="text" id="writerName" name="writerName" placeholder="著者の名前を入力" th:value="${writerName}">
+				</div>
 
-			<button type="submit">登録</button>
-		</form>
+				<div class="form-group">
+					<label for="writerDescription">著者紹介文 <span style="color: #d32f2f;">*</span></label>
+					<textarea id="writerDescription" name="writerDescription" placeholder="著者について説明してください">[[${writerDescription}]]</textarea>
+				</div>
+
+				<button type="submit">登録</button>
+			</form>
+		</div>
+		<!-- ▲▲▲ 本文 ▲▲▲ -->
 	</div>
 </body>
 </html>

@@ -7,46 +7,59 @@
 <link rel="stylesheet" href="/css/WriterShowStyle.css">
 </head>
 <body>
-	<header>としょんか　管理者</header>
-	<div class="container">
-		<h1>著者一覧</h1>
-
-		<!-- メッセージ表示 -->
-		<div th:if="${message}" class="message" th:classappend="${#strings.contains(message, 'エラー')} ? 'error'">
-			[[${message}]]
+	<div class="layout">
+		<div class="side">
+			<div class="site-title">としょんか</div>
+			<a href="/admin/logout">ログアウト</a>
+			<a href="/admin/">ホーム画面</a>
+			<a href="/admin/search">在庫一覧</a>
+			<a href="/admin/books/add">本追加</a>
+			<a href="/admin/writers">著者の追加</a>
+			<a href="/admin/categories">カテゴリー追加</a>
+			<a href="/admin/reservations">予約一覧</a>
+			<a href="/admin/rental">貸し出し状況</a>
+			<a href="/admin/users">利用者一覧</a>
 		</div>
 
-		<!-- 戻るボタン -->
-		<a class="btn-back" th:href="@{/admin/}">管理者メニューに戻る</a>
+		<div class="main">
+			<h1>著者一覧</h1>
 
-		<!-- 著者一覧テーブル -->
-		<table th:if="${writerList != null && !writerList.isEmpty()}">
-			<thead>
-				<tr>
-					<th>著者ID</th>
-					<th>著者名</th>
-					<th>著者紹介文</th>
-					<th style="width: 100px;">操作</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="writer:${writerList}">
-					<td th:text="${writer.id}">1</td>
-					<td th:text="${writer.writerName}">太郎</td>
-					<td th:text="${writer.writerDescription}">著者の説明</td>
-					<td style="text-align: center;">
-						<form th:action="@{/admin/writers/list/{id}/delete(id=${writer.id})}" method="post" onsubmit="return confirm('削除しますか？');">
-							<input type="hidden" name="writerName" th:value="${writer.writerName}">
-							<button type="submit" class="btn-delete">削除</button>
-						</form>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+			<!-- メッセージ表示 -->
+			<div th:if="${message}" class="message" th:classappend="${#strings.contains(message, 'エラー')} ? 'error'">
+				[[${message}]]
+			</div>
 
-		<!-- 著者がない場合 -->
-		<div th:if="${writerList == null || writerList.isEmpty()}" class="empty-message">
-			著者がまだ登録されていません。
+			<!-- 著者一覧テーブル -->
+			<div class="table-container">
+				<table th:if="${writerList != null && !writerList.isEmpty()}">
+					<thead>
+						<tr>
+							<th>著者ID</th>
+							<th>著者名</th>
+							<th>著者紹介文</th>
+							<th style="width: 100px;">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="writer:${writerList}">
+							<td th:text="${writer.id}">1</td>
+							<td th:text="${writer.writerName}">太郎</td>
+							<td th:text="${writer.writerDescription}">著者の説明</td>
+							<td style="text-align: center;">
+								<form th:action="@{/admin/writers/list/{id}/delete(id=${writer.id})}" method="post" onsubmit="return confirm('削除しますか？');">
+									<input type="hidden" name="writerName" th:value="${writer.writerName}">
+									<button type="submit" class="btn-delete">削除</button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- 著者がない場合 -->
+			<div th:if="${writerList == null || writerList.isEmpty()}" class="empty-message">
+				著者がまだ登録されていません。
+			</div>
 		</div>
 	</div>
 </body>
