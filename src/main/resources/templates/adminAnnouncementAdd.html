@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>お知らせ追加</title>
+</head>
+<body>
+	
+	<!-- サイドナビゲーション -->
+	<div class="side">
+		<div class="site-title">としょんか</div>
+		<a href="/admin/logout">ログアウト</a>
+		<a href="/admin/search">在庫一覧</a>
+		<a href="/admin/books/add">本追加</a>
+		<a href="/admin/writers">著者の追加</a>
+		<a href="/admin/categories">カテゴリー追加</a>
+		<a href="/admin/reservations">予約一覧</a>
+		<a href="/admin/rental">貸し出し状況</a>
+		<a href="/admin/writers/list">著者一覧</a>
+		<a href="/admin/users">利用者一覧</a>
+		<a href="/admin/announcement">お知らせ一覧</a>
+	</div>
+			
+	<h1>お知らせ追加</h1>
+	
+	<div th:each="msg:${msgList}" style="color: red;">[[${msg}]]</div><br>
+	
+	<form action="/admin/announcement/add" method="post">
+		
+		<div>タイトル</div>
+		<input type="text" name="title" placeholder="お知らせタイトル"><br>
+		
+		<div>内容</div>
+		<textarea  name="content" placeholder="お知らせ内容を入力してください"></textarea>
+		
+		<br>
+		
+		<button>追加</button>
+		
+	</form>
+
+</body>
+</html>

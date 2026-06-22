@@ -32,7 +32,7 @@ public class ReviewController {
 
 		Optional<Book> optionalBook = bookRepository.findById(bookId);
 		model.addAttribute("book", optionalBook);
-
+		
 		return "ReviewPage";
 	}
 

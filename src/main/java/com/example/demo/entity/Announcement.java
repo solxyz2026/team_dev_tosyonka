@@ -23,6 +23,10 @@ public class Announcement {
 	public Announcement() {
 	}
 
+	public Announcement(String content) {
+		this.content = content;
+	}
+
 	public Announcement(Integer id, String content) {
 		this.id = id;
 		this.content = content;
