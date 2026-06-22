@@ -2,61 +2,76 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>本を探す</title>
 <link rel="stylesheet" href="/css/UserSearchStyle.css">
 </head>
 <body>
-	<div class="container">
-		<!-- 検索セクション -->
-		<div class="search-section">
-		    <h2>本を探す</h2>
-		    <form id="searchForm" method="POST" th:action="@{/user/search}" class="search-form">
-				<input type="text" name="keyword" id="keyword" placeholder="タイトルまたは著者で検索" th:value="${keyword}">
-				<select name="categoryId" id="categoryId">
-					<option value="0">カテゴリを選択</option>
-					<option th:each="category : ${categories}"
-						th:value="${category.id}"
-						th:text="${category.categoryName}"
-						th:selected="${categoryId == category.id}">
-					</option>
-				</select>
-				<button type="submit">検索</button>
-		    </form>
-		</div>
-		<div class="button-group">
-					<a class="btn" th:href="@{/user/}">ユーザーメニューに戻る</a>
-		</div>
+	<!-- 左サイドバー -->
+	<div class="sidebar">
+		<a href="/user/logout">ログアウト</a>
+		<a href="/user/mypage">マイページ</a>
+		<a href="/user/reservations">予約</a>
+		<a href="/user/search">本検索</a>
+	</div>
 
-		<!-- 本一覧テーブル -->
-		<table th:if="${!books.isEmpty()}">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>タイトル</th>
-					<th>著者</th>
-					<th>出版社</th>
-					<th>カテゴリー</th>
-					<th>貸出状況</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="book : ${books}">
-					<td th:text="${book.id}">ID</td>
-					<td><a th:href="@{/user/books/{book_id}(book_id=${book.id})}" th:text="${book.title}"></a></td>
-					<td th:text="${book.writer.writerName}">著者名</td>
-					<td th:text="${book.publisher}">出版社</td>
-					<td th:text="${book.category.categoryName}">カテゴリー</td>
-					<td>
-						<span th:if="${book.loans}" class="status-borrowed">貸出中</span>
-						<span th:unless="${book.loans}" class="status-available">利用可能</span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+	<!-- ヘッダー -->
+	<h1>としょんか</h1>
 
-		<!-- 検索結果がない場合 -->
-		<div th:if="${books.isEmpty()}" class="no-results">
-			<p>本が見つかりませんでした。</p>
+	<!-- メインコンテンツ -->
+	<div class="main-container">
+		<div class="container">
+			<!-- 検索セクション -->
+			<div class="search-section">
+			    <h2>本を探す</h2>
+			    <form id="searchForm" method="POST" th:action="@{/user/search}" class="search-form">
+					<input type="text" name="keyword" id="keyword" placeholder="タイトルまたは著者で検索" th:value="${keyword}">
+					<select name="categoryId" id="categoryId">
+						<option value="0">カテゴリを選択</option>
+						<option th:each="category : ${categories}"
+							th:value="${category.id}"
+							th:text="${category.categoryName}"
+							th:selected="${categoryId == category.id}">
+						</option>
+					</select>
+					<button type="submit">検索</button>
+			    </form>
+			</div>
+			<div class="button-group">
+				<a class="btn" th:href="@{/user/}">ユーザーメニューに戻る</a>
+			</div>
+
+			<!-- 本一覧テーブル -->
+			<table th:if="${!books.isEmpty()}">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>タイトル</th>
+						<th>著者</th>
+						<th>出版社</th>
+						<th>カテゴリー</th>
+						<th>貸出状況</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="book : ${books}">
+						<td th:text="${book.id}">ID</td>
+						<td><a th:href="@{/user/books/{book_id}(book_id=${book.id})}" th:text="${book.title}"></a></td>
+						<td th:text="${book.writer.writerName}">著者名</td>
+						<td th:text="${book.publisher}">出版社</td>
+						<td th:text="${book.category.categoryName}">カテゴリー</td>
+						<td>
+							<span th:if="${book.loans}" class="status-borrowed">貸出中</span>
+							<span th:unless="${book.loans}" class="status-available">利用可能</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- 検索結果がない場合 -->
+			<div th:if="${books.isEmpty()}" class="no-results">
+				<p>本が見つかりませんでした。</p>
+			</div>
 		</div>
 	</div>
 </body>
