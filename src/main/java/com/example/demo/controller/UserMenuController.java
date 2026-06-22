@@ -62,10 +62,10 @@ public class UserMenuController {
 		//翌日返却日の本の取得
 		LocalDate today = LocalDate.now();
         List<Rental> rental = rentalRepository.findByUserIdAndDropDateBeforeAndReturnDateIsNull(userId, today);
- 
+
         // 返却本数
         model.addAttribute("rentalSize", rental.size());
-		
+
 		//リマインド用データをリスト化
 		List<String> reminderBooks = new ArrayList<>();
         for (Rental rent : rental) {
@@ -78,14 +78,14 @@ public class UserMenuController {
                 }
             }
         }
- 
+
         System.out.println("=== リマインダーデバッグ情報 ===");
         System.out.println("ユーザーID: " + userId);
         System.out.println("今日の日付: " + today);
         System.out.println("期限切れ本数: " + rental.size());
         System.out.println("期限切れの本: " + reminderBooks);
         System.out.println("================================");
- 
+
         model.addAttribute("reminderBooks", reminderBooks);
 		return "userMenu";
 	}

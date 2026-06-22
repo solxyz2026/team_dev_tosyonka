@@ -3,8 +3,6 @@ package com.example.demo.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.transaction.Transactional;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +32,7 @@ public class MyPageController {
 	}
 
 	//マイページ画面の表示
-	@Transactional
+
 	@GetMapping("/mypage")
 	public String myPage(Model model) {
 		int userId = account.getId();

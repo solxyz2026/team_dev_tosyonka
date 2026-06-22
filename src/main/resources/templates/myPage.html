@@ -2,26 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>ユーザメイン画面</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マイページ - としょんか</title>
 <style>
-	
-			/* 空の状態 */
-			
-			.empty-message {
-				text-align: center;
-				padding: 40px;
-				color: #999;
-				font-size: 16px;
-			}
-
-			.empty-message p {
-				margin: 10px 0;
-			}
-	/* ========================================
-	   図書館利用者ホーム CSS
-	   左固定ナビゲーション＆2カラムレイアウト＆森の緑を基調
-	   ======================================== */
-
 	* {
 		margin: 0;
 		padding: 0;
@@ -39,10 +22,7 @@
 		display: flex;
 	}
 
-	/* ========================================
-	   ヘッダー（フルスクリーン）
-	   ======================================== */
-
+	/* ヘッダー */
 	h1 {
 		position: fixed;
 		top: 0;
@@ -55,7 +35,6 @@
 		font-size: 32px;
 		letter-spacing: 2px;
 		border-bottom: 3px solid #558B2F;
-		margin: 0;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		z-index: 99;
 		height: 80px;
@@ -64,10 +43,7 @@
 		justify-content: center;
 	}
 
-	/* ========================================
-	   左サイドバー（ナビゲーション）
-	   ======================================== */
-
+	/* サイドバー */
 	.sidebar {
 		position: fixed;
 		left: 0;
@@ -99,62 +75,77 @@
 		color: #c8e6c9;
 	}
 
-	/* ========================================
-	   メインコンテンツエリア
-	   ======================================== */
+	.sidebar a.active {
+		background-color: rgba(255, 255, 255, 0.2);
+		border-left-color: #a5d6a7;
+		font-weight: bold;
+	}
 
+	/* メインコンテンツ */
 	.main-container {
 		margin-left: 220px;
 		margin-top: 80px;
 		flex: 1;
 		padding: 20px;
-		display: flex;
-		gap: 20px;
 		min-width: 0;
 	}
 
-	/* ========================================
-	   2カラムレイアウト
-	   ======================================== */
-
-	.column {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		gap: 20px;
-		min-width: 0;
+	/* ユーザー情報カード */
+	.user-card {
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		color: #ffffff;
+		padding: 25px;
+		border-radius: 8px;
+		margin-bottom: 25px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 	}
 
-	.column-left {
-		flex: 1;
-		min-width: 300px;
+	.user-card h2 {
+		font-size: 24px;
+		margin-bottom: 5px;
 	}
 
-	.column-right {
-		flex: 1.1;
-		min-width: 300px;
+	.user-card p {
+		font-size: 14px;
+		opacity: 0.9;
 	}
 
-	/* ========================================
-	   テーブル
-	   ======================================== */
+	/* セクションタイトル */
+	.section-title {
+		font-size: 18px;
+		font-weight: bold;
+		color: #ffffff;
+		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		padding: 12px 15px;
+		border-radius: 4px 4px 0 0;
+		margin: 25px 0 0 0;
+		border-bottom: 3px solid #558B2F;
+	}
 
+	.section-title.alert {
+		background: linear-gradient(135deg, #c62828 0%, #d32f2f 100%);
+		border-bottom-color: #b71c1c;
+	}
+
+	/* テーブル */
 	table {
 		width: 100%;
 		border-collapse: collapse;
 		background-color: #ffffff;
-		border-radius: 6px;
+		border-radius: 0 0 6px 6px;
 		overflow: hidden;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		margin-bottom: 10px;
 	}
 
 	table th {
-		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+		background: linear-gradient(135deg, #388E3C 0%, #43A047 100%);
 		color: #ffffff;
 		padding: 12px 15px;
 		text-align: left;
 		font-weight: bold;
-		border-right: 1px solid #1B5E20;
+		border-right: 1px solid #2E7D32;
+		font-size: 14px;
 	}
 
 	table th:last-child {
@@ -165,6 +156,7 @@
 		padding: 12px 15px;
 		border-bottom: 1px solid #c8e6c9;
 		background-color: #f9fff8;
+		font-size: 14px;
 	}
 
 	table tbody tr:nth-child(odd) td {
@@ -176,183 +168,61 @@
 		transition: background-color 0.2s ease;
 	}
 
-	/* テーブルボーダー */
-	table[border="1"] {
-		border: 1px solid #a5d6a7;
-	}
-
-	table[border="1"] tr {
-		border-color: #a5d6a7;
-	}
-
-	/* ========================================
-	   セクションタイトル
-	   ======================================== */
-
-	.section-title {
-		font-size: 18px;
-		font-weight: bold;
-		color: #ffffff;
-		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
-		padding: 12px 15px;
-		border-radius: 4px 4px 0 0;
-		margin: 0;
-		border-bottom: 3px solid #558B2F;
-	}
-
-	/* ========================================
-	   カレンダー
-	   ======================================== */
-
-	.calendar-wrap {
-		background-color: #ffffff;
-		padding: 20px;
-		border-radius: 6px;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-		overflow-x: auto;
-		border: 2px solid #a5d6a7;
-	}
-
-	.calendar {
-		width: 100%;
-		border-collapse: collapse;
-		background-color: #ffffff;
-	}
-
-	.calendar th {
-		background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
-		color: #ffffff;
-		padding: 10px;
-		text-align: center;
-		font-weight: bold;
-		border: 1px solid #a5d6a7;
-	}
-
-	.calendar td {
-		background-color: #ffffff;
-		border: 1px solid #c8e6c9;
-		padding: 12px;
-		text-align: center;
-		height: 45px;
-		line-height: 21px;
-		font-weight: 500;
-		color: #1B5E20;
-	}
-
-	/* 日曜日 */
-	.calendar th.sun {
-		color: #ffcdd2;
-	}
-
-	.calendar td.sun {
-		color: #d32f2f;
+	/* ステータスバッジ */
+	.badge {
+		display: inline-block;
+		padding: 4px 10px;
+		border-radius: 12px;
+		font-size: 12px;
 		font-weight: bold;
 	}
 
-	/* 土曜日 */
-	.calendar th.sat {
-		color: #bbdefb;
+	.badge-lending {
+		background-color: #fff3e0;
+		color: #ef6c00;
 	}
 
-	.calendar td.sat {
-		color: #1976d2;
-		font-weight: bold;
-	}
-
-	/* 今日の日付 */
-	.calendar td.today {
-		background-color: #fff9c4;
-		border: 3px solid #558B2F;
-		font-weight: bold;
-		color: #1B5E20;
-	}
-
-	/* 定休日（月曜日） */
-	.calendar td.off {
+	.badge-overdue {
 		background-color: #ffebee;
+		color: #c62828;
+	}
+
+	.badge-returned {
+		background-color: #e8f5e9;
+		color: #2e7d32;
+	}
+
+	.badge-reserved {
+		background-color: #e3f2fd;
+		color: #1565c0;
+	}
+
+	/* 空メッセージ */
+	.empty-message {
+		text-align: center;
+		padding: 30px;
+		color: #999;
+		font-size: 14px;
+		background-color: #ffffff;
+	}
+
+	/* 期限切れ警告ボックス */
+	.alert-box {
+		background-color: #ffebee;
+		border: 2px solid #c62828;
+		border-radius: 6px;
+		padding: 15px;
+		margin-bottom: 10px;
 		color: #c62828;
 		font-weight: bold;
 	}
 
-	/* 前月・翌月 */
-	.calendar td.mute {
-		color: #999;
-		background-color: #e8f5e9;
-	}
-
-	/* ========================================
-	   詳細情報ボックス（リマインド・図書館情報）
-	   ======================================== */
-
-	.info-box {
-		background-color: #ffffff;
-		padding: 20px;
-		border-radius: 6px;
-		border: 3px solid #558B2F;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-		line-height: 1.8;
-	}
-
-	.info-box p,
-	.info-box li {
-		color: #1B5E20;
-		font-size: 14px;
-		margin: 8px 0;
-	}
-
-	.info-box strong {
-		color: #2E7D32;
-		font-weight: bold;
-	}
-
-	/* ========================================
-	   リンク（一般）
-	   ======================================== */
-
-	a {
-		color: #2E7D32;
-		text-decoration: underline;
-		transition: color 0.2s ease;
-	}
-
-	a:hover {
-		color: #1B5E20;
-	}
-
-	/* ========================================
-	   レスポンシブ
-	   ======================================== */
-
-	@media (max-width: 1200px) {
-		.main-container {
-			flex-direction: column;
-		}
-
-		.column {
-			width: 100%;
-		}
-	}
-
+	/* レスポンシブ */
 	@media (max-width: 1024px) {
-		h1 {
-			font-size: 24px;
-			left: 180px;
-		}
-
-		.sidebar {
-			width: 180px;
-		}
-
-		.main-container {
-			margin-left: 180px;
-			flex-direction: column;
-		}
-
-		table th,
-		table td {
-			padding: 10px 12px;
-			font-size: 13px;
-		}
+		h1 { font-size: 24px; left: 180px; }
+		.sidebar { width: 180px; }
+		.main-container { margin-left: 180px; }
+		table th, table td { padding: 10px; font-size: 13px; }
 	}
 
 	@media (max-width: 768px) {
@@ -364,325 +234,166 @@
 			padding: 15px;
 			height: auto;
 		}
-
-		/* サイドバーをトグル化 */
+		body { flex-direction: column; }
 		.sidebar {
 			width: 100%;
 			height: auto;
 			position: relative;
-			top: 0;
 			background: linear-gradient(90deg, #1B5E20 0%, #2E7D32 100%);
 			padding: 10px 0;
-			overflow-y: visible;
 			display: flex;
 			flex-wrap: wrap;
-			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		}
-
 		.sidebar a {
 			flex: 1 1 25%;
 			padding: 10px 5px;
 			text-align: center;
 			border: none;
-			border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-			min-width: 100px;
+			min-width: 90px;
 		}
-
 		.main-container {
 			margin-left: 0;
 			margin-top: 0;
 			padding: 15px;
-			flex-direction: column;
 		}
-
-		table th,
-		table td {
-			padding: 8px 10px;
-			font-size: 12px;
-		}
-
-		.calendar-wrap {
-			padding: 10px;
-			overflow-x: auto;
-		}
-
-		.calendar td {
-			padding: 8px;
-			height: 35px;
-			line-height: 19px;
-			font-size: 12px;
-		}
-
-		.info-box {
-			padding: 15px;
-			border-width: 2px;
-		}
+		table th, table td { padding: 8px; font-size: 12px; }
 	}
 
 	@media (max-width: 480px) {
-		h1 {
-			font-size: 18px;
-			padding: 10px;
-		}
-
-		.sidebar {
-			padding: 5px 0;
-		}
-
-		.sidebar a {
-			flex: 1 1 50%;
-			padding: 8px 3px;
-			font-size: 12px;
-		}
-
-		.main-container {
-			padding: 10px;
-		}
-
-		table th,
-		table td {
-			padding: 6px 8px;
-			font-size: 11px;
-		}
-
-		.calendar-wrap {
-			padding: 5px;
-		}
-
-		.calendar td {
-			padding: 5px;
-			height: 30px;
-			line-height: 20px;
-			font-size: 10px;
-		}
-
-		.info-box {
-			padding: 12px;
-			border-width: 2px;
-			font-size: 12px;
-			line-height: 1.6;
-		}
+		.sidebar a { flex: 1 1 50%; font-size: 12px; }
+		table th, table td { padding: 6px; font-size: 11px; }
 	}
 
-	/* ========================================
-	   スクロール
-	   ======================================== */
-
-	::-webkit-scrollbar {
-		width: 8px;
-		height: 8px;
-	}
-
-	::-webkit-scrollbar-track {
-		background: #f1f8f3;
-	}
-
-	::-webkit-scrollbar-thumb {
-		background: #558B2F;
-		border-radius: 4px;
-	}
-
-	::-webkit-scrollbar-thumb:hover {
-		background: #2E7D32;
-	}
+	::-webkit-scrollbar { width: 8px; }
+	::-webkit-scrollbar-track { background: #f1f8f3; }
+	::-webkit-scrollbar-thumb { background: #558B2F; border-radius: 4px; }
+	::-webkit-scrollbar-thumb:hover { background: #2E7D32; }
 </style>
-<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-	<!--左ナビゲーション-->
+	<!-- サイドバー -->
 	<div class="sidebar">
 		<a href="/user/logout">ログアウト</a>
-		<a href="/user/mypage">マイページ</a>
+		<a href="/user/mypage" class="active">マイページ</a>
 		<a href="/user/reservations">予約</a>
 		<a href="/user/search">本検索</a>
-		
+		<a href="/user/">ホーム</a>
 	</div>
 
-	<!--ヘッダー-->
+	<!-- ヘッダー -->
 	<h1>としょんか</h1>
 
-	<!--メインコンテンツ（2列レイアウト）-->
+	<!-- メインコンテンツ -->
 	<div class="main-container">
-		
-		<!--左列：お知らせ＆カレンダー-->
-		<div class="column column-left">
-			<div class="section-title">お知らせ</div>
-			<table border="1">
-				<tr th:each="news:${newsList}">
-					<td>[[${news.content}]]</td>
+
+		<!-- ユーザー情報 -->
+		<div class="user-card">
+			<h2 th:text="${userName} + ' さん'">ユーザー名 さん</h2>
+			<p>マイページ</p>
+		</div>
+
+		<!-- 返却期限切れの本（警告） -->
+		<div th:if="${expiredList != null && !expiredList.isEmpty()}">
+			<div class="section-title alert">⚠️ 返却期限が過ぎている本</div>
+			<table>
+				<thead>
+					<tr>
+						<th>タイトル</th>
+						<th>貸出日</th>
+						<th>返却期限</th>
+						<th>状況</th>
+					</tr>
+				</thead>
+				<tbody>
+					<th:block th:each="rental : ${expiredList}">
+						<tr th:each="detail : ${rental.rentaldetail}">
+							<td th:text="${detail.book.title}">本のタイトル</td>
+							<td th:text="${#temporals.format(rental.rentalDate, 'yyyy-MM-dd')}">2026-01-01</td>
+							<td th:text="${#temporals.format(rental.dropDate, 'yyyy-MM-dd')}">2026-01-15</td>
+							<td><span class="badge badge-overdue">期限切れ</span></td>
+						</tr>
+					</th:block>
+				</tbody>
+			</table>
+		</div>
+
+		<!-- 貸出中の本 -->
+		<div class="section-title">📚 貸出中の本</div>
+		<table>
+			<thead>
+				<tr>
+					<th>タイトル</th>
+					<th>貸出日</th>
+					<th>返却期限</th>
+					<th>状況</th>
 				</tr>
-			</table>
+			</thead>
+			<tbody>
+				<th:block th:if="${rentalList != null && !rentalList.isEmpty()}" th:each="rental : ${rentalList}">
+					<tr th:each="detail : ${rental.rentaldetail}">
+						<td th:text="${detail.book.title}">本のタイトル</td>
+						<td th:text="${#temporals.format(rental.rentalDate, 'yyyy-MM-dd')}">2026-01-01</td>
+						<td th:text="${#temporals.format(rental.dropDate, 'yyyy-MM-dd')}">2026-01-15</td>
+						<td><span class="badge badge-lending">貸出中</span></td>
+					</tr>
+				</th:block>
+				<tr th:if="${rentalList == null || rentalList.isEmpty()}">
+					<td colspan="4" class="empty-message">現在貸出中の本はありません。</td>
+				</tr>
+			</tbody>
+		</table>
 
-			<div id="calendar" class="calendar-wrap"></div>
-		</div>
+		<!-- 予約中の本 -->
+		<div class="section-title">🔖 予約状況</div>
+		<table>
+			<thead>
+				<tr>
+					<th>タイトル</th>
+					<th>状況</th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:if="${reservationsList != null && !reservationsList.isEmpty()}" th:each="reservation : ${reservationsList}">
+					<tr th:each="detail : ${reservation.reservationdetails}">
+						<td th:text="${detail.book.title}">本のタイトル</td>
+						<td><span class="badge badge-reserved" th:text="${detail.status}">予約中</span></td>
+					</tr>
+				</th:block>
+				<tr th:if="${reservationsList == null || reservationsList.isEmpty()}">
+					<td colspan="2" class="empty-message">現在予約中の本はありません。</td>
+				</tr>
+			</tbody>
+		</table>
 
-		<!--右列：予約状況・リマインド・図書館情報-->
-		<div class="column column-right">
-			
-			<!--リマインド-->
-			<div class="info-box" id="reminder-box" style="display: none;">
-				<strong>リマインド</strong><br>
-				<span id="reminder-message">明日までに以下の本を返却してください。</span>
-				<ul id="reminder-list" style="margin: 10px 0 0 20px;">
-					<!-- JavaScriptで動的に追加 -->
-				</ul>
-			</div>
-
-			<!-- 予約状況 -->
-			<div class="section-title">予約状況</div>
-			<table border="1">
-			    <tr>
-			        <th>本のタイトル</th>
-			        <th>状況</th>
-			    </tr>
-
-			    <!-- 予約データ表示 -->
-			    <th:block th:each="reservationList : ${reservationsList}">
-			        <tr th:each="reservationdetails : ${reservationList.reservationdetails}">
-			            <td>[[${reservationdetails.book.title}]]</td>
-			            <td>[[${reservationdetails.status}]]</td>
-			        </tr>
-			    </th:block>
-
-			    <!-- 予約がない場合 -->
-			    <tr th:if="${reservationsList == null || reservationsList.isEmpty()}">
-			        <td colspan="2" class="empty-message">
-						<p>現在予約されている本はありません。</p>
-					</td>
-			    </tr>
-			</table>
-
-			<!--アクセス情報-->
-			<div class="info-box">
-				<strong>アクセス</strong>&nbsp;&nbsp;○○県○○町1－1－1<br>
-				<strong>営業時間</strong>&nbsp;&nbsp;9:00 ～ 17:00<br>
-				<strong>定休日</strong>&nbsp;&nbsp;月曜日（祝日除く）、第二木曜日
-			</div>
-
-			<!--図書館説明-->
-			<div class="info-box">
-				<strong>図書館の説明</strong><br>
-				広々とした読書スペースがあり、ゆったりとした時間が過ごせます。
-			</div>
-
-		</div>
+		<!-- 貸出履歴 -->
+		<div class="section-title">📖 貸出履歴</div>
+		<table>
+			<thead>
+				<tr>
+					<th>タイトル</th>
+					<th>貸出日</th>
+					<th>返却日</th>
+					<th>状況</th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:if="${rentalAllList != null && !rentalAllList.isEmpty()}" th:each="rental : ${rentalAllList}">
+					<tr th:each="detail : ${rental.rentaldetail}">
+						<td th:text="${detail.book.title}">本のタイトル</td>
+						<td th:text="${#temporals.format(rental.rentalDate, 'yyyy-MM-dd')}">2026-01-01</td>
+						<td th:text="${rental.returnDate != null ? #temporals.format(rental.returnDate, 'yyyy-MM-dd') : '-'}">-</td>
+						<td>
+							<span th:if="${rental.returnDate != null}" class="badge badge-returned">返却済み</span>
+							<span th:if="${rental.returnDate == null}" class="badge badge-lending">貸出中</span>
+						</td>
+					</tr>
+				</th:block>
+				<tr th:if="${rentalAllList == null || rentalAllList.isEmpty()}">
+					<td colspan="4" class="empty-message">貸出履歴はありません。</td>
+				</tr>
+			</tbody>
+		</table>
 
 	</div>
-
-	
-	<div id="data-container" 
-	     data-rental-size="[[${rentalSize}]]"
-	     data-reminder-books="[[${#lists.isEmpty(reminderBooks) ? '' : #lists.toList(reminderBooks)}]]"
-	     style="display:none;"></div>
-
-	<script th:inline="javascript">
-		const date = new Date();
-		const today = date.getDate();
-		const currentMonth = date.getMonth();
-
-		function createCalendar(month) {
-		    const monthDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-		    let calendarHTML = '<table class="calendar"><thead><tr>';
-
-		    for (let i = 0; i < 7; i++) {
-		        if (i === 0) {
-		            calendarHTML += `<th class="sun">${monthDays[i]}</th>`;
-		        } else if (i === 6) {
-		            calendarHTML += `<th class="sat">${monthDays[i]}</th>`;
-		        } else {
-		            calendarHTML += `<th>${monthDays[i]}</th>`;
-		        }
-		    }
-
-		    calendarHTML += '</tr></thead><tbody>';
-
-		    const daysInMonth = new Date(date.getFullYear(), month + 1, 0).getDate();
-		    const firstDay = new Date(date.getFullYear(), month, 1).getDay();
-
-		    const daysInPrevMonth = new Date(date.getFullYear(), month, 0).getDate();
-
-		    let dayCount = 1;
-		    let prevDayCount = daysInPrevMonth - firstDay + 1;
-
-		    for (let i = 0; i < 6; i++) {
-		        calendarHTML += '<tr>';
-
-		        for (let j = 0; j < 7; j++) {
-		            if (i === 0 && j < firstDay) {
-		                calendarHTML += `<td class="mute">${prevDayCount}</td>`;
-		                prevDayCount++;
-		            } else if (dayCount > daysInMonth) {
-		                let nextMonthDayCount = dayCount - daysInMonth;
-		                calendarHTML += `<td class="mute">${nextMonthDayCount}</td>`;
-		                dayCount++;
-		            } else {
-		                // 今日の日付にclassを付ける
-		                if (dayCount === today && month === currentMonth) {
-		                    calendarHTML += `<td class="today">${dayCount}</td>`;
-		                } 
-		                // 月曜日にclassを付ける
-		                else if (j === 1) {
-		                    calendarHTML += `<td class="off">${dayCount}</td>`;
-		                } else {
-		                    calendarHTML += `<td>${dayCount}</td>`;
-		                }
-		                dayCount++;
-		            }
-		        }
-
-		        calendarHTML += '</tr>';
-
-		        if (dayCount - daysInMonth > 7) {
-		            break;
-		        }
-		    }
-
-		    calendarHTML += '</tbody></table>';
-
-		    return calendarHTML;
-		}
-
-		document.getElementById('calendar').innerHTML = createCalendar(currentMonth);
-===========================
-		(function() {
-			// DOMContentLoadedで実行
-			function initReminder() {
-				// Thymeleafから直接取得
-				const rentalSize = /*[[${rentalSize}]]*/ 0;
-				const reminderBooks = /*[[${reminderBooks}]]*/ [];
-
-				console.log('【リマインダーデバッグ】');
-				console.log('rentalSize:', rentalSize);
-				console.log('reminderBooks:', reminderBooks);
-
-				// 返却本がある場合
-				if (rentalSize > 0 && reminderBooks && Array.isArray(reminderBooks) && reminderBooks.length > 0) {
-					console.log('✓ リマインダーアラートを表示します');
-					
-					// アラートメッセージを組立
-					let alertMessage = '【警告】返却期限超過\n以下の本の返却期限を過ぎています。\n早急に返却してください。\n\n';
-					
-					reminderBooks.forEach(function(bookTitle, index) {
-						alertMessage += '・' + bookTitle + '\n';
-						console.log('  対象:' + (index + 1) + '番目 - ' + bookTitle);
-					});
-
-					// アラートを表示
-					alert(alertMessage);
-					console.log('✓ リマインダーアラートを表示しました');
-				} else {
-					console.log('✗ リマインダーアラートは表示されません');
-					console.log('  理由:', rentalSize <= 0 ? '返却本がない' : 'データが空');
-				}
-			}
-
-			// ページ読み込み完了後に実行
-			if (document.readyState === 'loading') {
-				document.addEventListener('DOMContentLoaded', initReminder);
-			} else {
-				initReminder();
-			}
-		})();
-	</script>
 </body>
 </html>
