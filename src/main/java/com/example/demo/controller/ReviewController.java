@@ -32,6 +32,7 @@ public class ReviewController {
 
 		Optional<Book> optionalBook = bookRepository.findById(bookId);
 		model.addAttribute("book", optionalBook);
+
 		return "ReviewPage";
 	}
 
@@ -61,6 +62,10 @@ public class ReviewController {
 			Model model) {
 
 		Book book = bookRepository.findById(bookId).orElse(null);
+
+		if (bookReview.equals("") || bookReview == null) {
+			return "redirect:/user/" + bookId + "/review";
+		}
 
 		Review review = new Review(book, bookReview);
 		reviewRepository.save(review);
