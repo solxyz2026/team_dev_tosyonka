@@ -98,16 +98,43 @@
 		border-radius: 8px;
 		margin-bottom: 25px;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 15px;
+		flex-wrap: wrap;
 	}
 
-	.user-card h2 {
+	.user-card-info h2 {
 		font-size: 24px;
 		margin-bottom: 5px;
 	}
 
-	.user-card p {
+	.user-card-info p {
 		font-size: 14px;
 		opacity: 0.9;
+	}
+
+	/* 会員情報変更ボタン */
+	.edit-btn {
+		display: inline-block;
+		background-color: #ffffff;
+		color: #2E7D32;
+		text-decoration: none;
+		padding: 10px 20px;
+		border-radius: 6px;
+		font-weight: bold;
+		font-size: 14px;
+		white-space: nowrap;
+		transition: all 0.3s ease;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+	}
+
+	.edit-btn:hover {
+		background-color: #c8e6c9;
+		color: #1B5E20;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 	}
 
 	/* セクションタイトル */
@@ -262,6 +289,8 @@
 	@media (max-width: 480px) {
 		.sidebar a { flex: 1 1 50%; font-size: 12px; }
 		table th, table td { padding: 6px; font-size: 11px; }
+		.user-card { flex-direction: column; align-items: flex-start; }
+		.edit-btn { width: 100%; text-align: center; }
 	}
 
 	::-webkit-scrollbar { width: 8px; }
@@ -288,8 +317,11 @@
 
 		<!-- ユーザー情報 -->
 		<div class="user-card">
-			<h2 th:text="${userName} + ' さん'">ユーザー名 さん</h2>
-			<p>マイページ</p>
+			<div class="user-card-info">
+				<h2 th:text="${userName} + ' さん'">ユーザー名 さん</h2>
+				<p>マイページ</p>
+			</div>
+			<a href="/user/edit" class="edit-btn">✏️ 会員情報変更</a>
 		</div>
 
 		<!-- 返却期限切れの本（警告） -->
