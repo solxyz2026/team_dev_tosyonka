@@ -1,149 +1,105 @@
-* {
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-	}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-	body {
-		font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
-		background-color: #f5f5f5;
-		color: #333;
-		line-height: 1.6;
-	}
-	
-	header {
-							background: linear-gradient(135deg, #0097D4 0%, #0077B6 100%);
-							color: white;
-							padding: 20px;
-							text-align: center;
-							box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-							font-size: 24px;
-							font-weight: bold;
-							margin-bottom: 30px;
-						}
+body {
+	font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+	background-color: #f5f5f5;
+	color: #333;
+}
 
-	.container {
-		max-width: 600px;
-		margin: 0 auto;
-		background-color: #ffffff;
-		padding: 30px;
-		border-radius: 8px;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-	}
+/* レイアウト */
+.layout { display: flex; min-height: 100vh; }
 
-	h1 {
-		color: #0097D4;
-		font-size: 28px;
-		margin-bottom: 30px;
-		border-bottom: 3px solid #0097D4;
-		padding-bottom: 15px;
-		font-weight: bold;
-	}
+/* サイドバー */
+.side {
+	width: 200px;
+	flex-shrink: 0;
+	background: linear-gradient(135deg, #0097D4 0%, #0077B6 100%);
+	color: white;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.side .site-title {
+	font-size: 22px; font-weight: bold; color: white;
+	padding: 10px; margin-bottom: 10px;
+	border-bottom: 2px solid rgba(255,255,255,0.4); text-align: center;
+}
+.side a {
+	color: white; text-decoration: none; padding: 10px;
+	border-radius: 4px; transition: background-color 0.3s;
+	display: block; font-size: 14px;
+}
+.side a:hover { background-color: rgba(255,255,255,0.2); }
 
-	/* メッセージ */
-	.message {
-		background-color: #e8f5e9;
-		border: 2px solid #4CAF50;
-		color: #2e7d32;
-		padding: 15px;
-		border-radius: 4px;
-		margin-bottom: 20px;
-		font-weight: 500;
-	}
+/* 本文（中央寄せ） */
+.main {
+	flex: 1; padding: 30px; min-width: 0;
+	display: flex; flex-direction: column; align-items: center;
+}
+.main h1, .main .btn-back, .main form, .main .message {
+	width: 100%; max-width: 600px;
+}
 
-	.message.error {
-		background-color: #ffebee;
-		border-color: #d32f2f;
-		color: #d32f2f;
-	}
+/* 見出し */
+h1 {
+	color: #0097D4; margin-bottom: 20px; font-size: 28px;
+	border-bottom: 3px solid #0097D4; padding-bottom: 10px;
+}
 
-	/* フォーム */
-	form {
-		display: flex;
-		flex-direction: column;
-	}
+/* 戻るボタン */
+.btn-back {
+	display: inline-block; padding: 10px 20px;
+	background-color: #0097D4; color: white; text-decoration: none;
+	border-radius: 4px; font-weight: bold; margin-bottom: 20px;
+	transition: background-color 0.3s;
+}
+.btn-back:hover { background-color: #0077B6; }
 
-	.form-group {
-		margin-bottom: 20px;
-		display: flex;
-		flex-direction: column;
-	}
+/* メッセージ */
+.message {
+	background-color: #e8f5e9; border-left: 4px solid #4CAF50;
+	color: #2e7d32; padding: 15px; border-radius: 4px;
+	margin-bottom: 20px; font-weight: bold;
+}
+.message.error {
+	background-color: #ffebee; border-left-color: #d32f2f; color: #d32f2f;
+}
 
-	label {
-		font-weight: bold;
-		color: #333;
-		margin-bottom: 8px;
-		font-size: 14px;
-	}
+/* フォーム */
+form {
+	background-color: #ffffff; padding: 25px; border-radius: 6px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.form-group { margin-bottom: 20px; }
+.form-group label {
+	display: block; font-weight: bold; margin-bottom: 6px;
+	color: #333; font-size: 14px;
+}
+.form-group input, .form-group textarea {
+	width: 100%; padding: 10px; border: 2px solid #ddd;
+	border-radius: 4px; font-size: 14px; font-family: inherit;
+	transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-group input:focus, .form-group textarea:focus {
+	outline: none; border-color: #0097D4;
+	box-shadow: 0 0 8px rgba(0,151,212,0.2);
+}
+form button[type="submit"] {
+	background-color: #0097D4; color: white; border: none;
+	padding: 12px 30px; border-radius: 4px; font-size: 16px;
+	font-weight: bold; cursor: pointer; transition: background-color 0.3s;
+}
+form button[type="submit"]:hover { background-color: #0077B6; }
 
-	input[type="text"],
-	input[type="email"] {
-		padding: 12px;
-		border: 2px solid #0097D4;
-		border-radius: 4px;
-		font-size: 14px;
-		color: #333;
-		background-color: #f9f9f9;
-		transition: all 0.3s ease;
-	}
-
-	input[type="text"]:focus,
-	input[type="email"]:focus {
-		outline: none;
-		border-color: #0077B6;
-		background-color: #ffffff;
-		box-shadow: 0 0 8px rgba(0, 119, 182, 0.3);
-	}
-
-	/* ボタン */
-	button {
-		padding: 12px;
-		background-color: #0097D4;
-		color: #ffffff;
-		border: 2px solid #0077B6;
-		border-radius: 4px;
-		font-weight: bold;
-		font-size: 16px;
-		cursor: pointer;
-		transition: all 0.3s ease;
-		margin-top: 10px;
-	}
-
-	button:hover {
-		background-color: #0077B6;
-		box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
-	}
-
-	button:active {
-		transform: scale(0.98);
-	}
-
-	/* リンク */
-		.btn-back {
-			display: inline-block;
-			padding: 10px 20px;
-			background-color: #0097D4;
-			color: #ffffff;
-			border: 2px solid #0077B6;
-			text-decoration: none;
-			border-radius: 4px;
-			font-weight: bold;
-			transition: all 0.3s ease;
-			margin-bottom: 20px;
-			cursor: pointer;
-		}
-
-		.btn-back:hover {
-			background-color: #0077B6;
-			box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
-		}
-
-	@media (max-width: 600px) {
-		.container {
-			padding: 20px;
-		}
-
-		h1 {
-			font-size: 24px;
-		}
-	}
+/* レスポンシブ */
+@media (max-width: 768px) {
+	.layout { flex-direction: column; }
+	.side { width: 100%; flex-direction: row; flex-wrap: wrap; gap: 5px; }
+	.side .site-title { width: 100%; margin-bottom: 5px; }
+	.side a { flex: 1 1 auto; text-align: center; min-width: 90px; font-size: 12px; }
+	.main { padding: 15px; }
+}
+@media (max-width: 600px) {
+	.side a { flex: 1 1 45%; }
+}

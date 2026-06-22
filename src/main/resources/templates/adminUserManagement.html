@@ -2,39 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>利用者一覧</title>
 <link rel="stylesheet" href="/css/adminUserManagementStyle.css">
 </head>
 <body>
-	<header>としょんか　管理者</header>
-	<div class="container">
-		<h1>利用者一覧</h1>
-		<a class="btn-back" th:href="@{/admin/}">管理者メニューに戻る</a>
+	<div class="layout">
+		<div class="side">
+			<div class="site-title">としょんか</div>
+			<a href="/admin/logout">ログアウト</a>
+			<a href="/admin/">ホーム画面</a>
+			<a href="/admin/search">在庫一覧</a>
+			<a href="/admin/books/add">本追加</a>
+			<a href="/admin/writers">著者の追加</a>
+			<a href="/admin/categories">カテゴリー追加</a>
+			<a href="/admin/reservations">予約一覧</a>
+			<a href="/admin/rental">貸し出し状況</a>
+			<a href="/admin/writers/list">著者一覧</a>
+			
+		</div>
 
-		<table border="1">
-			<thead>
-				<tr>
-					<th>ユーザID</th>
-					<th>名前</th>
-					<th>メールアドレス</th>
-					<th>電話番号</th>
-					<th>削除</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="user:${usersList}">
-					<td th:text="${user.id}">1</td>
-					<td th:text="${user.name}">山田太郎</td>
-					<td th:text="${user.email}">yamada@example.com</td>
-					<td th:text="${user.telNumber}">09012345678</td>
-					<td style="text-align: center;">
-						<form th:action="|/admin/users/${user.id}/delete|" method="post" onsubmit="return confirm('削除しますか？');">
-							<button type="submit" class="btn-delete">削除</button>
-						</form>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="main">
+			<h1>利用者一覧</h1>
+			
+
+			<div class="table-container">
+				<table>
+					<thead>
+						<tr>
+							<th>ユーザID</th>
+							<th>名前</th>
+							<th>メールアドレス</th>
+							<th>電話番号</th>
+							<th>削除</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="user:${usersList}">
+							<td th:text="${user.id}">1</td>
+							<td th:text="${user.name}">山田太郎</td>
+							<td th:text="${user.email}">yamada@example.com</td>
+							<td th:text="${user.telNumber}">09012345678</td>
+							<td style="text-align: center;">
+								<form th:action="|/admin/users/${user.id}/delete|" method="post" onsubmit="return confirm('削除しますか？');">
+									<button type="submit" class="btn-delete">削除</button>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 </body>
 </html>
