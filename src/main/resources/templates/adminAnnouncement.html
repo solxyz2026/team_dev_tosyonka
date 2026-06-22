@@ -3,44 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <title>お知らせ一覧</title>
+<link rel="stylesheet" href="/css/AdminAnnouncementStyle.css">
 </head>
 <body>
 	
-	<!-- サイドナビゲーション -->
-	<div class="side">
-		<div class="site-title">としょんか</div>
-		<a href="/admin/logout">ログアウト</a>
-		<a href="/admin/search">在庫一覧</a>
-		<a href="/admin/books/add">本追加</a>
-		<a href="/admin/writers">著者の追加</a>
-		<a href="/admin/categories">カテゴリー追加</a>
-		<a href="/admin/reservations">予約一覧</a>
-		<a href="/admin/rental">貸し出し状況</a>
-		<a href="/admin/writers/list">著者一覧</a>
-		<a href="/admin/users">利用者一覧</a>
-		<a href="/admin/announcement">お知らせ</a>
+	<div class="layout">
+		<!-- サイドナビゲーション -->
+		<div class="side">
+			<div class="site-title">としょんか</div>
+			<a href="/admin/logout">ログアウト</a>
+			<a href="/admin/search">在庫一覧</a>
+			<a href="/admin/books/add">本追加</a>
+			<a href="/admin/writers">著者の追加</a>
+			<a href="/admin/categories">カテゴリー追加</a>
+			<a href="/admin/reservations">予約一覧</a>
+			<a href="/admin/rental">貸し出し状況</a>
+			<a href="/admin/writers/list">著者一覧</a>
+			<a href="/admin/users">利用者一覧</a>
+		</div>
+		
+		<div class="main">	
+			<h1>お知らせ一覧</h1>
+	
+			<form action="/admin/announcement/add" method="get">
+				<button class="btn">お知らせ追加</button>
+			</form>
+	
+			<table border="1">
+				<tr>
+					<th>お知らせ</th>
+					<th>削除</th>
+				</tr>
+				<tr th:each="announce : ${news}">
+					<td>[[${announce.content}]]</td>
+					<td>
+						<form th:action="|/admin/announcement/${announce.id}/delete|" method="post">
+							<button class="btn">削除</button>
+						</form>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
-			
-	<h1>お知らせ一覧</h1>
-	
-	<form action="/admin/announcement/add" method="get">
-		<button>お知らせ追加</button>
-	</form>
-	
-	<table border="1">
-		<tr>
-			<th>お知らせ</th>
-			<th>削除</th>
-		</tr>
-		<tr th:each="announce : ${news}">
-			<td>[[${announce.content}]]</td>
-			<td>
-				<form th:action="|/admin/announcement/${announce.id}/delete|" method="post">
-					<button>削除</button>
-				</form>
-			</td>
-		</tr>
-	</table>
 	
 </body>
 </html>
