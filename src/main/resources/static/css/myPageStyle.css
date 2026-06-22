@@ -14,7 +14,13 @@ body {
 	color: #1B5E20;
 	display: flex;
 }
-
+.site-title {
+	font-size: 18px;
+	color: rgb(255, 255, 255);
+	margin-bottom: 20px;
+	padding-left: 20px;
+	font-weight: bold;
+}
 /* ヘッダー */
 h1 {
 	position: fixed;

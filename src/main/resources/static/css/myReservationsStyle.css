@@ -6,18 +6,45 @@ body {
 	color: #1B5E20;
 }
 
+
+/* h1の高さが80pxなので、その分の余白を確保 */
+/* h1の高さを小さくする */
+h1 {
+	position: fixed;
+	top: 0;
+	left: 220px;
+	right: 0;
+	background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+	color: rgb(0, 128, 0);
+	padding: 10px 20px;  /* paddingを20pxから10pxに変更 */
+	text-align: center;
+	font-size: 28px;  /* 32pxから28pxに変更 */
+	letter-spacing: 2px;
+	border-bottom: 3px solid #558B2F;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	z-index: 99;
+	height: 60px;  /* 80pxから60pxに変更 */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* コンテナのパディングを調整 */
 .container {
 	max-width: 900px;
 	margin: 0 auto;
+	padding-top: 70px;  /* h1の高さ60px + 余白10px */
 }
 
-h1 {
-	font-size: 32px;
+/* h2を少し下げる */
+h2 {
+	font-size: 28px;  /* 32pxから28pxに変更（h1と統一感） */
 	color: #1B5E20;
 	border-bottom: 3px solid #558B2F;
-	padding-bottom: 15px;
-	margin: 0 0 20px 0;
+	padding-bottom: 12px;
+	margin: 10px 0 20px 0;  /* マージントップを10px追加 */
 }
+
 
 .site-title {
 	font-size: 18px;
