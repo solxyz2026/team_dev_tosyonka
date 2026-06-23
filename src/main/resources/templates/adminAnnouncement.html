@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>お知らせ一覧</title>
+<link rel="stylesheet" href="/css/AdminAnnouncementStyle.css">
+</head>
+<body>
+
+	<div class="layout">
+		<!-- サイドナビゲーション -->
+		<div class="side">
+			<div class="site-title">としょんか</div>
+			<a href="/admin/logout">ログアウト</a>
+			<a href="/admin/search">在庫一覧</a>
+			<a href="/admin/books/add">本追加</a>
+			<a href="/admin/writers">著者の追加</a>
+			<a href="/admin/categories">カテゴリー追加</a>
+			<a href="/admin/reservations">予約一覧</a>
+			<a href="/admin/rental">貸し出し状況</a>
+			<a href="/admin/writers/list">著者一覧</a>
+			<a href="/admin/users">利用者一覧</a>
+		</div>
+
+		<div class="main">
+			<h1>お知らせ一覧</h1>
+			<p class="subtitle">利用者向けのお知らせを管理します</p>
+
+			<!-- メッセージ -->
+			<div th:if="${msg}" class="message success">
+				<span th:text="${msg}"></span>
+			</div>
+			<div th:if="${error}" class="message error">
+				<span th:text="${error}"></span>
+			</div>
+
+			<!-- お知らせ追加ボタン -->
+			<form action="/admin/announcement/add" method="get">
+				<button class="btn">＋ お知らせ追加</button>
+			</form>
+
+			<!-- お知らせ一覧 -->
+			<table>
+				<thead>
+					<tr>
+						<th>お知らせ</th>
+						<th class="col-action">削除</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="announce : ${news}">
+						<td th:text="${announce.content}">お知らせ内容</td>
+						<td class="col-action">
+							<form th:action="|/admin/announcement/${announce.id}/delete|" method="post">
+								<button class="btn btn-delete">削除</button>
+							</form>
+						</td>
+					</tr>
+					<tr th:if="${news == null || news.isEmpty()}">
+						<td colspan="2" class="empty-row">現在お知らせはありません。</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+</body>
+</html>
