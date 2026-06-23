@@ -26,7 +26,17 @@
 			<div class="header-section">
 				<h1>📖 貸し出し一覧</h1>
 			</div>
-			
+
+			<!-- 名前で絞り込み検索 -->
+			<div class="search-section">
+				<form action="/admin/rental" method="get" class="search-form">
+					<label for="keyword">利用者名で絞り込み</label>
+					<input type="text" id="keyword" name="keyword"
+						th:value="${keyword}" placeholder="利用者名を入力">
+					<button type="submit" class="btn-search">🔍 検索</button>
+					<a href="/admin/rental" class="btn-clear">クリア</a>
+				</form>
+			</div>
 
 			<div class="table-container">
 				<table>
@@ -60,7 +70,12 @@
 
 						<tr th:if="${rentalList == null || rentalList.isEmpty()}">
 							<td colspan="5" class="empty-message">
-								<p>現在、貸し出し中の本はありません</p>
+								<p th:if="${keyword != null && !keyword.isEmpty()}">
+									「<span th:text="${keyword}"></span>」に一致する貸し出しはありません
+								</p>
+								<p th:if="${keyword == null || keyword.isEmpty()}">
+									現在、貸し出し中の本はありません
+								</p>
 							</td>
 						</tr>
 					</tbody>
