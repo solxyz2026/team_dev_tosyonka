@@ -8,11 +8,9 @@
 	<script>
 		function keikoku(){
 			let judge = confirm("一度削除したら戻せません。本当に削除しますか？");
-		
 			return judge;
-				
-			}
-		</script>
+		}
+	</script>
 </head>
 
 <body>
@@ -57,8 +55,8 @@
 				<tr>
 					<th>貸出状況</th>
 					<td>
-						<span th:if="${book.loans}">貸出中</span>
-						<span th:unless="${book.loans}">利用可能</span>
+						<span th:if="${book.loans}" class="status-borrowed">貸出中</span>
+						<span th:unless="${book.loans}" class="status-available">利用可能</span>
 					</td>
 				</tr>
 			</table>
@@ -70,26 +68,28 @@
 			</div>
 
 			<!-- レビュー -->
+			<h3 class="review-title">レビュー</h3>
 			<table border="1">
 				<tr th:each="review:${reviews}">
 					<td><img src="/image/kkrn_icon_user_1.png" alt="画像なし" class="icon">　[[${review.bookReview}]]</td>
 					<td>
 						<form th:action="|/admin/reviews/${review.id}/delete|" method="post" onsubmit="return keikoku();">
-							<button class="btn btn-delete">削除</button>
+							<button class="btn-delete">削除</button>
 						</form>
 					</td>
 				</tr>
-				</table>
+				<tr th:if="${reviews == null || reviews.isEmpty()}">
+					<td colspan="2" class="empty-review">まだレビューはありません。</td>
+				</tr>
+			</table>
 
-				<!-- ボタングループ -->
-				<div class="button-group">
-
-					<a class="btn" th:href="@{/admin/search}">検索ページに戻る</a>
-					<form th:action="@{/admin/{book_id}/delete(book_id=${book.id})}" method="post">
-						<button class="btn">削除</button>
-					</form>
-
-				</div>
+			<!-- ボタングループ -->
+			<div class="button-group">
+				<a class="btn" th:href="@{/admin/search}">検索ページに戻る</a>
+				<form th:action="@{/admin/{book_id}/delete(book_id=${book.id})}" method="post" onsubmit="return keikoku();">
+					<button class="btn">削除</button>
+				</form>
+			</div>
 		</div>
 	</div>
 </body>
