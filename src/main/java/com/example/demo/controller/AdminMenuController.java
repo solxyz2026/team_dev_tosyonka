@@ -387,11 +387,8 @@ public class AdminMenuController {
 					// 予約者本人の貸出なら予約を消化
 					if (reservedUserId.equals(userId)) {
 						System.out.println("処理済みに変更");
-						// 予約消化済み
-						reservationDetail.setDeleteJudge(true);
 
-						// 貸出可能状態を解除
-						reservationDetail.setReservationStatus(false);
+						reservationDetail.setDeleteJudge(true); // ★追加：処理済みに変更
 						reservationdetailRepository.save(reservationDetail);
 					}
 				});
@@ -452,30 +449,24 @@ public class AdminMenuController {
 
 			if (details != null && !details.isEmpty()) {
 				for (Rentaldetail detail : details) {
-
 					Book book = detail.getBook();
+					System.out.println("  返却中：" + book.getTitle());
 
-					System.out.println("返却中：" + book.getTitle());
-
-					// 本を貸出可能に戻す
+					// 貸出フラグを戻す
 					book.setLoans(false);
 					bookRepository.save(book);
-					Optional<Reservationdetail> optReservation = reservationdetailRepository
-							.findByBookIdAndDeleteJudgeFalse(
-									book.getId());
 
-					if (optReservation.isPresent()) {
+					// この本に有効な予約があれば「貸し出し可」に変更
+					Reservationdetail reservation = reservationdetailRepository
+							.findByBookIdAndDeleteJudgeFalse(book.getId())
+							.orElse(null);
 
-						Reservationdetail reservationDetail = optReservation.get();
-
-						reservationDetail.setReservationStatus(true);
-
-						reservationdetailRepository.save(reservationDetail);
-
-						System.out.println(
-								"予約者へ貸出可能状態に変更 : "
-										+ book.getTitle());
+					if (reservation != null) {
+						reservation.setReservationStatus(true); // 返却待ち → 貸し出し可
+						reservationdetailRepository.save(reservation);
+						System.out.println("  📌 予約を「貸し出し可」に更新: " + book.getTitle());
 					}
+					// ★★★ ここまで ★★★
 				}
 			}
 

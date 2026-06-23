@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>お気に入りページ</title>
+<link rel="stylesheet" href="/css/userLikebooksStyle.css">
+</head>
+<body>
+<!--	変更した鵜p-->
+	
+	<!--左ナビゲーション-->
+	<div class="sidebar">
+		<div class="site-title">としょんか</div>
+		<a href="/user/logout">ログアウト</a>
+		<a href="/user/">トップページ</a>
+		<a href="/user/mypage">マイページ</a>
+		<a href="/user/reservations">予約</a>
+		<a href="/user/search">本検索</a>
+		<a href="/user/likebooks">お気に入り</a>
+	</div>
+	
+	
+	<h1>お気に入り一覧</h1>
+	
+	<div class="main-container">
+		<div class="container">
+		
+			
+	<table border="1">
+		<tr>
+			<th>タイトル</th>
+			<th>著者</th>
+			<th>カテゴリー</th>
+			<th>削除</th>
+		</tr>
+		<th:block th:each="likebook : ${likebookList}">
+			<tr th:each="book : ${likebook.book}">
+				<td th:text="${book.title}">本のタイトル</td>
+				<td th:text="${book.writer.writerName}">本の著者</td>
+				<td th:text="${book.category.categoryName}">本のカテゴリー</td>
+				<td>
+					<form th:action="|/user/likebook/${likebook.id}/delete|" method="post">
+						<button class="btn btn-delete">削除</button>
+					</form>
+				</td>
+			</tr>
+		</th:block>
+	</table>
+		</div>
+	</div>
+</body>
+</html>
