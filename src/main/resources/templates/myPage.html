@@ -93,12 +93,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<th:block th:if="${reservationsList != null && !reservationsList.isEmpty()}" th:each="reservation : ${reservationsList}">
-					<tr th:each="detail : ${reservation.reservationdetails}">
-						<td th:text="${detail.book.title}">本のタイトル</td>
-						<td th:text="${reservation.reservationDate}">予約日</td>
-						<td><span class="badge badge-reserved" th:text="${detail.status}">予約中</span></td>
-					</tr>
+				<th:block th:each="detail : ${reservationsList}">
+				    <tr>
+				        <td th:text="${detail.book.title}"></td>
+				        <td th:text="${detail.reservation.reservationDate}"></td>
+				        <td th:text="${detail.status}"></td>
+				    </tr>
 				</th:block>
 				<tr th:if="${reservationsList == null || reservationsList.isEmpty()}">
 					<td colspan="2" class="empty-message">現在予約中の本はありません。</td>
