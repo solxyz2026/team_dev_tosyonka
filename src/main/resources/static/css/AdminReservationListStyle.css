@@ -118,4 +118,116 @@ table form button {
 }
 @media (max-width: 600px) {
 	.side a { flex: 1 1 45%; }
+	
+}
+/* ========================================
+   利用者名で絞り込み検索
+   ======================================== */
+
+/* 予約削除ボタンを中央寄せ・列幅調整 */
+.col-action {
+	text-align: center;
+	width: 120px;
+}
+
+.col-action form {
+	display: inline-block;
+	margin: 0;
+}
+
+/* 削除ボタンのデザイン */
+.col-action button {
+	padding: 8px 20px;
+	background-color: #d32f2f;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 14px;
+	transition: background-color 0.3s;
+}
+
+.col-action button:hover {
+	background-color: #c62828;
+}
+
+/* テーブルヘッダーの予約削除列も中央寄せ */
+table thead th:last-child {
+	text-align: center;
+}
+
+/* 列幅のバランス調整 */
+table thead th:nth-child(1) {
+	width: 40%;
+}
+
+table thead th:nth-child(2) {
+	width: 15%;
+}
+
+table thead th:nth-child(3) {
+	width: 25%;
+}
+
+.search-section {
+	background-color: #e8f4f8;
+	padding: 15px 20px;
+	border-left: 4px solid #0097D4;
+	border-radius: 4px;
+	margin-bottom: 20px;
+}
+
+.search-form {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.search-form label {
+	font-weight: bold;
+	font-size: 14px;
+	color: #0097D4;
+}
+
+.search-form input {
+	flex: 1;
+	max-width: 300px;
+	padding: 8px;
+	border: 1px solid #999;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+.btn-search {
+	padding: 8px 15px;
+	background-color: #0097D4;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: bold;
+	transition: background-color 0.3s;
+	font-size: 14px;
+}
+
+.btn-search:hover {
+	background-color: #0077B6;
+}
+
+.btn-clear {
+	padding: 8px 15px;
+	background-color: #999;
+	color: white;
+	text-decoration: none;
+	border-radius: 4px;
+	font-weight: bold;
+	transition: background-color 0.3s;
+	font-size: 14px;
+	display: inline-block;
+}
+
+.btn-clear:hover {
+	background-color: #777;
 }

@@ -26,8 +26,19 @@
 			<h1>著者一覧</h1>
 
 			<!-- メッセージ表示 -->
-			<div th:if="${message}" class="message" th:classappend="${#strings.contains(message, 'エラー')} ? 'error'">
+			<div th:if="${message}" class="message" th:classappend="${#strings.contains(message, 'エラー') || #strings.contains(message, '削除できません')} ? 'error'">
 				[[${message}]]
+			</div>
+
+			<!-- 著者名で絞り込み検索 -->
+			<div class="search-section">
+				<form action="/admin/writers/list" method="get" class="search-form">
+					<label for="keyword">著者名で絞り込み</label>
+					<input type="text" id="keyword" name="keyword"
+						th:value="${keyword}" placeholder="著者名を入力">
+					<button type="submit" class="btn-search">🔍 検索</button>
+					<a href="/admin/writers/list" class="btn-clear">クリア</a>
+				</form>
 			</div>
 
 			<!-- 著者一覧テーブル -->
@@ -59,7 +70,12 @@
 
 			<!-- 著者がない場合 -->
 			<div th:if="${writerList == null || writerList.isEmpty()}" class="empty-message">
-				著者がまだ登録されていません。
+				<span th:if="${keyword != null && !keyword.isEmpty()}">
+					「<span th:text="${keyword}"></span>」に一致する著者はいません。
+				</span>
+				<span th:if="${keyword == null || keyword.isEmpty()}">
+					著者がまだ登録されていません。
+				</span>
 			</div>
 		</div>
 	</div>

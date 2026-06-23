@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
@@ -25,10 +26,23 @@ public class UserManagementController {
 	}
 
 	//利用者一覧の表示
+	//利用者一覧の表示（名前で絞り込み可能）
 	@GetMapping("/users")
-	public String index(Model model) {
-		List<User> usersList = userRepository.findByDeleteJudgeFalseAndRole("User");
+	public String index(
+			@RequestParam(name = "keyword", required = false) String keyword,
+			Model model) {
+
+		List<User> usersList;
+
+		// キーワードがあれば名前で絞り込み
+		if (keyword != null && !keyword.isBlank()) {
+			usersList = userRepository.findByDeleteJudgeFalseAndRoleAndNameContaining("User", keyword.trim());
+		} else {
+			usersList = userRepository.findByDeleteJudgeFalseAndRole("User");
+		}
+
 		model.addAttribute("usersList", usersList);
+		model.addAttribute("keyword", keyword);
 
 		return "adminUserManagement";
 	}

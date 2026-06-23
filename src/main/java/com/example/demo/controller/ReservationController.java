@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Reservation;
@@ -203,10 +204,23 @@ public class ReservationController {
 	}
 
 	@GetMapping("/admin/reservations")
-	public String showReservations(Model model) {
-		List<Reservation> reservationsList = reservationRepository.findAll();
+	public String showReservations(
+			@RequestParam(name = "keyword", required = false) String keyword,
+			Model model) {
+
+		List<Reservation> reservationsList;
+
+		// キーワードがあれば名前で絞り込み
+		if (keyword != null && !keyword.isBlank()) {
+			reservationsList = reservationRepository.findByUser_NameContaining(keyword.trim());
+		} else {
+			reservationsList = reservationRepository.findAll();
+		}
 		System.out.println(reservationsList.size());
+
 		model.addAttribute("reservationsList", reservationsList);
+		model.addAttribute("keyword", keyword);
+
 		return "AdminReservationList";
 	}
 

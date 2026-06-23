@@ -12,4 +12,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
 	//予約確定
 	List<Reservation> findByReservationDate(LocalDate today);
+	//名前で絞り込み
+	List<Reservation> findByUser_NameContaining(String name);
 }

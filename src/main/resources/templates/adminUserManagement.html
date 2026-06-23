@@ -24,10 +24,20 @@
 
 		<div class="main">
 			<h1>利用者一覧</h1>
-			
+
+			<!-- 名前で絞り込み検索 -->
+			<div class="search-section">
+				<form action="/admin/users" method="get" class="search-form">
+					<label for="keyword">利用者名で絞り込み</label>
+					<input type="text" id="keyword" name="keyword"
+						th:value="${keyword}" placeholder="利用者名を入力">
+					<button type="submit" class="btn-search">🔍 検索</button>
+					<a href="/admin/users" class="btn-clear">クリア</a>
+				</form>
+			</div>
 
 			<div class="table-container">
-				<table>
+				<table th:if="${usersList != null && !usersList.isEmpty()}">
 					<thead>
 						<tr>
 							<th>ユーザID</th>
@@ -51,6 +61,16 @@
 						</tr>
 					</tbody>
 				</table>
+
+				<!-- 利用者がいない場合 -->
+				<div th:if="${usersList == null || usersList.isEmpty()}" class="empty-message">
+					<span th:if="${keyword != null && !keyword.isEmpty()}">
+						「<span th:text="${keyword}"></span>」に一致する利用者はいません。
+					</span>
+					<span th:if="${keyword == null || keyword.isEmpty()}">
+						利用者がまだ登録されていません。
+					</span>
+				</div>
 			</div>
 		</div>
 	</div>

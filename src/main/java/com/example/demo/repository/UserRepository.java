@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	List<User> findByRole(String role);
 
 	List<User> findByDeleteJudgeFalseAndRole(String role);
+	
+	//名前で絞り込み（削除されていない一般利用者）
+	List<User> findByDeleteJudgeFalseAndRoleAndNameContaining(String role, String name);
 }

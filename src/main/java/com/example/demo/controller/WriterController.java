@@ -113,14 +113,25 @@ public class WriterController {
 	//		return "";//○○（本のタイトル）の画面へ(←未入力)
 	//	}
 
-	//著者一覧画面へ
+	
+	//著者一覧画面へ（名前で絞り込み可能）
 	@GetMapping("/writers/list")
-	public String writerList(Model model) {
+	public String writerList(
+			@RequestParam(name = "keyword", required = false) String keyword,
+			Model model) {
 
-		List<Writer> writerList = writerRepository.findByDeleteJudgeFalse();
+		List<Writer> writerList;
+
+		// キーワードがあれば名前で絞り込み
+		if (keyword != null && !keyword.isBlank()) {
+			writerList = writerRepository.findByDeleteJudgeFalseAndWriterNameContaining(keyword.trim());
+		} else {
+			writerList = writerRepository.findByDeleteJudgeFalse();
+		}
 		System.out.println(writerList.size());
 
 		model.addAttribute("writerList", writerList);
+		model.addAttribute("keyword", keyword);
 
 		return "WriterShow";
 	}

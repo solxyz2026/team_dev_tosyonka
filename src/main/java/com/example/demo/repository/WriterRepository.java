@@ -12,4 +12,6 @@ public interface WriterRepository extends JpaRepository<Writer, Integer> {
 	Optional<Writer> findByWriterNameAndDeleteJudgeFalse(String writerName);
 
 	List<Writer> findByDeleteJudgeFalse();
+	//名前で絞り込み（削除されていない著者）
+	List<Writer> findByDeleteJudgeFalseAndWriterNameContaining(String writerName);
 }

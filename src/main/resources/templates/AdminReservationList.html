@@ -26,7 +26,18 @@
 			<div class="header-section">
 				<h1>📖 現在の予約一覧</h1>
 			</div>
-			
+
+			<!-- 利用者名で絞り込み検索 -->
+			<div class="search-section">
+				<form action="/admin/reservations" method="get" class="search-form">
+					<label for="keyword">利用者名で絞り込み</label>
+					<input type="text" id="keyword" name="keyword"
+						th:value="${keyword}" placeholder="利用者名を入力">
+					<button type="submit" class="btn-search">🔍 検索</button>
+					<a href="/admin/reservations" class="btn-clear">クリア</a>
+				</form>
+			</div>
+
 			<div class="table-container">
 				<table>
 					<thead>
@@ -34,7 +45,7 @@
 							<th>📚 本一覧</th>
 							<th>ユーザID</th>
 							<th>利用者名</th>
-							<th>予約削除</th>
+							<th class="col-action">予約削除</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -44,7 +55,7 @@
 									<td>[[${detail.book.title}]]</td>
 									<td>[[${reservation.user.id}]]</td>
 									<td>[[${reservation.user.name}]]</td>
-									<td>
+									<td class="col-action">
 										<form th:action="@{/admin/reservation/delete/{id}(id=${reservation.id})}" method="post">
 											<button type="submit">削除</button>
 										</form>
@@ -55,7 +66,12 @@
 
 						<tr th:if="${#lists.isEmpty(reservationsList)}">
 							<td colspan="4" class="empty-message">
-								<p>現在、予約中の本はありません</p>
+								<p th:if="${keyword != null && !keyword.isEmpty()}">
+									「<span th:text="${keyword}"></span>」に一致する予約はありません
+								</p>
+								<p th:if="${keyword == null || keyword.isEmpty()}">
+									現在、予約中の本はありません
+								</p>
 							</td>
 						</tr>
 					</tbody>
