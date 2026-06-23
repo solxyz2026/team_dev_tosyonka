@@ -1,7 +1,13 @@
-body {
-	font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
+@charset "UTF-8";
+
+* {
 	margin: 0;
 	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
 	background-color: #f1f8f3;
 	color: #1B5E20;
 }
@@ -56,17 +62,18 @@ body {
 	border-bottom: 3px solid #558B2F;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	z-index: 99;
-	height: 60px;
+	height: 80px;
+	padding: 20px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-h1 {
+.header h1 {
 	color: rgb(0, 128, 0);
 	margin: 0;
 	padding: 0;
-	font-size: 28px;
+	font-size: 32px;
 	letter-spacing: 2px;
 	text-align: center;
 }
@@ -74,17 +81,9 @@ h1 {
 /* メインコンテンツ */
 .container {
 	margin-left: 220px;
-	margin-top: 60px;
+	margin-top: 80px;
+	padding: 30px;
 	max-width: calc(100% - 220px);
-	padding: 20px;
-}
-
-h2 {
-	font-size: 28px;
-	color: #1B5E20;
-	border-bottom: 3px solid #558B2F;
-	padding-bottom: 12px;
-	margin: 0 0 20px 0;
 }
 
 /* メッセージ */
@@ -92,9 +91,10 @@ h2 {
 	background-color: #e8f5e9;
 	color: #1B5E20;
 	padding: 15px;
-	margin: 20px 0;
+	margin-bottom: 20px;
 	border-left: 4px solid #558B2F;
 	border-radius: 4px;
+	font-weight: bold;
 }
 
 /* セクションタイトル */
@@ -104,7 +104,7 @@ h2 {
 	color: #ffffff;
 	background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
 	padding: 12px 15px;
-	margin: 20px 0 10px 0;
+	margin: 20px 0 0 0;
 	border-radius: 4px 4px 0 0;
 	border-bottom: 3px solid #558B2F;
 }
@@ -116,7 +116,7 @@ table {
 	background-color: #ffffff;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 	margin-bottom: 20px;
-	border-radius: 6px;
+	border-radius: 0 0 6px 6px;
 	overflow: hidden;
 }
 
@@ -135,7 +135,7 @@ table th:last-child {
 
 table td {
 	padding: 12px 15px;
-	border: 1px solid #c8e6c9;
+	border-bottom: 1px solid #c8e6c9;
 	color: #1B5E20;
 	background-color: #f9fff8;
 }
@@ -152,10 +152,38 @@ table tbody tr:hover td {
 /* フォーム要素 */
 form {
 	display: inline-block;
+	margin: 0;
 }
 
-button {
-	padding: 10px 20px;
+/* 削除ボタン（テーブル内） */
+table button {
+	padding: 6px 14px;
+	border: none;
+	background-color: #d32f2f;
+	color: #ffffff;
+	cursor: pointer;
+	font-weight: bold;
+	border-radius: 4px;
+	font-size: 13px;
+	transition: background-color 0.3s ease;
+}
+
+table button:hover {
+	background-color: #c62828;
+}
+
+/* エラー文 */
+.container > p {
+	color: #d32f2f;
+	font-weight: bold;
+	margin: 10px 0;
+}
+
+/* 予約確定ボタン */
+.confirm-button {
+	margin-top: 15px;
+	padding: 12px 30px;
+	font-size: 16px;
 	border: 2px solid #558B2F;
 	background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
 	color: #ffffff;
@@ -165,20 +193,46 @@ button {
 	transition: all 0.3s ease;
 }
 
-button:hover {
+.confirm-button:hover {
 	background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
 	box-shadow: 0 2px 8px rgba(27, 94, 32, 0.3);
 }
 
-/* 削除ボタン */
-form button {
-	padding: 6px 12px;
-	font-size: 13px;
-}
+/* レスポンシブ */
+@media (max-width: 768px) {
+	.sidebar {
+		width: 100%;
+		height: auto;
+		position: relative;
+		background: linear-gradient(90deg, #1B5E20 0%, #2E7D32 100%);
+		padding: 10px 0;
+		display: flex;
+		flex-wrap: wrap;
+	}
 
-/* 予約確定ボタン */
-.confirm-button {
-	margin-top: 15px;
-	padding: 12px 30px;
-	font-size: 16px;
+	.sidebar a {
+		flex: 1 1 30%;
+		padding: 10px 5px;
+		text-align: center;
+		border: none;
+		min-width: 100px;
+	}
+
+	.header {
+		position: relative;
+		left: 0;
+	}
+
+	.container {
+		margin-left: 0;
+		margin-top: 0;
+		max-width: 100%;
+		padding: 15px;
+	}
+
+	table th,
+	table td {
+		padding: 8px 10px;
+		font-size: 13px;
+	}
 }
