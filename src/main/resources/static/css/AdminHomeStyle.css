@@ -259,7 +259,11 @@ form {
 }
 		
 .site-title {
-	font-size: 20px;
-	color: #ffffff;
+	font-size: 22px;
 	font-weight: bold;
+	color: white;
+	padding: 10px;
+	margin-bottom: 10px;
+	border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+	text-align: center;
 }

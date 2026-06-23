@@ -25,8 +25,12 @@
 		<div class="main">
 			<h1>お知らせ追加</h1>
 	
+			<!-- エラーメッセージ -->
+			<ul th:if="${msgList != null && !msgList.isEmpty()}" class="error-list">
+				<li th:each="msg:${msgList}">[[${msg}]]</li>
+			</ul>
+			
 			<form action="/admin/announcement/add" method="post">
-				<div th:each="msg:${msgList}" style="color: red;">[[${msg}]]</div><br>
 				
 				<div class="form-group">
 					<label for="title">タイトル</label>
