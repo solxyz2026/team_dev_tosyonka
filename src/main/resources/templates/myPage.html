@@ -88,6 +88,7 @@
 			<thead>
 				<tr>
 					<th>タイトル</th>
+					<th>予約日</th>
 					<th>状況</th>
 				</tr>
 			</thead>
@@ -95,6 +96,7 @@
 				<th:block th:if="${reservationsList != null && !reservationsList.isEmpty()}" th:each="reservation : ${reservationsList}">
 					<tr th:each="detail : ${reservation.reservationdetails}">
 						<td th:text="${detail.book.title}">本のタイトル</td>
+						<td th:text="${reservation.reservationDate}">予約日</td>
 						<td><span class="badge badge-reserved" th:text="${detail.status}">予約中</span></td>
 					</tr>
 				</th:block>
