@@ -24,11 +24,11 @@
 		
 		<div class="main">	
 			
-			<h1>お知らせ一覧</h1>
+			<h1>📺お知らせ一覧</h1>
 			
 	
 			<form action="/admin/announcement/add" method="get">
-				<button class="btn">お知らせ追加</button>
+				<button class="btn-back" type="submit">お知らせ追加</button>
 			</form>
 	
 			<div class="table-container">
@@ -42,9 +42,9 @@
 				<tbody>
 				<tr th:each="announce : ${news}">
 					<td>[[${announce.content}]]</td>
-					<td>
+					<td style="text-align: center;">
 						<form th:action="|/admin/announcement/${announce.id}/delete|" method="post">
-							<button class="btn">削除</button>
+							<button class="btn-delete">削除</button>
 						</form>
 					</td>
 				</tr>

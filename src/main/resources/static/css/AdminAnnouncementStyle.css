@@ -52,23 +52,13 @@ body {
 	background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* 本文エリア（中央寄せ） */
+/* 本文 */
 .main {
-	flex: 1;
-	padding: 30px;
+	flex: 1; 
+	padding: 30px; 
 	min-width: 0;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-/* 本文内のコンテンツ幅を制限して中央に配置 */
-.main h1,
-.main .btn,
-.main form,
-.main .demo-info {
-	width: 100%;
-	max-width: 600px;
+	max-width: 1000px; 
+	margin: 0 auto;
 }
 
 /* 見出し・ボタン*/
@@ -80,23 +70,15 @@ h1 {
 	padding-bottom: 10px;
 }
 
-.btn {
-	display: inline-block;
-	padding: 10px 20px;
-	background-color: #0097D4;
-	color: white;
-	text-decoration: none;
-	border-radius: 4px;
-	font-weight: bold;
-	margin-bottom: 20px;
+/* 戻るボタン */
+.btn-back {
+	display: inline-block; padding: 10px 20px;
+	background-color: #0097D4; color: white; text-decoration: none;
+	border-radius: 4px; font-weight: bold; margin-bottom: 20px;
 	transition: background-color 0.3s;
 }
 
-.btn:hover {
-	background-color: #0077B6;
-}
-
-
+.btn-back:hover { background-color: #0077B6; }
 
 /* 登録ボタン */
 form button[type="submit"] {
@@ -114,6 +96,19 @@ form button[type="submit"] {
 form button[type="submit"]:hover {
 	background-color: #0077B6;
 }
+
+
+/* 操作ボタン */
+.btn-delete, 
+table form button {
+	padding: 6px 14px; border: none; border-radius: 4px;
+	cursor: pointer; font-weight: bold; font-size: 13px;
+	transition: background-color 0.3s;
+}
+.btn-delete, table form button {
+	background-color: #d32f2f; color: white;
+}
+.btn-delete:hover, table form button:hover { background-color: #c62828; }
 
 /* テーブル */
 .table-container { overflow-x: auto; }
