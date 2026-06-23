@@ -167,7 +167,7 @@ public class ReservationController {
 					return "myReservations"; // ★redirectしない
 				}
 
-				details.add(new Reservationdetail(reservation, book, false));
+				details.add(new Reservationdetail(reservation, book, !book.isLoans(), false));
 			}
 
 			if (!details.isEmpty()) {

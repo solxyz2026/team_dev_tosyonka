@@ -23,15 +23,10 @@ public interface RentalRepository extends JpaRepository<Rental, Integer> {
 
 	//貸し出し履歴
 	List<Rental> findByUserId(Integer userId);
+
 	//名前で絞り込み（貸し出し中のもの）
 	List<Rental> findByReturnDateIsNullAndUser_NameContaining(String name);
-	
+
 	Rental findFirstByOrderByIdDesc();
-	
-	@Override
-	default long count() {
-		// TODO 自動生成されたメソッド・スタブ
-		return 0;
-	}
 
 }

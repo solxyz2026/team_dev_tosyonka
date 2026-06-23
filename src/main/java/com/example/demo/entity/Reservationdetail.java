@@ -51,6 +51,13 @@ public class Reservationdetail {
 		this.reservationStatus = reservationStatus;
 	}
 
+	public Reservationdetail(Reservation reservation, Book book, boolean reservationStatus, boolean deleteJudge) {
+		this.reservation = reservation;
+		this.book = book;
+		this.reservationStatus = reservationStatus;
+		this.deleteJudge = deleteJudge;
+	}
+
 	//ゲッターセッター
 	public Integer getId() {
 		return id;
