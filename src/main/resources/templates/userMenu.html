@@ -74,16 +74,18 @@
 			<table border="1">
 			    <tr>
 			        <th>本のタイトル</th>
+					<th>予約日</th>
 			        <th>状況</th>
 			    </tr>
 
 			    <!-- 予約データ表示 -->
-			    <th:block th:each="reservationList : ${reservationsList}">
-			        <tr th:each="reservationdetails : ${reservationList.reservationdetails}">
-			            <td>[[${reservationdetails.book.title}]]</td>
-			            <td>[[${reservationdetails.status}]]</td>
-			        </tr>
-			    </th:block>
+				<th:block th:each="detail : ${reservationsList}">
+				<tr>
+					<td th:text="${detail.book.title}"></td>
+					<td th:text="${detail.reservation.reservationDate}"></td>
+					<td th:text="${detail.status}"></td>
+			    </tr>
+				</th:block>
 
 			    <!-- 予約がない場合 -->
 			    <tr th:if="${reservationsList == null || reservationsList.isEmpty()}">

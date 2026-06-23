@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demo.entity.Announcement;
 import com.example.demo.entity.Rental;
 import com.example.demo.entity.Rentaldetail;
-import com.example.demo.entity.Reservation;
 import com.example.demo.entity.Reservationdetail;
 import com.example.demo.model.Account;
 import com.example.demo.repository.AnnouncementRepository;
 import com.example.demo.repository.RentalRepository;
 import com.example.demo.repository.ReservationRepository;
+import com.example.demo.repository.ReservationdetailRepository;
 
 import tools.jackson.databind.ObjectMapper;
 
@@ -38,7 +39,9 @@ public class UserMenuController {
 	private final AnnouncementRepository announcementRepository;
 	private final ReservationRepository reservationRepository;
 	private final RentalRepository rentalRepository;
-
+	
+	@Autowired
+	private ReservationdetailRepository reservationdetailRepository;
 	// JSON変換用（Spring Boot標準のJackson）
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -66,14 +69,11 @@ public class UserMenuController {
 		// ========================================
 		// 予約内容の取得
 		// ========================================
-		List<Reservation> reservationsList = reservationRepository.findByUserId(userId);
+		List<Reservationdetail> reservationsList = reservationdetailRepository
+				.findByReservation_User_IdAndDeleteJudgeFalse(userId);
 		model.addAttribute("reservationsList", reservationsList);
 
-		if (reservationsList.size() != 0) {
-			List<Reservationdetail> detail = reservationsList.get(0).getReservationdetails();
-			model.addAttribute("detail", detail);
-		}
-
+		
 		// ========================================
 		// 翌日返却日の本の取得（リマインダー用）
 		// ========================================
