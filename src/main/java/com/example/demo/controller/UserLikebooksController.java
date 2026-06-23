@@ -49,6 +49,12 @@ public class UserLikebooksController {
 	public String add(
 			@PathVariable Integer bookId, Model model) {
 		Integer userId = account.getId();
+
+		List<Likebook> likebook = likebookRepository.findByUserIdAndBookIdAndDeleteJudge(userId, bookId, false);
+		if (likebook.size() != 0) {
+			return "redirect:/user/books/" + bookId;
+		}
+
 		User user = userRepository.findById(userId).get();
 		Book book = bookRepository.findById(bookId).get();
 		Likebook addLikebook = new Likebook(user, book, false);
