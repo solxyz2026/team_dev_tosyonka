@@ -66,6 +66,7 @@ body {
 .main h1,
 .main .btn,
 .main form,
+.main .error-list,
 .main .demo-info {
 	width: 100%;
 	max-width: 600px;
@@ -96,6 +97,23 @@ h1 {
 
 .btn:hover {
 	background-color: #0077B6;
+}
+
+/* ========================================
+   エラーメッセージ
+   ======================================== */
+.error-list {
+	background-color: #ffebee;
+	border-left: 4px solid #d32f2f;
+	color: #d32f2f;
+	padding: 15px 15px 15px 35px;
+	border-radius: 4px;
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+
+.error-list li {
+	margin: 5px 0;
 }
 
 /* ========================================

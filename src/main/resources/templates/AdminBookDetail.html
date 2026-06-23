@@ -70,13 +70,12 @@
 			</div>
 
 			<!-- レビュー -->
-			<p>レビュー</p>
 			<table border="1">
 				<tr th:each="review:${reviews}">
 					<td><img src="/image/kkrn_icon_user_1.png" alt="画像なし" class="icon">　[[${review.bookReview}]]</td>
 					<td>
 						<form th:action="|/admin/reviews/${review.id}/delete|" method="post" onsubmit="return keikoku();">
-							<button>削除</button>
+							<button class="btn btn-delete">削除</button>
 						</form>
 					</td>
 				</tr>
