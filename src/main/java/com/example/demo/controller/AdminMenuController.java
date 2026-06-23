@@ -20,15 +20,27 @@ import com.example.demo.entity.Book;
 import com.example.demo.entity.CartItem;
 import com.example.demo.entity.Rental;
 import com.example.demo.entity.Rentaldetail;
+import com.example.demo.entity.Reservationdetail;
 import com.example.demo.entity.User;
+import com.example.demo.repository.AnnouncementRepository;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.RentalRepository;
 import com.example.demo.repository.RentaldetailRepository;
+import com.example.demo.repository.ReservationRepository;
+import com.example.demo.repository.ReservationdetailRepository;
 import com.example.demo.repository.UserRepository;
 
 @RequestMapping("/admin")
 @Controller
 public class AdminMenuController {
+
+	private final AnnouncementRepository announcementRepository;
+
+	private final Rental rental;
+
+	private final ReservationController reservationController;
+
+	private final Reservationdetail reservationdetail;
 
 	@Autowired
 	private RentalRepository rentalRepository;
@@ -42,9 +54,23 @@ public class AdminMenuController {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private ReservationRepository reservationRepository;
+
+	@Autowired
+	private ReservationdetailRepository reservationdetailRepository;
+
 	private static final String SESSION_RENTAL_CART = "rentalCart";
 	private static final String SESSION_MESSAGE = "message";
 	private static final String SESSION_ERROR = "error";
+
+	AdminMenuController(Reservationdetail reservationdetail, ReservationController reservationController, Rental rental,
+			AnnouncementRepository announcementRepository) {
+		this.reservationdetail = reservationdetail;
+		this.reservationController = reservationController;
+		this.rental = rental;
+		this.announcementRepository = announcementRepository;
+	}
 
 	/**
 	 * GET /admin/ - 管理者ホーム画面（貸し出し画面）
@@ -250,6 +276,37 @@ public class AdminMenuController {
 
 			System.out.println("✅ ユーザー確認: " + user.getName());
 
+			for (CartItem item : rentalCart) {
+
+				Reservationdetail reservation = reservationdetailRepository
+						.findByBookIdAndReservationStatusFalse(
+								item.getBookId())
+						.orElse(null);
+
+				if (!(reservation == null)) {
+
+					Integer reservedUserId = reservation
+							.getReservation()
+							.getUser()
+							.getId();
+
+					if (!reservedUserId.equals(userId)) {
+
+						session.setAttribute(
+								SESSION_ERROR,
+								"予約者以外には貸し出せません");
+
+						return "redirect:/admin/";
+					}
+					if (reservedUserId.equals(userId)) {
+						reservation.setReservationStatus(true);
+						reservationdetailRepository.save(reservation);
+
+						System.out.println("予約を消化しました");
+					}
+				}
+			}
+
 			// 3. Rental を作成
 			Rental rental = new Rental();
 			rental.setUser(user);
@@ -287,8 +344,8 @@ public class AdminMenuController {
 			// 5. カートをクリア
 			rentalCart.clear();
 
-			session.setAttribute(SESSION_MESSAGE, 
-				successCount + "冊の貸し出しが完了しました（Rental ID: " + rental.getId() + "）");
+			session.setAttribute(SESSION_MESSAGE,
+					successCount + "冊の貸し出しが完了しました（Rental ID: " + rental.getId() + "）");
 
 		} catch (Exception e) {
 			System.out.println("❌ エラー: " + e.getMessage());
@@ -345,8 +402,8 @@ public class AdminMenuController {
 
 			System.out.println("✅ 返却処理完了");
 
-			session.setAttribute(SESSION_MESSAGE, 
-				(details != null ? details.size() : 0) + "冊の返却が完了しました");
+			session.setAttribute(SESSION_MESSAGE,
+					(details != null ? details.size() : 0) + "冊の返却が完了しました");
 
 		} catch (Exception e) {
 			System.out.println("❌ エラー: " + e.getMessage());

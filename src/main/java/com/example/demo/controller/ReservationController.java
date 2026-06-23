@@ -212,9 +212,11 @@ public class ReservationController {
 
 		// キーワードがあれば名前で絞り込み
 		if (keyword != null && !keyword.isBlank()) {
-			reservationsList = reservationRepository.findByUser_NameContaining(keyword.trim());
+			reservationsList = reservationRepository
+					.findByUser_NameAndReservationdetails_ReservationStatusFalseOrderByUser_IdAsc(keyword.trim());
 		} else {
-			reservationsList = reservationRepository.findAll();
+			reservationsList = reservationRepository
+					.findDistinctByReservationdetails_ReservationStatusFalseOrderByUser_IdAsc();
 		}
 		System.out.println(reservationsList.size());
 

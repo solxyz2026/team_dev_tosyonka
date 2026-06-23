@@ -12,6 +12,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
 	//予約確定
 	List<Reservation> findByReservationDate(LocalDate today);
+
 	//名前で絞り込み
-	List<Reservation> findByUser_NameContaining(String name);
+	List<Reservation> findByUser_NameAndReservationdetails_ReservationStatusFalseOrderByUser_IdAsc(String name);
+
+	//reservationStatusがfalseのもののみ表示（予約が完了していないもののみ）
+	List<Reservation> findDistinctByReservationdetails_ReservationStatusFalseOrderByUser_IdAsc();
 }
