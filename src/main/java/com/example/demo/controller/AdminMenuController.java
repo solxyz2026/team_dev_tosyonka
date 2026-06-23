@@ -334,7 +334,7 @@ public class AdminMenuController {
 			if (currentCount + cartCount > MAX_RENTAL) {
 				session.setAttribute(SESSION_ERROR,
 						"貸出は一人" + MAX_RENTAL + "冊までです（現在" + currentCount
-						+ "冊借りています。あと" + (MAX_RENTAL - currentCount) + "冊借りられます）");
+								+ "冊借りています。あと" + (MAX_RENTAL - currentCount) + "冊借りられます）");
 				return "redirect:/admin/";
 			}
 
@@ -387,8 +387,11 @@ public class AdminMenuController {
 					// 予約者本人の貸出なら予約を消化
 					if (reservedUserId.equals(userId)) {
 						System.out.println("処理済みに変更");
+						// 予約消化済み
+						reservationDetail.setDeleteJudge(true);
 
-						reservationDetail.setDeleteJudge(true); // ★追加：処理済みに変更
+						// 貸出可能状態を解除
+						reservationDetail.setReservationStatus(false);
 						reservationdetailRepository.save(reservationDetail);
 					}
 				});
@@ -449,12 +452,30 @@ public class AdminMenuController {
 
 			if (details != null && !details.isEmpty()) {
 				for (Rentaldetail detail : details) {
-					Book book = detail.getBook();
-					System.out.println("  返却中：" + book.getTitle());
 
-					// 貸出フラグを戻す
+					Book book = detail.getBook();
+
+					System.out.println("返却中：" + book.getTitle());
+
+					// 本を貸出可能に戻す
 					book.setLoans(false);
 					bookRepository.save(book);
+					Optional<Reservationdetail> optReservation = reservationdetailRepository
+							.findByBookIdAndDeleteJudgeFalse(
+									book.getId());
+
+					if (optReservation.isPresent()) {
+
+						Reservationdetail reservationDetail = optReservation.get();
+
+						reservationDetail.setReservationStatus(true);
+
+						reservationdetailRepository.save(reservationDetail);
+
+						System.out.println(
+								"予約者へ貸出可能状態に変更 : "
+										+ book.getTitle());
+					}
 				}
 			}
 
