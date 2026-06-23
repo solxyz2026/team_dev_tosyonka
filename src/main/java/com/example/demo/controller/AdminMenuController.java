@@ -174,7 +174,7 @@ public class AdminMenuController {
 			}
 			// ★★★ ここまで ★★★
 			Reservationdetail reservation = reservationdetailRepository
-					.findByBookIdAndReservationStatusFalse(bookId)
+					.findByBookIdAndDeleteJudgeFalse(bookId)
 					.orElse(null);
 
 			if (reservation != null) {
@@ -182,7 +182,7 @@ public class AdminMenuController {
 				System.out.println("📌 予約あり: ID=" + reservedUser.getId() + " " + reservedUser.getName());
 				session.setAttribute(SESSION_RESERVED,
 						"⚠️「" + book.getTitle() + "」は ID=" + reservedUser.getId()
-						+ " の " + reservedUser.getName() + " さんが予約しています");
+								+ " の " + reservedUser.getName() + " さんが予約しています");
 			}
 			// 4. CartItem を作成
 			CartItem item = new CartItem();
