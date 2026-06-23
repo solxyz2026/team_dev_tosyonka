@@ -4,9 +4,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Book;
+import com.example.demo.entity.Rentaldetail;
 import com.example.demo.entity.Reservation;
 import com.example.demo.entity.Reservationdetail;
 import com.example.demo.entity.User;
 import com.example.demo.model.Account;
 import com.example.demo.repository.BookRepository;
+import com.example.demo.repository.RentaldetailRepository;
 import com.example.demo.repository.ReservationRepository;
 import com.example.demo.repository.ReservationdetailRepository;
 import com.example.demo.repository.UserRepository;
@@ -27,26 +31,25 @@ import com.example.demo.repository.UserRepository;
 @Controller
 public class ReservationController {
 
-	private final Account account;
-	private final BookRepository bookRepository;
-	private final ReservationRepository reservationRepository;
-	private final UserRepository userRepository;
-	private final ReservationdetailRepository reservationdetailRepository;
+	@Autowired
+	private Account account;
+
+	@Autowired
+	private BookRepository bookRepository;
+
+	@Autowired
+	private ReservationRepository reservationRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private ReservationdetailRepository reservationdetailRepository;
+
+	@Autowired
+	private RentaldetailRepository rentaldetailRepository;
 
 	private static final String SESSION_RESERVATION_CART = "reservationCart";
-
-	public ReservationController(Account account,
-			BookRepository bookRepository,
-			ReservationRepository reservationRepository,
-			UserRepository userRepository,
-			ReservationdetailRepository reservationdetailRepository) {
-
-		this.account = account;
-		this.bookRepository = bookRepository;
-		this.reservationRepository = reservationRepository;
-		this.userRepository = userRepository;
-		this.reservationdetailRepository = reservationdetailRepository;
-	}
 
 	/**
 	 * 予約カートに追加
@@ -156,6 +159,16 @@ public class ReservationController {
 			List<Reservationdetail> details = new ArrayList<>();
 
 			for (Book book : cart) {
+
+				Optional<Rentaldetail> rentaldetailOptional = rentaldetailRepository
+						.findByBook_IdAndRental_User_IdAndRental_ReturnDateIsNull(book.getId(), account.getId());
+
+				if (rentaldetailOptional.isPresent()) {
+					model.addAttribute("books", cart);
+					model.addAttribute("error", "借りている本を返してから予約してください");
+
+					return "myReservations";
+				}
 
 				// ★ここが重要：すでに予約されている本はスキップ or エラー
 				boolean alreadyReserved = reservationdetailRepository
