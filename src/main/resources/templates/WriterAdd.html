@@ -33,8 +33,6 @@
 				<li th:each="data:${errors}">[[${data}]]</li>
 			</ul>
 
-			<!-- 戻るボタン -->
-			<a class="btn-back" th:href="@{/admin/}">管理者メニューに戻る</a>
 
 			<!-- 著者追加フォーム -->
 			<form action="/admin/writers" method="post">
