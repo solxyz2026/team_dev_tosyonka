@@ -244,3 +244,44 @@ a:hover {
 		text-align: center;
 	}
 }
+
+/* お気に入りフォーム */
+.like-form {
+	display: inline-block;
+}
+
+/* お気に入りボタン */
+.like-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	background-color: #ffffff;
+	color: #e57373;
+	border: 2px solid #e57373;
+	border-radius: 25px;
+	padding: 10px 20px;
+	font-size: 15px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.like-icon {
+	font-size: 18px;
+	line-height: 1;
+}
+
+.like-text {
+	line-height: 1;
+}
+
+.like-btn:hover {
+	background-color: #e57373;
+	color: #ffffff;
+	box-shadow: 0 2px 8px rgba(229, 115, 115, 0.4);
+	transform: translateY(-2px);
+}
+
+.like-btn:active {
+	transform: translateY(0);
+}

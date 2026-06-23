@@ -26,10 +26,12 @@
 			<!-- タイトル -->
 			<h1 th:text="${book.title}">本のタイトル</h1>
 			
-			<form th:action="|/user/likebook/${book.id}/add|" method="post">
-				<button>♡</button>
+			<form th:action="|/user/likebook/${book.id}/add|" method="post" class="like-form">
+			    <button type="submit" class="like-btn">
+			        <span class="like-icon">♡</span>
+			        <span class="like-text">お気に入り</span>
+			    </button>
 			</form>
-
 			<!-- 詳細情報テーブル -->
 			<table>
 				<tr>
