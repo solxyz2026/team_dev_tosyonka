@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,16 +45,18 @@ public class WriterController {
 
 		//		List<String> errors = new ArrayList<>();
 
-		ArrayList<String> errors = new ArrayList<>();
+		//		ArrayList<String> errors = new ArrayList<>();
 
 		if (writerName.equals("")) {
-			errors.add("著者名が未入力です");
+			//			errors.add("著者名が未入力です");
+			model.addAttribute("errorWriterName", "著者名が入力されていません");
 		}
 		if (writerDescription.equals("")) {
-			errors.add("著者紹介文が未入力です");
+			//			errors.add("著者紹介文が未入力です");
+			model.addAttribute("errorWriterDescription", "著者紹介文が入力されていません");
 		}
-		if (errors.size() > 0) {
-			model.addAttribute("errors", errors);
+		if (writerName.equals("") || writerDescription.equals("")) {
+			//			model.addAttribute("errors", errors);
 			model.addAttribute("writerName", writerName);
 			model.addAttribute("writerDescription", writerDescription);
 			return "WriterAdd";
@@ -113,7 +114,6 @@ public class WriterController {
 	//		return "";//○○（本のタイトル）の画面へ(←未入力)
 	//	}
 
-	
 	//著者一覧画面へ（名前で絞り込み可能）
 	@GetMapping("/writers/list")
 	public String writerList(
