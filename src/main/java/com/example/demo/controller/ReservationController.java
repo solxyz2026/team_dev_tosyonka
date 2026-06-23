@@ -213,10 +213,10 @@ public class ReservationController {
 		// キーワードがあれば名前で絞り込み
 		if (keyword != null && !keyword.isBlank()) {
 			reservationsList = reservationRepository
-					.findByUser_NameAndReservationdetails_ReservationStatusFalseOrderByUser_IdAsc(keyword.trim());
+					.findByUser_NameAndReservationdetails_DeleteJudgeFalseOrderByUser_IdAsc(keyword.trim());
 		} else {
 			reservationsList = reservationRepository
-					.findDistinctByReservationdetails_ReservationStatusFalseOrderByUser_IdAsc();
+					.findDistinctByReservationdetails_DeleteJudgeFalseOrderByUser_IdAsc();
 		}
 		System.out.println(reservationsList.size());
 
