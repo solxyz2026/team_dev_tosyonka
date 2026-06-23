@@ -115,6 +115,28 @@ form button[type="submit"]:hover {
 	background-color: #0077B6;
 }
 
+/* テーブル */
+.table-container { overflow-x: auto; }
+table {
+	width: 100%; border-collapse: collapse; margin: 10px 0;
+	background-color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+	border-radius: 6px; overflow: hidden;
+}
+table th {
+	padding: 12px; text-align: left; font-weight: bold;
+	background-color: #004B7A; color: #ffffff;
+	border-right: 1px solid #0077B6;
+}
+table th:last-child { border-right: none; }
+table td {
+	padding: 12px; border: 1px solid #ddd; color: #333;
+}
+table tbody tr:nth-child(even) { background-color: #f9f9f9; }
+table tbody tr:hover { background-color: #e8f4f8; transition: background-color 0.2s ease; }
+
+table ul { margin: 0; padding-left: 18px; }
+table ul li { margin: 3px 0; }
+
 /*レスポンシブ*/
 
 @media (max-width: 768px) {

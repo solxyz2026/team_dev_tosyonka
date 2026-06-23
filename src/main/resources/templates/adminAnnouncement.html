@@ -23,17 +23,23 @@
 		</div>
 		
 		<div class="main">	
+			
 			<h1>お知らせ一覧</h1>
+			
 	
 			<form action="/admin/announcement/add" method="get">
 				<button class="btn">お知らせ追加</button>
 			</form>
 	
-			<table border="1">
+			<div class="table-container">
+			<table>
+				<thead>
 				<tr>
 					<th>お知らせ</th>
 					<th>削除</th>
 				</tr>
+				</thead>
+				<tbody>
 				<tr th:each="announce : ${news}">
 					<td>[[${announce.content}]]</td>
 					<td>
@@ -42,7 +48,9 @@
 						</form>
 					</td>
 				</tr>
+				</tbody>
 			</table>
+			</div>
 		</div>
 	</div>
 	
