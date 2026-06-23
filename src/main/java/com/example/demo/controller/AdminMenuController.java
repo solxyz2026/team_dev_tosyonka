@@ -455,6 +455,18 @@ public class AdminMenuController {
 					// 貸出フラグを戻す
 					book.setLoans(false);
 					bookRepository.save(book);
+
+					// この本に有効な予約があれば「貸し出し可」に変更
+					Reservationdetail reservation = reservationdetailRepository
+							.findByBookIdAndDeleteJudgeFalse(book.getId())
+							.orElse(null);
+
+					if (reservation != null) {
+						reservation.setReservationStatus(true);  // 返却待ち → 貸し出し可
+						reservationdetailRepository.save(reservation);
+						System.out.println("  📌 予約を「貸し出し可」に更新: " + book.getTitle());
+					}
+					// ★★★ ここまで ★★★
 				}
 			}
 
