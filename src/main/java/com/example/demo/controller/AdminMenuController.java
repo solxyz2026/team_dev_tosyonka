@@ -63,6 +63,7 @@ public class AdminMenuController {
 	private static final String SESSION_RENTAL_CART = "rentalCart";
 	private static final String SESSION_MESSAGE = "message";
 	private static final String SESSION_ERROR = "error";
+	private static final String SESSION_RESERVED = "reserved";
 
 	AdminMenuController(Reservationdetail reservationdetail, ReservationController reservationController, Rental rental,
 			AnnouncementRepository announcementRepository) {
@@ -98,6 +99,10 @@ public class AdminMenuController {
 		if (session.getAttribute(SESSION_ERROR) != null) {
 			model.addAttribute("error", session.getAttribute(SESSION_ERROR));
 			session.removeAttribute(SESSION_ERROR);
+		}
+		if (session.getAttribute(SESSION_RESERVED) != null) {
+			model.addAttribute("reserved", session.getAttribute(SESSION_RESERVED));
+			session.removeAttribute(SESSION_RESERVED);
 		}
 
 		// ★★★ 【新規追加】直近の貸し出し情報を取得 ★★★
@@ -167,7 +172,17 @@ public class AdminMenuController {
 				return "redirect:/admin/";
 			}
 			// ★★★ ここまで ★★★
+			Reservationdetail reservation = reservationdetailRepository
+					.findByBookIdAndReservationStatusFalse(bookId)
+					.orElse(null);
 
+			if (reservation != null) {
+				User reservedUser = reservation.getReservation().getUser();
+				System.out.println("📌 予約あり: ID=" + reservedUser.getId() + " " + reservedUser.getName());
+				session.setAttribute(SESSION_RESERVED,
+						"⚠️「" + book.getTitle() + "」は ID=" + reservedUser.getId()
+						+ " の " + reservedUser.getName() + " さんが予約しています");
+			}
 			// 4. CartItem を作成
 			CartItem item = new CartItem();
 			item.setBookId(book.getId());

@@ -36,7 +36,9 @@
 			<div th:if="${error != null}" class="message error">
 				❌ [[${error}]]
 			</div>
-
+			<div th:if="${reserved != null}" class="message reserved-warning">
+							[[${reserved}]]
+						</div>
 			<h2>📚 本をカートに追加</h2>
 
 			<div class="form-section">
