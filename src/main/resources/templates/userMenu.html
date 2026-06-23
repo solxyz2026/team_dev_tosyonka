@@ -96,7 +96,7 @@
 			<div class="info-box">
 				<strong>アクセス</strong>&nbsp;&nbsp;○○県○○町1－1－1<br>
 				<strong>営業時間</strong>&nbsp;&nbsp;9:00 ～ 17:00<br>
-				<strong>定休日</strong>&nbsp;&nbsp;月曜日（祝日除く）、第二木曜日
+				<strong>定休日</strong>&nbsp;&nbsp;月曜日
 			</div>
 
 			<!--図書館説明-->
@@ -257,7 +257,7 @@
 
 							if (this.isSameDate(dayCount, year, month)) {
 								cellClass += ' today';
-								cellContent += '<div class="today-indicator">今日</div>';
+								cellContent += '<div class="today-indicator">本日</div>';
 							}
 
 							// 返却期限の本の冊数を取得
@@ -266,9 +266,9 @@
 								cellClass += ' has-deadline';
 								// 2冊以上のときは冊数を表示
 								if (count >= 2) {
-									cellContent += `<div class="deadline-indicator">◆<span class="deadline-count">×${count}</span></div>`;
+									cellContent += `<div class="deadline-indicator" style="color: red;">◆<span class="deadline-count">×${count}</span></div>`;
 								} else {
-									cellContent += '<div class="deadline-indicator">◆</div>';
+									cellContent += '<div class="deadline-indicator" style="color: red;">◆</div>';
 								}
 							}
 
