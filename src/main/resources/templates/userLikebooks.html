@@ -20,7 +20,7 @@
 	</div>
 	
 	
-	<h1>お気に入り一覧</h1>
+	<h1>お気に入り</h1>
 	
 	<div class="main-container">
 		<div class="container">
@@ -35,7 +35,7 @@
 		</tr>
 		<th:block th:each="likebook : ${likebookList}">
 			<tr th:each="book : ${likebook.book}">
-				<td th:text="${book.title}">本のタイトル</td>
+				<td><a th:href="@{/user/books/{book_id}(book_id=${book.id})}" th:text="${book.title}"></a></td>
 				<td th:text="${book.writer.writerName}">本の著者</td>
 				<td th:text="${book.category.categoryName}">本のカテゴリー</td>
 				<td>
