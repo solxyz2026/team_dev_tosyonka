@@ -3,17 +3,18 @@ package com.example.demo.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.entity.Rental;
-import com.example.demo.entity.Reservation;
 import com.example.demo.entity.Reservationdetail;
 import com.example.demo.model.Account;
 import com.example.demo.repository.RentalRepository;
 import com.example.demo.repository.ReservationRepository;
+import com.example.demo.repository.ReservationdetailRepository;
 
 /**
  * マイページコントローラー
@@ -26,6 +27,9 @@ public class MyPageController {
 	private final Account account;
 	private final RentalRepository rentalRepository;
 	private final ReservationRepository reservationRepository;
+
+	@Autowired
+	private ReservationdetailRepository reservationdetailRepository;
 
 	public MyPageController(Account account, RentalRepository rentalRepository,
 			ReservationRepository reservationRepository) {
@@ -47,12 +51,9 @@ public class MyPageController {
 		// ========================================
 		// 予約内容の取得
 		// ========================================
-		List<Reservation> reservationsList = reservationRepository.findByUserId(userId);
+		List<Reservationdetail> reservationsList = reservationdetailRepository
+				.findByReservation_User_IdAndDeleteJudgeFalse(userId);
 		model.addAttribute("reservationsList", reservationsList);
-		if (reservationsList.size() != 0) {
-			List<Reservationdetail> detail = reservationsList.get(0).getReservationdetails();
-			model.addAttribute("detail", detail);
-		}
 
 		// ========================================
 		// 返却期限が切れた本の取得

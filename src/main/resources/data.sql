@@ -222,13 +222,13 @@ VALUES
 (8, '2026-06-14');
 
 INSERT INTO reservationdetails
-(reservation_id, book_id, reservation_status)
+(reservation_id, book_id, reservation_status, delete_judge)
 VALUES
-(1, 2, FALSE),
-(2, 8, FALSE),
-(3, 22, FALSE),
-(4, 30, FALSE),
-(5, 34, FALSE),
-(6, 36, FALSE),
-(7, 40, FALSE),
-(8, 42, FALSE);
+(1, 2, FALSE,FALSE),
+(2, 8, FALSE,FALSE),
+(3, 22, FALSE,FALSE),
+(4, 30, FALSE,FALSE),
+(5, 34, FALSE,FALSE),
+(6, 36, FALSE,FALSE),
+(7, 40, FALSE,FALSE),
+(8, 42, FALSE,FALSE);

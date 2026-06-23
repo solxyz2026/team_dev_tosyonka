@@ -29,7 +29,10 @@ public class Reservationdetail {
 	private Book book; //本ID booksテーブルのid
 
 	@Column(name = "reservation_status")
-	private Boolean reservationStatus; //t:貸し出し可 f:返却待ち
+	private boolean reservationStatus; //t:貸し出し可 f:返却待ち
+
+	@Column(name = "delete_judge")
+	private boolean deleteJudge;
 
 	//コンストラクタ
 	public Reservationdetail() {
@@ -73,11 +76,11 @@ public class Reservationdetail {
 		this.book = book;
 	}
 
-	public Boolean getReservationStatus() {
+	public boolean getReservationStatus() {
 		return reservationStatus;
 	}
 
-	public void setReservationStatus(Boolean reservationStatus) {
+	public void setReservationStatus(boolean reservationStatus) {
 		this.reservationStatus = reservationStatus;
 	}
 
@@ -86,6 +89,14 @@ public class Reservationdetail {
 			return "貸し出し可";
 		}
 		return "返却待ち";
+	}
+
+	public void setDeleteJudge(boolean deleteJudge) {
+		this.deleteJudge = deleteJudge;
+	}
+
+	public boolean getDeleteJudge() {
+		return deleteJudge;
 	}
 
 }
