@@ -32,7 +32,6 @@
 
 			<!-- ========================================
 			     カレンダーセクション
-			     ※ 期限データは data-deadlines 属性に埋め込む
 			     ======================================== -->
 			<div class="calendar-section">
 				<div class="calendar-wrap"
@@ -48,9 +47,10 @@
 					<!-- カレンダーテーブル -->
 					<div id="calendar-container"></div>
 
-					<!-- 注意書き（◆の説明） -->
+					<!-- 注意書き（◆と定休日の説明） -->
 					<div class="calendar-note">
 						<span class="note-mark">◆</span>＝返却期限
+						<span class="note-closed">■</span>＝定休日（月曜）
 					</div>
 				</div>
 			</div>
@@ -109,16 +109,12 @@
 
 	</div>
 
-	<!-- ========================================
-	     リマインダー用の隠しデータ要素
-	     ======================================== -->
+	<!-- リマインダー用の隠しデータ要素 -->
 	<div id="data-container" 
 	     th:attr="data-rental-size=${rentalSize}"
 	     style="display:none;"></div>
 
-	<!-- ========================================
-	     リマインダー用データ（th:inline版・単独scriptで隔離）
-	     ======================================== -->
+	<!-- リマインダー用データ -->
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		window.REMINDER_DATA = {
@@ -128,36 +124,26 @@
 		/*]]>*/
 	</script>
 
-	<!-- ========================================
-	     カレンダー機能（通常のscript・Thymeleaf非依存）
-	     ======================================== -->
+	<!-- カレンダー機能 -->
 	<script>
-		// ========================================
-		// カレンダー月移動機能
-		// ========================================
 		class InteractiveCalendar {
 			constructor() {
 				this.currentDate = new Date();
 				this.todayDate = new Date();
 
-				// DOM要素
 				this.monthYearDisplay = document.getElementById('calendar-month-year');
 				this.calendarContainer = document.getElementById('calendar-container');
 				this.prevBtn = document.getElementById('prev-month');
 				this.nextBtn = document.getElementById('next-month');
 
-				// 期限データを data属性から取得（JSON文字列をパース）
 				this.deadlinesByMonth = this.loadDeadlines();
 
-				// イベントリスナー設定
 				this.prevBtn.addEventListener('click', () => this.previousMonth());
 				this.nextBtn.addEventListener('click', () => this.nextMonth());
 
-				// 初期表示
 				this.render();
 			}
 
-			// data-deadlines 属性から期限データを読み込む
 			loadDeadlines() {
 				const dataEl = document.getElementById('calendar-data');
 				if (!dataEl) {
@@ -201,12 +187,10 @@
 				this.monthYearDisplay.textContent = `${year}年${monthStr}月`;
 			}
 
-			// その日に返却期限の本が何冊あるかを数える
 			getDeadlineCount(day, year, month) {
 				const monthKey = `${year}-${String(month + 1).padStart(2, '0')}`;
 				if (this.deadlinesByMonth[monthKey]) {
 					const list = this.deadlinesByMonth[monthKey];
-					// その日に一致する要素の数を数える（同日複数冊に対応）
 					return list.filter(d => d === String(day) || d === day).length;
 				}
 				return 0;
@@ -231,6 +215,8 @@
 						html += `<th class="day-header sunday">${label}</th>`;
 					} else if (index === 6) {
 						html += `<th class="day-header saturday">${label}</th>`;
+					} else if (index === 1) {
+						html += `<th class="day-header closed-header">${label}</th>`;
 					} else {
 						html += `<th class="day-header">${label}</th>`;
 					}
@@ -260,11 +246,9 @@
 								cellContent += '<div class="today-indicator">本日</div>';
 							}
 
-							// 返却期限の本の冊数を取得
 							const count = this.getDeadlineCount(dayCount, year, month);
 							if (count > 0) {
 								cellClass += ' has-deadline';
-								// 2冊以上のときは冊数を表示
 								if (count >= 2) {
 									cellContent += `<div class="deadline-indicator" style="color: red;">◆<span class="deadline-count">×${count}</span></div>`;
 								} else {
@@ -274,6 +258,11 @@
 
 							if (day === 0) cellClass += ' sunday';
 							if (day === 6) cellClass += ' saturday';
+							// 月曜日は定休日
+							if (day === 1) {
+								cellClass += ' closed-day';
+								cellContent += '<div class="closed-indicator">定休日</div>';
+							}
 
 							html += `<td class="${cellClass}">${cellContent}</td>`;
 							dayCount++;
@@ -302,9 +291,6 @@
 			}
 		}
 
-		// ========================================
-		// リマインド表示（アラート版）
-		// ========================================
 		function initReminder() {
 			const data = window.REMINDER_DATA || { rentalSize: 0, reminderBooks: [] };
 			const rentalSize = data.rentalSize;
@@ -321,9 +307,6 @@
 			}
 		}
 
-		// ========================================
-		// ページ読み込み完了時に初期化
-		// ========================================
 		document.addEventListener('DOMContentLoaded', () => {
 			console.log('【初期化】DOMContentLoaded');
 			try {
