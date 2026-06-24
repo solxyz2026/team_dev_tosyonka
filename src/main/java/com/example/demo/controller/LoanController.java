@@ -26,15 +26,7 @@ public class LoanController {
 		this.rentaldetailRepository = rentaldetailRepository;
 	}
 
-	/**
-	 * GET /admin/rental - 貸し出し状況一覧表示（名前で絞り込み可能）
-	 * 
-	 * 改善内容：
-	 * - @Transactional(readOnly=true) で Hibernateキャッシュを無効化
-	 * - 未返却の本のみ（returnDate IS NULL）を取得するクエリを使用
-	 * - 削除済みの本（deleteJudge = true）を除外
-	 * - 返却ボタンをクリック後、その本が一覧から消える
-	 */
+	
 	@Transactional(readOnly = true)
 	@GetMapping("/rental")
 	public String index(

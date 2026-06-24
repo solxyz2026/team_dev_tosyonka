@@ -79,11 +79,9 @@
 					</thead>
 					<tbody>
 						<th:block th:if="${rentalList != null && !rentalList.isEmpty()}" th:each="rental : ${rentalList}">
-							<!-- 
-								🔧 修正: 各本を個別の行に表示
+							<!--🔧 修正: 各本を個別の行に表示
 								✅ 削除済み本（deleteJudge = true）は除外
-								✅ 返却済み本（returnDate != null）は除外 ← ★★★重要★★★
-							-->
+								✅ 返却済み本（returnDate != null）は除外 							-->
 							<tr th:each="detail : ${rental.rentaldetail}" 
 								th:if="${detail.returnDate == null && !detail.book.deleteJudge}">
 								<td>[[${detail.book.title}]]</td>

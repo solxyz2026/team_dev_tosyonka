@@ -14,7 +14,7 @@ public interface RentalRepository extends JpaRepository<Rental, Integer> {
 	// 翌日に返却する本を取得
 	List<Rental> findByUserIdAndDropDate(Integer userId, LocalDate tomorrow);
 
-	// 🆕 修正: 未返却の本のみ（returnDate IS NULL）かつ、削除されていない本のみを取得
+	// 修正: 未返却の本のみ（returnDate IS NULL）かつ、削除されていない本のみを取得
 	@Query("SELECT DISTINCT r FROM Rental r " +
 	       "WHERE EXISTS (SELECT 1 FROM Rentaldetail rd " +
 	       "              WHERE rd.rental = r " +
@@ -22,7 +22,7 @@ public interface RentalRepository extends JpaRepository<Rental, Integer> {
 	       "              AND rd.book.deleteJudge = false)")
 	List<Rental> findByUnreturnedBooksOnly();
 
-	// 🆕 修正: 名前検索 + 未返却の本のみ
+	// 修正: 名前検索 + 未返却の本のみ
 	@Query("SELECT DISTINCT r FROM Rental r " +
 	       "WHERE r.user.name LIKE %:name% " +
 	       "AND EXISTS (SELECT 1 FROM Rentaldetail rd " +
