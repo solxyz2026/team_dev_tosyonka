@@ -101,7 +101,7 @@
 			<h3 class="review-title">レビュー</h3>
 			<table border="1">
 				<tr th:each="review:${reviews}">
-					<td><img src="/image/kkrn_icon_user_1.png" alt="画像なし" class="icon">　[[${review.bookReview}]]</td>
+					<td><img src="/image/kkrn_icon_user_1.png" alt="画像なし" class="icon">　[(${review.bookReview})]</td>
 				</tr>
 				<tr th:if="${reviews == null || reviews.isEmpty()}">
 					<td class="empty-review">まだレビューはありません。</td>
