@@ -303,7 +303,7 @@
 			console.log('【リマインダー】rentalSize:', rentalSize, 'books:', reminderBooks);
 
 			if (rentalSize > 0 && Array.isArray(reminderBooks) && reminderBooks.length > 0) {
-				let alertMessage = '【リマインド】\n明日までに以下の本を返却してください。\n\n';
+				let alertMessage = '【リマインド】\n本日までに以下の本を返却してください。\n\n';
 				reminderBooks.forEach(function(bookTitle) {
 					alertMessage += '・' + bookTitle + '\n';
 				});
