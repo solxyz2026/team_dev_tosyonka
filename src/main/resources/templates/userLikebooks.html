@@ -24,7 +24,13 @@
 	
 	<div class="main-container">
 		<div class="container">
-		
+			<!-- メッセージ -->
+		<div th:if="${msg}" class="message">
+		<span th:text="${msg}"></span>
+	   </div>
+
+		<!-- お気に入り本がある場合のみ表示 -->
+	<div th:if="${likebookList != null && !likebookList.isEmpty()}">
 			
 	<table border="1">
 		<tr>

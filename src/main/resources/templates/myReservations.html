@@ -22,42 +22,46 @@
 		<h1>予約</h1>
 	</header>
 
+	
 	<!-- メインコンテンツ -->
-	<div class="container">
-		
+		<div class="container">
 
-		<!-- メッセージ -->
-		<div th:if="${msg}" class="message">
-			<span th:text="${msg}"></span>
+			<!-- メッセージ -->
+			<div th:if="${msg}" class="message">
+				<span th:text="${msg}"></span>
+			</div>
+
+			<!-- 予約がある場合だけ表示 -->
+			<div th:if="${books != null && !books.isEmpty()}">
+				<!-- 予約一覧 -->
+				<div class="section-title">予約する本一覧</div>
+				<table border="1">
+					<tr>
+						<th>タイトル</th>
+						<th>著者</th>
+						<th>カテゴリー</th>
+						<th>削除</th>
+					</tr>
+					<tr th:each="book:${books}">
+						<td>[[${book.title}]]</td>
+						<td>[[${book.writer.writerName}]]</td>
+						<td>[[${book.category.categoryName}]]</td>
+						<td>
+							<form th:action="|/user/reservation/${book.id}/delete|" method="post">
+								<button type="submit">削除</button>
+							</form>
+						</td>
+					</tr>
+				</table>
+
+				<p th:text="${error}"></p>
+
+				<!-- 予約確定ボタン -->
+				<form action="/user/reservations" method="post">
+					<button type="submit" class="confirm-button">予約確定</button>
+				</form>
+			</div>
+
 		</div>
-
-		<!-- 予約一覧 -->
-		<div class="section-title">予約する本一覧</div>
-		<table border="1">
-			<tr>
-				<th>タイトル</th>
-				<th>著者</th>
-				<th>カテゴリー</th>
-				<th>削除</th>
-			</tr>
-			<tr th:each="book:${books}">
-				<td>[[${book.title}]]</td>
-				<td>[[${book.writer.writerName}]]</td>
-				<td>[[${book.category.categoryName}]]</td>
-				<td>
-					<form th:action="|/user/reservation/${book.id}/delete|" method="post">
-						<button type="submit">削除</button>
-					</form>
-				</td>
-			</tr>
-		</table>
-
-		<p th:text="${error}"></p>
-
-		<!-- 予約確定ボタン -->
-		<form action="/user/reservations" method="post">
-			<button type="submit" class="confirm-button">予約確定</button>
-		</form>
-	</div>
-</body>
-</html>
+	</body>
+	</html>

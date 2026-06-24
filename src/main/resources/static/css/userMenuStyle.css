@@ -764,14 +764,11 @@ a:hover {
 	font-size: 15px;
 }
 
-/* 
-   月曜定休日のスタイル
-   （このブロックを userMenuStyle.css の末尾に追加）
-  */
+/* 月曜定休日のスタイル */
 
 /* 曜日ヘッダーの月曜 */
 .calendar-table th.closed-header {
-	color: #c62828;
+	color: rgb(255, 255, 255);
 }
 
 /* 月曜日のセル（定休日） */
@@ -798,4 +795,13 @@ a:hover {
 	color: #c62828;
 	font-weight: bold;
 	margin-left: 12px;
+}
+.message {
+	background-color: #e8f5e9;
+	color: #1B5E20;
+	padding: 15px;
+	margin-bottom: 20px;
+	border-left: 4px solid #558B2F;
+	border-radius: 4px;
+	font-weight: bold;
 }

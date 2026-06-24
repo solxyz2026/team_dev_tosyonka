@@ -15,9 +15,7 @@ body {
 	display: flex;
 }
 
-/* ========================================
-   ヘッダー
-   ======================================== */
+/* ヘッダー */
 h1 {
 	position: fixed;
 	top: 0;
@@ -44,9 +42,7 @@ h1 {
 	padding-left: 20px;
 	font-weight: bold;
 }
-/* ========================================
-   左サイドバー（緑テーマ）
-   ======================================== */
+/*  左サイドバー */
 .sidebar {
 	position: fixed;
 	left: 0;
@@ -78,9 +74,7 @@ h1 {
 	color: #c8e6c9;
 }
 
-/* ========================================
-   メインコンテンツ
-   ======================================== */
+/* メインコンテンツ*/
 .main-container {
 	margin-left: 220px;
 	margin-top: 80px;
@@ -102,9 +96,7 @@ h2 {
 	padding-bottom: 10px;
 }
 
-/* ========================================
-   検索フォーム
-   ======================================== */
+/* 検索フォーム */
 .search-section {
 	margin-bottom: 20px;
 	padding: 20px;
@@ -164,9 +156,7 @@ h2 {
 	border-color: #1B5E20;
 }
 
-/* ========================================
-   ボタングループ
-   ======================================== */
+/* ボタングループ */
 .button-group {
 	margin-bottom: 20px;
 	display: flex;
@@ -188,9 +178,7 @@ h2 {
 	background-color: #1B5E20;
 }
 
-/* ========================================
-   テーブル
-   ======================================== */
+/* テーブル */
 table {
 	width: 100%;
 	border-collapse: collapse;
@@ -296,9 +284,7 @@ table form {
 	background-color: #c62828;
 }
 
-/* ========================================
-   レスポンシブ
-   ======================================== */
+/* レスポンシブ */
 @media (max-width: 768px) {
 	h1 {
 		position: relative;
@@ -366,4 +352,14 @@ table form {
 		padding: 6px;
 		font-size: 11px;
 	}
+}
+.message {
+	background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f3 100%);
+	color: #1B5E20;
+	padding: 18px 20px;
+	margin-bottom: 20px;
+	border-left: 5px solid #2E7D32;
+	border-radius: 4px;
+	font-weight: bold;
+	font-size: 15px;
 }

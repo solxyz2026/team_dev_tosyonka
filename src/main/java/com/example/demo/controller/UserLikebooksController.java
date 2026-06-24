@@ -41,7 +41,11 @@ public class UserLikebooksController {
 		Integer userId = account.getId();
 		List<Likebook> likebookList = likebookRepository.findByUserIdAndDeleteJudge(userId, false);
 		model.addAttribute("likebookList", likebookList);
+		if (likebookList.isEmpty()) {
+			model.addAttribute("msg", "お気に入り欄は空です");
+		}
 		return "userLikebooks";
+	
 	}
 
 	//お気に入り登録
