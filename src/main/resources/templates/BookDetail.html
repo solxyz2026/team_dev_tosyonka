@@ -9,6 +9,30 @@
 </head>
 
 <body>
+	<!-- 予約確認モーダル -->
+	<div id="reserve-modal" class="popup-overlay">
+		<div class="popup-content">
+			<div class="popup-header">
+				📚 予約確認
+			</div>
+			<div class="popup-body">
+				<p>
+					「<span th:text="${book.title}"></span>」
+					を予約カートへ追加しますか？
+				</p>
+			</div>
+			<div class="popup-footer">
+				<button class="popup-btn cancel-btn"
+					onclick="closeReserveModal()">
+					キャンセル
+				</button>
+				<a class="popup-btn confirm-btn"
+				   th:href="@{/user/reservation/{book_id}(book_id=${book.id})}">
+					追加する
+				</a>
+			</div>
+		</div>
+	</div>
 	<div class="container">
 		<!-- メッセージ表示 -->
 		<div th:if="${message}" class="message">
@@ -88,9 +112,9 @@
 			<div class="button-group">
 				<a th:href="|/user/${book.id}/review|" class="btn btn-reserve">✒️ レビューを書く</a>
 				<a class="btn btn-reserve"
-					th:href="@{/user/reservation/{book_id}(book_id=${book.id})}"
-					onclick="return confirm('この本を予約カートに追加しますか？')">
-					📌 予約カートに追加
+				   href="#"
+				   onclick="openReserveModal(event)">
+				   📌 予約カートに追加
 				</a>
 				<a class="btn" th:href="@{/user/reservations}">今すぐ予約する</a>
 				<a class="btn" th:href="@{/user/search}">検索ページに戻る</a>
@@ -98,6 +122,25 @@
 			</div>
 		</div>
 	</div>
+	
+	<script>
+	function openReserveModal(event) {
+		event.preventDefault();
+		document.getElementById("reserve-modal")
+			.classList.add("show");
+	}
+	function closeReserveModal() {
+		document.getElementById("reserve-modal")
+			.classList.remove("show");
+	}
+	window.onclick = function(event) {
+		const modal =
+			document.getElementById("reserve-modal");
+		if(event.target === modal){
+			closeReserveModal();
+		}
+	}
+	</script>
 </body>
 
 </html>
