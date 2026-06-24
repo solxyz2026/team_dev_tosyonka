@@ -167,7 +167,7 @@ public class ReservationController {
 
 				// ★ここが重要：すでに予約されている本はスキップ or エラー
 				boolean alreadyReserved = reservationdetailRepository
-						.existsByBookId(book.getId());
+						.existsByBook_IdAndDeleteJudgeFalse(book.getId());
 
 				if (alreadyReserved) {
 					model.addAttribute("books", cart);
@@ -215,20 +215,21 @@ public class ReservationController {
 			@RequestParam(name = "keyword", required = false) String keyword,
 			Model model) {
 
-		List<Reservation> reservationsList;
+		List<Reservationdetail> reservationDetails;
 
-		// キーワードがあれば名前で絞り込み
 		if (keyword != null && !keyword.isBlank()) {
-			reservationsList = reservationRepository
-					.findByUser_NameAndReservationdetails_DeleteJudgeFalseAndReservationdetails_Book_DeleteJudgeFalseOrderByUser_IdAsc(
-							keyword.trim());
-		} else {
-			reservationsList = reservationRepository
-					.findDistinctByReservationdetails_DeleteJudgeFalseAndReservationdetails_Book_DeleteJudgeFalseOrderByUser_IdAsc();
-		}
-		System.out.println(reservationsList.size());
 
-		model.addAttribute("reservationsList", reservationsList);
+			reservationDetails = reservationdetailRepository
+					.findByReservation_User_NameAndDeleteJudgeFalseAndBook_DeleteJudgeFalseOrderByReservation_User_IdAsc(
+							keyword.trim());
+
+		} else {
+
+			reservationDetails = reservationdetailRepository
+					.findByDeleteJudgeFalseAndBook_DeleteJudgeFalseOrderByReservation_User_IdAsc();
+		}
+
+		model.addAttribute("reservationDetails", reservationDetails);
 		model.addAttribute("keyword", keyword);
 
 		return "AdminReservationList";
@@ -239,11 +240,12 @@ public class ReservationController {
 			@PathVariable Integer id,
 			Model model) {
 
-		reservationdetailRepository.deleteById(id);
-		List<Reservationdetail> checkList = reservationdetailRepository.findByReservationId(id);
-		if (checkList.isEmpty()) {
-			reservationRepository.deleteById(id);
-		}
+		System.out.println(id);
+
+		Reservationdetail reservationDetailOptional = reservationdetailRepository.findById(id).orElse(null);
+		reservationDetailOptional.setDeleteJudge(true);
+		reservationdetailRepository.save(reservationDetailOptional);
+
 		return "redirect:/admin/reservations";
 
 	}

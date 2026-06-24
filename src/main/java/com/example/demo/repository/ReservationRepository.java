@@ -19,5 +19,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 	//reservationStatusがfalseのもののみ表示（予約が完了していないもののみ）
 	List<Reservation> findDistinctByReservationdetails_DeleteJudgeFalseAndReservationdetails_Book_DeleteJudgeFalseOrderByUser_IdAsc();
 
-	List<Reservation> findByUserId(Integer userId);
+	List<Reservation> findByUserIdAndReservationdetails_Book_DeleteJudgeFalse(Integer userId);
 }

@@ -6,11 +6,30 @@
 	<title>レビュー投稿フォーム</title>
 	<link rel="stylesheet" href="/css/ReviewStyle.css">
 	<script>
-		function keikoku() {
-			let judge = confirm("一度投稿したら編集・削除ができません。本当に投稿しますか？");
+		let reviewForm = null;
 
-			return judge;
+		function keikoku(event, form) {
+			event.preventDefault();
 
+			reviewForm = form;
+
+			document.getElementById("reviewModal")
+				.classList.add("show");
+
+			return false;
+		}
+
+		function closeReviewModal() {
+			document.getElementById("reviewModal")
+				.classList.remove("show");
+
+			reviewForm = null;
+		}
+
+		function submitReview() {
+			if (reviewForm) {
+				reviewForm.submit();
+			}
 		}
 	</script>
 
@@ -29,7 +48,9 @@
 	
 	<div class="container">
 	<h1>レビュー投稿フォーム</h1>
-	<form action="/user/reviews" method="post" onsubmit="return keikoku();">
+	<form action="/user/reviews"
+		method="post"
+		onsubmit="return keikoku(event,this);">
 		<div class="form-group">
 			<input type="hidden" name="bookId" th:value="${bookId}">
 			ニックネーム：<br>
@@ -42,6 +63,41 @@
 		<button>投稿</button>
 
 	</form>
+	</div>
+	<!-- ==========================
+	     レビュー投稿確認モーダル
+	     ========================== -->
+	<div id="reviewModal" class="custom-modal">
+		<div class="custom-modal-content">
+
+			<div class="custom-modal-header">
+				📝 レビュー投稿確認
+			</div>
+
+			<div class="custom-modal-body">
+				<p>
+					一度投稿すると<br>
+					編集・削除はできません。<br><br>
+
+					この内容で投稿しますか？
+				</p>
+			</div>
+
+			<div class="custom-modal-footer">
+				<button type="button"
+					class="modal-btn cancel-btn"
+					onclick="closeReviewModal()">
+					キャンセル
+				</button>
+
+				<button type="button"
+					class="modal-btn ok-btn"
+					onclick="submitReview()">
+					投稿する
+				</button>
+			</div>
+
+		</div>
 	</div>
 </body>
 

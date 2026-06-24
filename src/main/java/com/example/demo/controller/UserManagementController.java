@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.entity.Reservationdetail;
 import com.example.demo.entity.User;
+import com.example.demo.repository.ReservationdetailRepository;
 import com.example.demo.repository.UserRepository;
 
 //大森
@@ -19,11 +22,11 @@ import com.example.demo.repository.UserRepository;
 @RequestMapping("/admin")
 public class UserManagementController {
 
-	private final UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-	public UserManagementController(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	@Autowired
+	private ReservationdetailRepository reservationdetailRepository;
 
 	//利用者一覧の表示
 	//利用者一覧の表示（名前で絞り込み可能）
@@ -62,6 +65,14 @@ public class UserManagementController {
 
 		for (int i = 0; i < StringLength; i++) {
 			newPassword.append((CHARSET.charAt(random.nextInt((CHARSET.length())))));
+		}
+
+		List<Reservationdetail> reservationdetailList = reservationdetailRepository
+				.findByReservation_User_IdAndDeleteJudgeFalseAndBook_DeleteJudgeFalse(userId);
+
+		for (Reservationdetail reservationdetail : reservationdetailList) {
+			reservationdetail.setDeleteJudge(true);
+			reservationdetailRepository.save(reservationdetail);
 		}
 
 		User user = userRepository.findById(userId).orElse(null);
