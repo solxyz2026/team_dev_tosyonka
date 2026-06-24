@@ -1,5 +1,8 @@
 package com.example.demo.entity;
 
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +28,20 @@ public class Rentaldetail {
 	@ManyToOne
 	@JoinColumn(name = "book_id") //本ID
 	private Book book;
+	
+	// 🆕 追加: 本ごとの返却日
+		@Column(name = "return_date")
+		private LocalDate returnDate;
 
+		// 🆕 追加: ゲッター
+		public LocalDate getReturnDate() {
+			return returnDate;
+		}
+
+		// 🆕 追加: セッター
+		public void setReturnDate(LocalDate returnDate) {
+			this.returnDate = returnDate;
+		}
 	public Rentaldetail() {
 
 	}

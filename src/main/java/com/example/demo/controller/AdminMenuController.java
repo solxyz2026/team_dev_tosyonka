@@ -341,13 +341,11 @@ public class AdminMenuController {
 			// =========================
 			// 貸出伝票作成
 			// =========================
-			Rental rental = new Rental();
-			rental.setUser(user);
-			rental.setRentalDate(LocalDate.now());
-			rental.setDropDate(LocalDate.now().plusDays(14));
-
-			rentalRepository.save(rental);
-
+				 Rental rental = new Rental();
+			     rental.setUser(user);
+			     rental.setRentalDate(LocalDate.now());
+			     rental.setDropDate(LocalDate.now().plusDays(14));
+			     rentalRepository.save(rental); // 1冊ごとに伝票が発行される
 			int successCount = 0;
 
 			System.out.println("\n========== 処理チェック2 ==========");
@@ -362,11 +360,14 @@ public class AdminMenuController {
 				if (book == null)
 					continue;
 
-				// 貸出明細作成
-				Rentaldetail detail = new Rentaldetail();
-				detail.setRental(rental);
-				detail.setBook(book);
-				rentaldetailRepository.save(detail);
+			
+
+			        // 貸出明細作成（この rental に紐づく）
+			        Rentaldetail detail = new Rentaldetail();
+			        detail.setRental(rental);
+			        detail.setBook(book);
+			        rentaldetailRepository.save(detail);
+
 
 				// 貸出フラグ更新
 				book.setLoans(true);
@@ -421,72 +422,71 @@ public class AdminMenuController {
 	}
 
 	/**
-	 * POST /admin/rental/{rentalId}/return - 本の返却処理
+	 * POST /admin/rental/detail/{rentaldetailId}/return - 本を1冊ずつ返却
+	 * 
+	 * 🔑 このメソッドが新しい本ごと返却の実装
 	 */
 	@Transactional
-	@PostMapping("/rental/{rentalId}/return")
-	public String returnRental(@PathVariable Integer rentalId, HttpSession session) {
-		System.out.println("\n========== 返却処理開始 ==========");
-		System.out.println("rentalId: " + rentalId);
-
+	@PostMapping("/rental/detail/{rentaldetailId}/return")
+	public String returnRentalDetail(
+			@PathVariable Integer rentaldetailId,
+			HttpSession session) {
+		
+		System.out.println("\n========== 本ごとの返却処理開始 ==========");
+		System.out.println("rentaldetailId: " + rentaldetailId);
+		
 		try {
-			// 1. Rental を取得
-			Rental rental = rentalRepository.findById(rentalId)
-					.orElseThrow(() -> new IllegalArgumentException("Rental not found: " + rentalId));
-
-			System.out.println("✅ 貸出伝票取得: ID = " + rental.getId());
-
+			// 1. Rentaldetail を取得
+			Rentaldetail detail = rentaldetailRepository.findById(rentaldetailId)
+					.orElseThrow(() -> new IllegalArgumentException("Rentaldetail not found: " + rentaldetailId));
+			
+			System.out.println("✅ 貸出詳細取得: ID = " + detail.getId());
+			System.out.println("   本: " + detail.getBook().getTitle());
+			
 			// 2. すでに返却済みなら何もしない
-			if (rental.getReturnDate() != null) {
-				System.out.println("⚠️ すでに返却済み");
-				session.setAttribute(SESSION_ERROR, "この貸出は既に返却済みです");
+			if (detail.getReturnDate() != null) {
+				System.out.println("⚠️ この本は既に返却済み");
+				session.setAttribute(SESSION_ERROR, "この本は既に返却済みです");
 				return "redirect:/admin/rental";
 			}
-
-			// 3. 伝票内のすべての本を返却
-			List<Rentaldetail> details = rental.getRentaldetail();
-			System.out.println("📚 返却対象の本数：" + (details != null ? details.size() : 0));
-
-			if (details != null && !details.isEmpty()) {
-				for (Rentaldetail detail : details) {
-					Book book = detail.getBook();
-					System.out.println("  返却中：" + book.getTitle());
-
-					// 貸出フラグを戻す
-					book.setLoans(false);
-					bookRepository.save(book);
-
-					// この本に有効な予約があれば「貸し出し可」に変更
-					Reservationdetail reservation = reservationdetailRepository
-							.findByBookIdAndDeleteJudgeFalse(book.getId())
-							.orElse(null);
-
-					if (reservation != null) {
-						reservation.setReservationStatus(true);  // 返却待ち → 貸し出し可
-						reservationdetailRepository.save(reservation);
-						System.out.println("  📌 予約を「貸し出し可」に更新: " + book.getTitle());
-					}
-				
-				}
+			
+			// 3. 本の返却処理
+			Book book = detail.getBook();
+			
+			// 3-1. 本ごとの返却日を設定 ← ここが重要！
+			detail.setReturnDate(LocalDate.now());
+			rentaldetailRepository.save(detail);
+			System.out.println("  📝 返却日を記録: " + LocalDate.now());
+			
+			// 3-2. 貸出フラグを戻す
+			book.setLoans(false);
+			bookRepository.save(book);
+			System.out.println("  ✅ 貸出フラグを解除");
+			
+			// 3-3. この本に有効な予約があれば「貸し出し可」に変更
+			Reservationdetail reservation = reservationdetailRepository
+					.findByBookIdAndDeleteJudgeFalse(book.getId())
+					.orElse(null);
+			
+			if (reservation != null) {
+				reservation.setReservationStatus(true);
+				reservationdetailRepository.save(reservation);
+				System.out.println("  📌 予約を「貸し出し可」に更新");
 			}
-
-			// 4. 返却日を更新
-			rental.setReturnDate(LocalDate.now());
-			rentalRepository.save(rental);
-
-			System.out.println("✅ 返却処理完了");
-
+			
+			System.out.println("✅ 返却処理完了: " + book.getTitle());
+			
 			session.setAttribute(SESSION_MESSAGE,
-					(details != null ? details.size() : 0) + "冊の返却が完了しました");
-
+					"「" + book.getTitle() + "」の返却が完了しました");
+			
 		} catch (Exception e) {
 			System.out.println("❌ エラー: " + e.getMessage());
 			e.printStackTrace();
 			session.setAttribute(SESSION_ERROR, "返却処理に失敗しました");
 		}
-
+		
 		System.out.println("========== 処理完了 ==========\n");
-
+		
 		return "redirect:/admin/rental";
 	}
 }

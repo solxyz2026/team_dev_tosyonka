@@ -282,3 +282,15 @@ table form button {
 .ok-btn:hover {
 	background: #125aa0;
 }
+
+
+
+    .returned-badge {
+        display: inline-block;
+        background-color: #4CAF50;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+}
