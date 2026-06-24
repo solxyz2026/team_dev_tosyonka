@@ -5,28 +5,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>利用者一覧</title>
 <link rel="stylesheet" href="/css/adminUserManagementStyle.css">
+
+<script>
+	let targetForm = null;
+
+	function openModal(event, form, message) {
+		event.preventDefault();
+		targetForm = form;
+
+		document.getElementById("modalMessage").innerText = message;
+		document.getElementById("confirmModal").classList.add("show");
+
+		return false;
+	}
+
+	function closeModal() {
+		document.getElementById("confirmModal").classList.remove("show");
+		targetForm = null;
+	}
+
+	function executeModal() {
+		if (targetForm) {
+			targetForm.submit();
+		}
+	}
+</script>
 </head>
+
 <body>
 	<div class="layout">
+
 		<div class="side">
-				<div class="site-title">としょんか</div>
-				<a href="/admin/">ホーム画面</a>
-				<a href="/admin/logout">ログアウト</a>
-				<a href="/admin/search">在庫一覧</a>
-				<a href="/admin/books/add">本追加</a>
-				<a href="/admin/writers">著者の追加</a>
-				<a href="/admin/categories">カテゴリー追加</a>
-				<a href="/admin/reservations">予約一覧</a>
-				<a href="/admin/rental">貸し出し状況</a>
-				<a href="/admin/writers/list">著者一覧</a>
-				<a href="/admin/users">利用者一覧</a>
-				<a href="/admin/announcement">お知らせ</a>
-			</div>
+			<div class="site-title">としょんか</div>
+			<a href="/admin/">ホーム画面</a>
+			<a href="/admin/logout">ログアウト</a>
+			<a href="/admin/search">在庫一覧</a>
+			<a href="/admin/books/add">本追加</a>
+			<a href="/admin/writers">著者の追加</a>
+			<a href="/admin/categories">カテゴリー追加</a>
+			<a href="/admin/reservations">予約一覧</a>
+			<a href="/admin/rental">貸し出し状況</a>
+			<a href="/admin/writers/list">著者一覧</a>
+			<a href="/admin/users">利用者一覧</a>
+			<a href="/admin/announcement">お知らせ</a>
+		</div>
 
 		<div class="main">
+
 			<h1>利用者一覧</h1>
 
-			<!-- 名前で絞り込み検索 -->
 			<div class="search-section">
 				<form action="/admin/users" method="get" class="search-form">
 					<label for="keyword">利用者名で絞り込み</label>
@@ -48,14 +75,18 @@
 							<th>削除</th>
 						</tr>
 					</thead>
+
 					<tbody>
 						<tr th:each="user:${usersList}">
-							<td th:text="${user.id}">1</td>
-							<td th:text="${user.name}">山田太郎</td>
-							<td th:text="${user.email}">yamada@example.com</td>
-							<td th:text="${user.telNumber}">09012345678</td>
-							<td style="text-align: center;">
-								<form th:action="|/admin/users/${user.id}/delete|" method="post" onsubmit="return confirm('削除しますか？');">
+							<td th:text="${user.id}"></td>
+							<td th:text="${user.name}"></td>
+							<td th:text="${user.email}"></td>
+							<td th:text="${user.telNumber}"></td>
+
+							<td style="text-align:center;">
+								<form th:action="|/admin/users/${user.id}/delete|"
+									  method="post"
+									  onsubmit="return openModal(event,this,'この利用者を削除しますか？');">
 									<button type="submit" class="btn-delete">削除</button>
 								</form>
 							</td>
@@ -63,17 +94,38 @@
 					</tbody>
 				</table>
 
-				<!-- 利用者がいない場合 -->
 				<div th:if="${usersList == null || usersList.isEmpty()}" class="empty-message">
-					<span th:if="${keyword != null && !keyword.isEmpty()}">
-						「<span th:text="${keyword}"></span>」に一致する利用者はいません。
-					</span>
-					<span th:if="${keyword == null || keyword.isEmpty()}">
-						利用者がまだ登録されていません。
-					</span>
+					利用者がまだ登録されていません。
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<!-- =========================
+	     青モーダル（共通UI）
+	========================= -->
+	<div id="confirmModal" class="custom-modal">
+		<div class="custom-modal-content">
+
+			<div class="custom-modal-header">
+				確認
+			</div>
+
+			<div class="custom-modal-body">
+				<p id="modalMessage">実行しますか？</p>
+			</div>
+
+			<div class="custom-modal-footer">
+				<button type="button" class="modal-btn cancel-btn" onclick="closeModal()">
+					キャンセル
+				</button>
+				<button type="button" class="modal-btn ok-btn" onclick="executeModal()">
+					OK
+				</button>
+			</div>
+
+		</div>
+	</div>
+
 </body>
 </html>

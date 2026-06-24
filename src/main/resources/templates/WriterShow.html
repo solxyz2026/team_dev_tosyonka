@@ -1,37 +1,68 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>著者一覧</title>
 <link rel="stylesheet" href="/css/WriterShowStyle.css">
+
+<script>
+	let targetForm = null;
+
+	function openModal(event, form, message) {
+		event.preventDefault();
+		targetForm = form;
+
+		document.getElementById("modalMessage").innerText = message;
+		document.getElementById("confirmModal").classList.add("show");
+
+		return false;
+	}
+
+	function closeModal() {
+		document.getElementById("confirmModal").classList.remove("show");
+		targetForm = null;
+	}
+
+	function executeModal() {
+		if (targetForm) {
+			targetForm.submit();
+		}
+	}
+</script>
 </head>
+
 <body>
 	<div class="layout">
+
+		<!-- サイド -->
 		<div class="side">
-				<div class="site-title">としょんか</div>
-				<a href="/admin/">ホーム画面</a>
-				<a href="/admin/logout">ログアウト</a>
-				<a href="/admin/search">在庫一覧</a>
-				<a href="/admin/books/add">本追加</a>
-				<a href="/admin/writers">著者の追加</a>
-				<a href="/admin/categories">カテゴリー追加</a>
-				<a href="/admin/reservations">予約一覧</a>
-				<a href="/admin/rental">貸し出し状況</a>
-				<a href="/admin/writers/list">著者一覧</a>
-				<a href="/admin/users">利用者一覧</a>
-				<a href="/admin/announcement">お知らせ</a>
-			</div>
+			<div class="site-title">としょんか</div>
+			<a href="/admin/">ホーム画面</a>
+			<a href="/admin/logout">ログアウト</a>
+			<a href="/admin/search">在庫一覧</a>
+			<a href="/admin/books/add">本追加</a>
+			<a href="/admin/writers">著者の追加</a>
+			<a href="/admin/categories">カテゴリー追加</a>
+			<a href="/admin/reservations">予約一覧</a>
+			<a href="/admin/rental">貸し出し状況</a>
+			<a href="/admin/writers/list">著者一覧</a>
+			<a href="/admin/users">利用者一覧</a>
+			<a href="/admin/announcement">お知らせ</a>
+		</div>
 
 		<div class="main">
 			<h1>著者一覧</h1>
 
-			<!-- メッセージ表示 -->
-			<div th:if="${message}" class="message" th:classappend="${#strings.contains(message, 'エラー') || #strings.contains(message, '削除できません')} ? 'error'">
+			<!-- メッセージ -->
+			<div th:if="${message}" class="message"
+				 th:classappend="${#strings.contains(message, 'エラー') || #strings.contains(message, '削除できません')} ? 'error'">
 				[[${message}]]
 			</div>
 
-			<!-- 著者名で絞り込み検索 -->
+			<!-- 検索 -->
 			<div class="search-section">
 				<form action="/admin/writers/list" method="get" class="search-form">
 					<label for="keyword">著者名で絞り込み</label>
@@ -42,7 +73,7 @@
 				</form>
 			</div>
 
-			<!-- 著者一覧テーブル -->
+			<!-- テーブル -->
 			<div class="table-container">
 				<table th:if="${writerList != null && !writerList.isEmpty()}">
 					<thead>
@@ -50,16 +81,21 @@
 							<th>著者ID</th>
 							<th>著者名</th>
 							<th>著者紹介文</th>
-							<th style="width: 100px;">削除</th>
+							<th>削除</th>
 						</tr>
 					</thead>
+
 					<tbody>
-						<tr th:each="writer:${writerList}">
-							<td th:text="${writer.id}">1</td>
-							<td th:text="${writer.writerName}">太郎</td>
-							<td th:text="${writer.writerDescription}">著者の説明</td>
-							<td style="text-align: center;">
-								<form th:action="@{/admin/writers/list/{id}/delete(id=${writer.id})}" method="post" onsubmit="return confirm('削除しますか？');">
+						<tr th:each="writer : ${writerList}">
+							<td th:text="${writer.id}"></td>
+							<td th:text="${writer.writerName}"></td>
+							<td th:text="${writer.writerDescription}"></td>
+
+							<td style="text-align:center;">
+								<form th:action="@{/admin/writers/list/{id}/delete(id=${writer.id})}"
+									  method="post"
+									  onsubmit="return openModal(event,this,'著者を削除しますか？');">
+
 									<input type="hidden" name="writerName" th:value="${writer.writerName}">
 									<button type="submit" class="btn-delete">削除</button>
 								</form>
@@ -69,7 +105,7 @@
 				</table>
 			</div>
 
-			<!-- 著者がない場合 -->
+			<!-- 空 -->
 			<div th:if="${writerList == null || writerList.isEmpty()}" class="empty-message">
 				<span th:if="${keyword != null && !keyword.isEmpty()}">
 					「<span th:text="${keyword}"></span>」に一致する著者はいません。
@@ -80,5 +116,30 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- 🔵 共通青モーダル -->
+	<div id="confirmModal" class="custom-modal">
+		<div class="custom-modal-content">
+
+			<div class="custom-modal-header">
+				確認
+			</div>
+
+			<div class="custom-modal-body">
+				<p id="modalMessage">実行しますか？</p>
+			</div>
+
+			<div class="custom-modal-footer">
+				<button type="button" class="modal-btn cancel-btn" onclick="closeModal()">
+					キャンセル
+				</button>
+				<button type="button" class="modal-btn ok-btn" onclick="executeModal()">
+					OK
+				</button>
+			</div>
+
+		</div>
+	</div>
+
 </body>
 </html>

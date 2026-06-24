@@ -5,30 +5,56 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>予約一覧</title>
 	<link rel="stylesheet" href="/css/AdminReservationListStyle.css">
+
+	<script>
+		let targetForm = null;
+
+		function openModal(event, form, message) {
+			event.preventDefault();
+			targetForm = form;
+
+			document.getElementById("modalMessage").innerText = message;
+			document.getElementById("confirmModal").classList.add("show");
+
+			return false;
+		}
+
+		function closeModal() {
+			document.getElementById("confirmModal").classList.remove("show");
+			targetForm = null;
+		}
+
+		function executeModal() {
+			if (targetForm) {
+				targetForm.submit();
+			}
+		}
+	</script>
 </head>
+
 <body>
 	<div class="layout">
 		<div class="side">
-				<div class="site-title">としょんか</div>
-				<a href="/admin/">ホーム画面</a>
-				<a href="/admin/logout">ログアウト</a>
-				<a href="/admin/search">在庫一覧</a>
-				<a href="/admin/books/add">本追加</a>
-				<a href="/admin/writers">著者の追加</a>
-				<a href="/admin/categories">カテゴリー追加</a>
-				<a href="/admin/reservations">予約一覧</a>
-				<a href="/admin/rental">貸し出し状況</a>
-				<a href="/admin/writers/list">著者一覧</a>
-				<a href="/admin/users">利用者一覧</a>
-				<a href="/admin/announcement">お知らせ</a>
-			</div>
+			<div class="site-title">としょんか</div>
+			<a href="/admin/">ホーム画面</a>
+			<a href="/admin/logout">ログアウト</a>
+			<a href="/admin/search">在庫一覧</a>
+			<a href="/admin/books/add">本追加</a>
+			<a href="/admin/writers">著者の追加</a>
+			<a href="/admin/categories">カテゴリー追加</a>
+			<a href="/admin/reservations">予約一覧</a>
+			<a href="/admin/rental">貸し出し状況</a>
+			<a href="/admin/writers/list">著者一覧</a>
+			<a href="/admin/users">利用者一覧</a>
+			<a href="/admin/announcement">お知らせ</a>
+		</div>
 
 		<div class="main">
 			<div class="header-section">
 				<h1>📖 現在の予約一覧</h1>
 			</div>
 
-			<!-- 利用者名で絞り込み検索 -->
+			<!-- 検索 -->
 			<div class="search-section">
 				<form action="/admin/reservations" method="get" class="search-form">
 					<label for="keyword">利用者名で絞り込み</label>
@@ -49,20 +75,22 @@
 							<th class="col-action">予約削除</th>
 						</tr>
 					</thead>
+
 					<tbody>
-						<th:block th:if="${reservationsList != null}">
-							<th:block th:each="reservation : ${reservationsList}">
-								<tr th:each="detail : ${reservation.reservationdetails}">
-									<td>[[${detail.book.title}]]</td>
-									<td>[[${reservation.user.id}]]</td>
-									<td>[[${reservation.user.name}]]</td>
-									<td class="col-action">
-										<form th:action="@{/admin/reservation/delete/{id}(id=${reservation.id})}" method="post">
-											<button type="submit">削除</button>
-										</form>
-									</td>
-								</tr>
-							</th:block>
+						<th:block th:each="reservation : ${reservationsList}">
+							<tr th:each="detail : ${reservation.reservationdetails}">
+								<td>[[${detail.book.title}]]</td>
+								<td>[[${reservation.user.id}]]</td>
+								<td>[[${reservation.user.name}]]</td>
+
+								<td class="col-action">
+									<form th:action="@{/admin/reservation/delete/{id}(id=${reservation.id})}"
+										method="post"
+										onsubmit="return openModal(event,this,'予約を削除しますか？');">
+										<button type="submit">削除</button>
+									</form>
+								</td>
+							</tr>
 						</th:block>
 
 						<tr th:if="${#lists.isEmpty(reservationsList)}">
@@ -78,6 +106,30 @@
 					</tbody>
 				</table>
 			</div>
+		</div>
+	</div>
+
+	<!-- 🔵 青モーダル（削除確認） -->
+	<div id="confirmModal" class="custom-modal">
+		<div class="custom-modal-content">
+
+			<div class="custom-modal-header">
+				確認
+			</div>
+
+			<div class="custom-modal-body">
+				<p id="modalMessage">実行しますか？</p>
+			</div>
+
+			<div class="custom-modal-footer">
+				<button type="button" class="modal-btn cancel-btn" onclick="closeModal()">
+					キャンセル
+				</button>
+				<button type="button" class="modal-btn ok-btn" onclick="executeModal()">
+					OK
+				</button>
+			</div>
+
 		</div>
 	</div>
 </body>
