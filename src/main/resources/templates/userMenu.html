@@ -6,6 +6,23 @@
 <link rel="stylesheet" href="/css/userMenuStyle.css">
 </head>
 <body>
+	
+	<!-- ========================================
+	     リマインドモーダル
+	     ======================================== -->
+	<div id="reminderModal" class="modal">
+		<div class="modal-content">
+			<h2>📚 返却期限のお知らせ</h2>
+			<p>
+				本日までに以下の本を返却してください。
+			</p>
+			<ul id="reminderBookList">
+			</ul>
+			<button id="closeReminderBtn">
+				閉じる
+			</button>
+		</div>
+	</div>
 	<!--左ナビゲーション-->
 	<div class="sidebar">
 		<div class="site-title">としょんか</div>
@@ -62,7 +79,7 @@
 			<!--リマインド-->
 			<div class="info-box" id="reminder-box" style="display: none;">
 				<strong>リマインド</strong><br>
-				<span id="reminder-message">明日までに以下の本を返却してください。</span>
+				<span id="reminder-message">本日までに以下の本を返却してください。</span>
 				<ul id="reminder-list" style="margin: 10px 0 0 20px;">
 					<!-- JavaScriptで動的に追加 -->
 				</ul>
@@ -294,18 +311,36 @@
 		}
 
 		function initReminder() {
-			const data = window.REMINDER_DATA || { rentalSize: 0, reminderBooks: [] };
+
+			const data = window.REMINDER_DATA || {
+				rentalSize: 0,
+				reminderBooks: []
+			};
+
 			const rentalSize = data.rentalSize;
 			const reminderBooks = data.reminderBooks;
 
-			console.log('【リマインダー】rentalSize:', rentalSize, 'books:', reminderBooks);
+			console.log(
+				'【リマインダー】rentalSize:',
+				rentalSize,
+				'books:',
+				reminderBooks
+			);
 
-			if (rentalSize > 0 && Array.isArray(reminderBooks) && reminderBooks.length > 0) {
-				let alertMessage = '【リマインド】\n明日までに以下の本を返却してください。\n\n';
-				reminderBooks.forEach(function(bookTitle) {
-					alertMessage += '・' + bookTitle + '\n';
+			if (
+				rentalSize > 0 &&
+				Array.isArray(reminderBooks) &&
+				reminderBooks.length > 0
+			) {
+				const modal =document.getElementById("reminderModal");
+				const list =document.getElementById("reminderBookList");
+				list.innerHTML = "";
+				reminderBooks.forEach(bookTitle => {
+					const li =document.createElement("li");
+					li.textContent = bookTitle;
+					list.appendChild(li);
 				});
-				alert(alertMessage);
+				modal.style.display = "flex";
 			}
 		}
 
@@ -313,11 +348,24 @@
 			console.log('【初期化】DOMContentLoaded');
 			try {
 				new InteractiveCalendar();
-				console.log('✓ カレンダー初期化成功');
+				console.log(
+					'✓ カレンダー初期化成功'
+				);
 			} catch (e) {
-				console.error('✗ カレンダー初期化失敗:', e);
+				console.error(
+					'✗ カレンダー初期化失敗:',
+					e
+				);
 			}
 			initReminder();
+			// モーダル閉じる
+			document
+				.getElementById("closeReminderBtn")
+				.addEventListener("click", () => {
+					document
+						.getElementById("reminderModal")
+						.style.display = "none";
+				});
 		});
 	</script>
 </body>

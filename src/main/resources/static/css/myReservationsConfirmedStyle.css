@@ -22,13 +22,28 @@ body {
 	text-align: center;
 }
 
-h1 {
-	color: #1B5E20;
+/* ========================================
+   ヘッダー（MyPageと統一）
+   ======================================== */
+.header {
+	position: fixed;
+	top: 0;
+	left: 220px;   /* サイドバー分 */
+	right: 0;
+	height: 80px;  /* ← 重要：統一サイズ */
+	background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+	color: rgb(0, 128, 0);
+	padding: 0 20px;
+	text-align: center;
 	font-size: 32px;
-	margin-bottom: 20px;
+	letter-spacing: 2px;
 	border-bottom: 3px solid #558B2F;
-	padding-bottom: 15px;
-	font-weight: bold;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	z-index: 99;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 /* サイトタイトル */
