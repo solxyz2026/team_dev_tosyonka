@@ -184,3 +184,101 @@ table form button {
 .btn-clear:hover {
 	background-color: #777;
 }
+/* ===== モーダル背景 ===== */
+.custom-modal {
+	display: none;
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.45);
+	z-index: 9999;
+
+	justify-content: center;
+	align-items: center;
+}
+
+/* 表示状態 */
+.custom-modal.show {
+	display: flex;
+}
+
+/* ===== 本体 ===== */
+.custom-modal-content {
+	width: 380px;
+	background: #ffffff;
+	border-radius: 14px;
+	box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+	overflow: hidden;
+
+	animation: pop 0.18s ease-out;
+}
+
+/* アニメーション */
+@keyframes pop {
+	from {
+		transform: scale(0.92);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+/* ===== ヘッダー（青グラデ） ===== */
+.custom-modal-header {
+	background: linear-gradient(135deg, #1976d2, #1565c0);
+	color: white;
+	padding: 14px 18px;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+}
+
+/* ===== 本文 ===== */
+.custom-modal-body {
+	padding: 24px 20px;
+	text-align: center;
+	color: #333;
+	font-size: 15px;
+	line-height: 1.6;
+}
+
+/* ===== フッター ===== */
+.custom-modal-footer {
+	display: flex;
+	gap: 10px;
+	padding: 16px;
+	border-top: 1px solid #eee;
+	justify-content: center;
+}
+
+/* ===== ボタン共通 ===== */
+.modal-btn {
+	padding: 10px 18px;
+	border-radius: 8px;
+	border: none;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.2s;
+	min-width: 120px;
+}
+
+/* キャンセル（グレー） */
+.cancel-btn {
+	background: #e0e0e0;
+	color: #333;
+}
+
+.cancel-btn:hover {
+	background: #cfcfcf;
+}
+
+/* OK（青） */
+.ok-btn {
+	background: #1976d2;
+	color: white;
+}
+
+.ok-btn:hover {
+	background: #125aa0;
+}
