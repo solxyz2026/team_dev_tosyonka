@@ -49,9 +49,7 @@
 				</tr>
 			</table>
 
-			<!-- ========================================
-			     カレンダーセクション
-			     ======================================== -->
+			<!-- カレンダーセクション-->
 			<div class="calendar-section">
 				<div class="calendar-wrap"
 				     id="calendar-data"
@@ -107,7 +105,7 @@
 
 			    <!-- 予約がない場合 -->
 			    <tr th:if="${reservationsList == null || reservationsList.isEmpty()}">
-			        <td colspan="2" class="empty-message">
+			        <td colspan="3" class="empty-message">
 						<p>現在予約されている本はありません。</p>
 					</td>
 			    </tr>

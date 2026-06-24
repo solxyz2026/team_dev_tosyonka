@@ -51,9 +51,8 @@ public class ReservationController {
 
 	private static final String SESSION_RESERVATION_CART = "reservationCart";
 
-	/**
-	 * 予約カートに追加
-	 */
+	//予約カートに追加
+	 
 	@GetMapping("/user/reservation/{book_id}")
 	public String addToReservationCart(@PathVariable Integer book_id,
 			HttpSession session) {
@@ -94,9 +93,8 @@ public class ReservationController {
 		return "redirect:/user/books/" + book_id;
 	}
 
-	/**
-	 * カート削除
-	 */
+	//カート削除
+	
 	@PostMapping("/user/reservation/{book_id}/delete")
 	public String deleteCart(@PathVariable Integer book_id,
 			HttpSession session) {
@@ -112,9 +110,7 @@ public class ReservationController {
 		return "redirect:/user/reservations";
 	}
 
-	/**
-	 * カート画面表示（前と同じView名）
-	 */
+	//カート画面表示（前と同じView名）
 	@GetMapping("/user/reservations")
 	public String showCart(HttpSession session, Model model) {
 
@@ -134,9 +130,8 @@ public class ReservationController {
 		return "myReservations"; // ← 前のまま
 	}
 
-	/**
-	 * 予約確定
-	 */
+	//予約確定
+	 
 	@PostMapping("/user/reservations")
 	public String confirmReservation(HttpSession session, Model model) {
 
@@ -198,9 +193,8 @@ public class ReservationController {
 		return "redirect:/user/reservations/confirmed";
 	}
 
-	/**
-	 * 確定画面（前のView名に戻す）
-	 */
+	//確定画面（前のView名に戻す）
+	
 	@GetMapping("/user/reservations/confirmed")
 	public String confirmed(Model model) {
 
