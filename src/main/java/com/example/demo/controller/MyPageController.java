@@ -48,29 +48,22 @@ public class MyPageController {
 		model.addAttribute("userId", userId);
 		model.addAttribute("userName", userName);
 
-		// ========================================
 		// 予約内容の取得
-		// ========================================
 		List<Reservationdetail> reservationsList = reservationdetailRepository
 				.findByReservation_User_IdAndDeleteJudgeFalse(userId);
 		model.addAttribute("reservationsList", reservationsList);
 
-		// ========================================
 		// 返却期限が切れた本の取得
-		// ========================================
 		LocalDate today = LocalDate.now();
 		List<Rental> expiredList = rentalRepository.findByUserIdAndDropDateBeforeAndReturnDateIsNull(userId, today);
 		model.addAttribute("expiredList", expiredList);
 
-		// ========================================
 		// 貸し出し中の本を取得
-		// ========================================
+		
 		List<Rental> rentalList = rentalRepository.findByUserIdAndReturnDateIsNull(userId);
 		model.addAttribute("rentalList", rentalList);
 
-		// ========================================
 		// 貸し出し履歴
-		// ========================================
 		List<Rental> rentalAllList = rentalRepository.findByUserId(userId);
 		model.addAttribute("rentalAllList", rentalAllList);
 
