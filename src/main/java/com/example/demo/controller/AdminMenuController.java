@@ -270,6 +270,11 @@ public class AdminMenuController {
 		System.out.println("\n========== 貸し出し確定処理 ==========");
 
 		try {
+			User user = userRepository.findById(userId).orElse(null);
+			if (user.isDeleteJudge() == true) {
+				session.setAttribute(SESSION_ERROR, "そのユーザはすでに削除されているので貸し出しできません");
+				return "redirect:/admin/";
+			}
 
 			// =========================
 			// カート取得
@@ -285,7 +290,6 @@ public class AdminMenuController {
 			// =========================
 			// ユーザー取得
 			// =========================
-			User user = userRepository.findById(userId).orElse(null);
 
 			if (user == null) {
 				session.setAttribute(SESSION_ERROR, "ユーザーが見つかりません");
@@ -334,7 +338,7 @@ public class AdminMenuController {
 			if (currentCount + cartCount > MAX_RENTAL) {
 				session.setAttribute(SESSION_ERROR,
 						"貸出は一人" + MAX_RENTAL + "冊までです（現在" + currentCount
-						+ "冊借りています。あと" + (MAX_RENTAL - currentCount) + "冊借りられます）");
+								+ "冊借りています。あと" + (MAX_RENTAL - currentCount) + "冊借りられます）");
 				return "redirect:/admin/";
 			}
 
@@ -462,11 +466,11 @@ public class AdminMenuController {
 							.orElse(null);
 
 					if (reservation != null) {
-						reservation.setReservationStatus(true);  // 返却待ち → 貸し出し可
+						reservation.setReservationStatus(true); // 返却待ち → 貸し出し可
 						reservationdetailRepository.save(reservation);
 						System.out.println("  📌 予約を「貸し出し可」に更新: " + book.getTitle());
 					}
-				
+
 				}
 			}
 
