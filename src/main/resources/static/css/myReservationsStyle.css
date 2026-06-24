@@ -10,6 +10,7 @@ body {
 	font-family: 'Arial', 'Hiragino Sans', 'MS Pゴシック', sans-serif;
 	background-color: #f1f8f3;
 	color: #1B5E20;
+	display: flex;
 }
 
 /* サイドバー */
@@ -70,6 +71,10 @@ body {
 }
 
 .header h1 {
+	position: fixed;
+		top: 10;
+		left: 220px;
+		right: 0;
 	color: rgb(0, 128, 0);
 	margin: 0;
 	padding: 0;
@@ -77,26 +82,36 @@ body {
 	letter-spacing: 2px;
 	text-align: center;
 }
+.main-container {
+	margin-left: 220px;
+	margin-top: 80px;
+	flex: 1;
+	padding: 20px;
+}
 
 /* メインコンテンツ */
 .container {
 	margin-left: 220px;
 	margin-top: 80px;
 	padding: 30px;
-	max-width: calc(100% - 220px);
+	max-width: 1000px;
+	margin: 0 auto;
 }
 
 /* メッセージ */
 .message {
-	background-color: #e8f5e9;
+	background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f3 100%);
 	color: #1B5E20;
-	padding: 15px;
-	margin-bottom: 20px;
-	border-left: 4px solid #558B2F;
+	padding: 18px 20px;
+	margin: -10px 0 20px;
+	border-left: 5px solid #2E7D32;
 	border-radius: 4px;
 	font-weight: bold;
+	font-size: 15px;        
+	max-width: 400px;       
+	transform: translateY(-10px);
+	margin-top: -20px;
 }
-
 /* セクションタイトル */
 .section-title {
 	font-size: 18px;
