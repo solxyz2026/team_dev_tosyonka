@@ -68,7 +68,7 @@ public class UserManagementController {
 		}
 
 		List<Reservationdetail> reservationdetailList = reservationdetailRepository
-				.findByReservation_User_IdAndDeleteJudgeFalse(userId);
+				.findByReservation_User_IdAndDeleteJudgeFalseAndBook_DeleteJudgeFalse(userId);
 
 		for (Reservationdetail reservationdetail : reservationdetailList) {
 			reservationdetail.setDeleteJudge(true);

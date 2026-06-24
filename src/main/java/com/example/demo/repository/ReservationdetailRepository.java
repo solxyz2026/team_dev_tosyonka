@@ -55,4 +55,11 @@ public interface ReservationdetailRepository extends JpaRepository<Reservationde
 
 	List<Reservationdetail> findByReservation_User_IdAndDeleteJudgeFalseAndBook_DeleteJudgeFalse(Integer userId);
 
+	List<Reservationdetail> findByDeleteJudgeFalseAndBook_DeleteJudgeFalseOrderByReservation_User_IdAsc();
+
+	List<Reservationdetail> findByReservation_User_NameAndDeleteJudgeFalseAndBook_DeleteJudgeFalseOrderByReservation_User_IdAsc(
+			String name);
+
+	boolean existsByBook_IdAndDeleteJudgeFalse(Integer bookId);
+
 }

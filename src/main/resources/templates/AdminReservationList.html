@@ -77,32 +77,35 @@
 					</thead>
 
 					<tbody>
-						<th:block th:each="reservation : ${reservationsList}">
-							<tr th:each="detail : ${reservation.reservationdetails}">
-								<td>[[${detail.book.title}]]</td>
-								<td>[[${reservation.user.id}]]</td>
-								<td>[[${reservation.user.name}]]</td>
 
-								<td class="col-action">
-									<form th:action="@{/admin/reservation/delete/{id}(id=${reservation.id})}"
-										method="post"
-										onsubmit="return openModal(event,this,'予約を削除しますか？');">
-										<button type="submit">削除</button>
-									</form>
-								</td>
-							</tr>
-						</th:block>
+					    <tr th:each="detail : ${reservationDetails}">
+					        <td>[[${detail.book.title}]]</td>
+					        <td>[[${detail.reservation.user.id}]]</td>
+					        <td>[[${detail.reservation.user.name}]]</td>
 
-						<tr th:if="${#lists.isEmpty(reservationsList)}">
-							<td colspan="4" class="empty-message">
-								<p th:if="${keyword != null && !keyword.isEmpty()}">
-									「<span th:text="${keyword}"></span>」に一致する予約はありません
-								</p>
-								<p th:if="${keyword == null || keyword.isEmpty()}">
-									現在、予約中の本はありません
-								</p>
-							</td>
-						</tr>
+					        <td class="col-action">
+					            <form th:action="@{/admin/reservation/delete/{id}(id=${detail.id})}"
+					                  method="post"
+					                  onsubmit="return openModal(event,this,'予約を削除しますか？');">
+					                <button type="submit">削除</button>
+					            </form>
+					        </td>
+					    </tr>
+
+					    <tr th:if="${#lists.isEmpty(reservationDetails)}">
+					        <td colspan="4" class="empty-message">
+
+					            <p th:if="${keyword != null && !keyword.isEmpty()}">
+					                「<span th:text="${keyword}"></span>」に一致する予約はありません
+					            </p>
+
+					            <p th:if="${keyword == null || keyword.isEmpty()}">
+					                現在、予約中の本はありません
+					            </p>
+
+					        </td>
+					    </tr>
+
 					</tbody>
 				</table>
 			</div>
