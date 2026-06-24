@@ -32,6 +32,8 @@
 	<form action="/user/reviews" method="post" onsubmit="return keikoku();">
 		<div class="form-group">
 			<input type="hidden" name="bookId" th:value="${bookId}">
+			ニックネーム：<br>
+			<input type="text" name="nickname" value="匿名希望">
 			レビュー：<br>
 			<textarea name="bookReview" rows="10" cols="30"></textarea>
 		</div>

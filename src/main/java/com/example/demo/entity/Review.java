@@ -27,19 +27,29 @@ public class Review {
 	@Column(name = "book_review")
 	private String bookReview; //レビュー内容
 
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user; //ユーザID usersテーブルのid
+
+	private String nickname;//ニックネーム
+
 	//コンストラクタ
 	public Review() {
 	}
 
-	public Review(Book book, String bookReview) {
+	public Review(Book book, String bookReview, User user, String nickname) {
 		this.book = book;
 		this.bookReview = bookReview;
+		this.user = user;
+		this.nickname = nickname;
 	}
 
-	public Review(Integer id, Book book, String bookReview) {
+	public Review(Integer id, Book book, String bookReview, User user, String nickname) {
 		this.id = id;
 		this.book = book;
 		this.bookReview = bookReview;
+		this.user = user;
+		this.nickname = nickname;
 	}
 
 	//ゲッターセッター
@@ -65,6 +75,22 @@ public class Review {
 
 	public void setBookReview(String bookReview) {
 		this.bookReview = bookReview;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 }

@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Review;
+import com.example.demo.entity.User;
+import com.example.demo.model.Account;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.ReviewRepository;
+import com.example.demo.repository.UserRepository;
 
 @Controller
 public class ReviewController {
@@ -25,6 +28,12 @@ public class ReviewController {
 	@Autowired
 	private ReviewRepository reviewRepository;
 
+	@Autowired
+	private Account account;
+
+	@Autowired
+	private UserRepository userRepository;
+
 	@GetMapping("/user/{bookId}/review")
 	public String showReviewPage(
 			@PathVariable Integer bookId,
@@ -32,7 +41,7 @@ public class ReviewController {
 
 		Optional<Book> optionalBook = bookRepository.findById(bookId);
 		model.addAttribute("book", optionalBook);
-		
+
 		return "ReviewPage";
 	}
 
@@ -59,6 +68,7 @@ public class ReviewController {
 	public String store(
 			@RequestParam Integer bookId,
 			@RequestParam String bookReview,
+			@RequestParam(defaultValue = "匿名希望") String nickname,
 			Model model) {
 
 		Book book = bookRepository.findById(bookId).orElse(null);
@@ -67,7 +77,10 @@ public class ReviewController {
 			return "redirect:/user/" + bookId + "/review";
 		}
 
-		Review review = new Review(book, bookReview);
+		Integer userId = account.getId();
+		User user = userRepository.findById(userId).get();
+
+		Review review = new Review(book, bookReview, user, nickname);
 		reviewRepository.save(review);
 
 		return "redirect:/user/books/" + bookId;
