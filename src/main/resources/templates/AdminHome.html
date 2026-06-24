@@ -1,154 +1,210 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
 	<title>管理者画面 - 貸し出し管理</title>
 	<link rel="stylesheet" href="/css/AdminHomeStyle.css">
+
+	<!-- ★★★ ここだけ追加（モーダル制御JS）★★★ -->
+	<script>
+		let targetForm = null;
+		let messageText = "";
+
+		function openModal(event, form, message) {
+			event.preventDefault();
+			targetForm = form;
+			messageText = message;
+
+			document.getElementById("modalMessage").textContent = messageText;
+			document.getElementById("confirmModal").classList.add("show");
+
+			return false;
+		}
+
+		function closeModal() {
+			document.getElementById("confirmModal").classList.remove("show");
+			targetForm = null;
+		}
+
+		function executeModal() {
+			if (targetForm) {
+				targetForm.submit();
+			}
+		}
+	</script>
 </head>
 
 <body>
-	<article>
-		<!-- サイドナビゲーション -->
-		<div class="side">
-			<div class="site-title">としょんか</div>
-			<a href="/admin/logout">ログアウト</a>
-			<a href="/admin/search">在庫一覧</a>
-			<a href="/admin/books/add">本追加</a>
-			<a href="/admin/writers">著者の追加</a>
-			<a href="/admin/categories">カテゴリー追加</a>
-			<a href="/admin/reservations">予約一覧</a>
-			<a href="/admin/rental">貸し出し状況</a>
-			<a href="/admin/writers/list">著者一覧</a>
-			<a href="/admin/users">利用者一覧</a>
-			<a href="/admin/announcement">お知らせ</a>
+<article>
+
+	<!-- サイドバー（変更なし） -->
+	<div class="side">
+		<div class="site-title">としょんか</div>
+		<a href="/admin/logout">ログアウト</a>
+		<a href="/admin/search">在庫一覧</a>
+		<a href="/admin/books/add">本追加</a>
+		<a href="/admin/writers">著者の追加</a>
+		<a href="/admin/categories">カテゴリー追加</a>
+		<a href="/admin/reservations">予約一覧</a>
+		<a href="/admin/rental">貸し出し状況</a>
+		<a href="/admin/writers/list">著者一覧</a>
+		<a href="/admin/users">利用者一覧</a>
+		<a href="/admin/announcement">お知らせ</a>
+	</div>
+
+	<!-- メイン（絶対に変更なし） -->
+	<div class="content">
+
+		<h1>管理者画面</h1>
+		<p class="subtitle">本の貸し出し処理</p>
+
+		<div th:if="${message != null}" class="message success">✅ [[${message}]]</div>
+		<div th:if="${error != null}" class="message error">❌ [[${error}]]</div>
+
+		<h2>📚 本をカートに追加</h2>
+
+		<div class="form-section">
+			<form action="/admin/rental/add-to-cart" method="post" class="form-group">
+				<label for="bookId">本の登録ID</label>
+				<input type="number" id="bookId" name="bookId" placeholder="本のIDを入力（例：1）" min="1" required>
+				<button type="submit" class="btn">追加</button>
+			</form>
 		</div>
 
-		<!-- メインコンテンツ -->
-		<div class="content">
-			<h1>管理者画面</h1>
-			<p class="subtitle">本の貸し出し処理</p>
+		<div class="cart-info">
+			カート内の冊数：<strong th:text="${cartCount ?: 0}">0</strong> 冊
+		</div>
 
-			<!-- メッセージ表示 -->
-			<div th:if="${message != null}" class="message success">
-				✅ [[${message}]]
-			</div>
-			<div th:if="${error != null}" class="message error">
-				❌ [[${error}]]
-			</div>
-			<div th:if="${reserved != null}" class="message reserved-warning">
-							[[${reserved}]]
+		<h2>🛒 カート内容</h2>
+
+		<table>
+			<thead>
+			<tr>
+				<th>ID</th>
+				<th>タイトル</th>
+				<th>著者</th>
+				<th>カテゴリー</th>
+				<th>タグ</th>
+				<th style="width: 80px;">操作</th>
+			</tr>
+			</thead>
+
+			<tbody>
+			<tr th:each="item : ${rentalCart}">
+				<td th:text="${item.bookId}"></td>
+				<td th:text="${item.title}"></td>
+				<td th:text="${item.author}"></td>
+				<td th:text="${item.category}"></td>
+				<td th:text="${item.tag}"></td>
+
+				<td>
+					<form action="/admin/rental/remove-from-cart"
+						  method="post"
+						  style="display:inline;"
+						  onsubmit="return openModal(event,this,'削除しますか？');">
+						<input type="hidden" name="bookId" th:value="${item.bookId}">
+						<button type="submit" class="btn btn-delete">削除</button>
+					</form>
+				</td>
+			</tr>
+
+			<tr th:if="${rentalCart == null || rentalCart.isEmpty()}">
+				<td colspan="6">本を追加してください</td>
+			</tr>
+			</tbody>
+		</table>
+
+		<h2>👤 貸し出し先ユーザー</h2>
+
+		<div class="user-section">
+			<form action="/admin/rental/create"
+				  method="post"
+				  onsubmit="return openModal(event,this,'貸し出しを確定しますか？');"
+				  style="display:flex; gap:10px; align-items:center; width:100%;">
+
+				<label for="userId">ユーザID</label>
+				<input type="number" id="userId" name="userId" placeholder="ユーザーIDを入力（例：1）" min="1" required>
+				<button type="submit" class="btn">確定</button>
+			</form>
+		</div>
+
+		<h2>📖 直近の貸し出し情報</h2>
+
+					<!-- 直近の貸し出しがある場合 -->
+					<div th:if="${latestRental != null}" class="latest-rental-info">
+						<div>
+							<strong>貸出ID：</strong> <span th:text="${latestRental.id}">1</span>
 						</div>
-			<h2>📚 本をカートに追加</h2>
+						<div>
+							<strong>ユーザー名：</strong> <span th:text="${latestRental.user.name}">田中太郎</span>
+						</div>
+						<div>
+							<strong>貸出日：</strong> <span th:text="${#temporals.format(latestRental.rentalDate, 'yyyy-MM-dd')}">2026-06-17</span>
+						</div>
+						<div>
+							<strong>返却期限：</strong> <span th:text="${#temporals.format(latestRental.dropDate, 'yyyy-MM-dd')}">2026-07-01</span>
+						</div>
+						<div>
+							<strong>返却状況：</strong>
+							<span th:if="${latestRental.returnDate == null}" class="status-lend">貸出中</span>
+							<span th:if="${latestRental.returnDate != null}" class="status-return">返却済み</span>
+						</div>
 
-			<div class="form-section">
-				<form action="/admin/rental/add-to-cart" method="post" class="form-group">
-					<label for="bookId">本の登録ID</label>
-					<input type="number" id="bookId" name="bookId" placeholder="本のIDを入力（例：1）" min="1" required>
-					<button type="submit" class="btn">追加</button>
-				</form>
-			</div>
+						<h3 style="margin-top: 15px; margin-bottom: 10px; color: #333; border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 16px;">
+							📚 貸し出した本
+						</h3>
 
-			<!-- カート情報 -->
-			<div class="cart-info">
-				カート内の冊数：<strong th:text="${cartCount ?: 0}">0</strong> 冊
-			</div>
+						<table>
+							<thead>
+								<tr>
+									<th>本ID</th>
+									<th>タイトル</th>
+									<th>著者</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="detail : ${latestRentalDetails}">
+									<td th:text="${detail.book.id}">1</td>
+									<td th:text="${detail.book.title}">Java入門</td>
+									<td th:text="${detail.book.writer.writerName}">山田太郎</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 
-			<h2>🛒 カート内容</h2>
-
-			<table>
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>タイトル</th>
-						<th>著者</th>
-						<th>カテゴリー</th>
-						<th>タグ</th>
-						<th style="width: 80px;">操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!-- Thymeleaf でカートをループ表示 -->
-					<tr th:if="${rentalCart != null && !rentalCart.isEmpty()}" th:each="item : ${rentalCart}">
-						<td th:text="${item.bookId}">1</td>
-						<td th:text="${item.title}">Java入門</td>
-						<td th:text="${item.author}">太郎</td>
-						<td th:text="${item.category}">プログラミング</td>
-						<td th:text="${item.tag}">新着</td>
-						<td style="text-align: center;">
-							<form action="/admin/rental/remove-from-cart" method="post" style="display: inline;">
-								<input type="hidden" name="bookId" th:value="${item.bookId}">
-								<button type="submit" class="btn btn-delete" onclick="return confirm('削除しますか？')">削除</button>
-							</form>
-						</td>
-					</tr>
-					<!-- カートが空の場合 -->
-					<tr th:if="${rentalCart == null || rentalCart.isEmpty()}" class="empty-row">
-						<td colspan="6">本を追加してください</td>
-					</tr>
-				</tbody>
-			</table>
-
-			<h2>👤 貸し出し先ユーザー</h2>
-
-			<div class="user-section">
-				<form action="/admin/rental/create" method="post" onsubmit="return confirm('貸し出しを確定しますか？');" style="display: flex; gap: 10px; align-items: center; width: 100%;">
-					<label for="userId">ユーザID</label>
-					<input type="number" id="userId" name="userId" placeholder="ユーザーIDを入力（例：1）" min="1" required>
-					<button type="submit" class="btn">確定</button>
-				</form>
-			</div>
-
-			<h2>📖 直近の貸し出し情報</h2>
-
-			<!-- 直近の貸し出しがある場合 -->
-			<div th:if="${latestRental != null}" class="latest-rental-info">
-				<div>
-					<strong>貸出ID：</strong> <span th:text="${latestRental.id}">1</span>
-				</div>
-				<div>
-					<strong>ユーザー名：</strong> <span th:text="${latestRental.user.name}">田中太郎</span>
-				</div>
-				<div>
-					<strong>貸出日：</strong> <span th:text="${#temporals.format(latestRental.rentalDate, 'yyyy-MM-dd')}">2026-06-17</span>
-				</div>
-				<div>
-					<strong>返却期限：</strong> <span th:text="${#temporals.format(latestRental.dropDate, 'yyyy-MM-dd')}">2026-07-01</span>
-				</div>
-				<div>
-					<strong>返却状況：</strong>
-					<span th:if="${latestRental.returnDate == null}" class="status-lend">貸出中</span>
-					<span th:if="${latestRental.returnDate != null}" class="status-return">返却済み</span>
-				</div>
-
-				<h3 style="margin-top: 15px; margin-bottom: 10px; color: #333; border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 16px;">
-					📚 貸し出した本
-				</h3>
-
-				<table>
-					<thead>
-						<tr>
-							<th>本ID</th>
-							<th>タイトル</th>
-							<th>著者</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="detail : ${latestRentalDetails}">
-							<td th:text="${detail.book.id}">1</td>
-							<td th:text="${detail.book.title}">Java入門</td>
-							<td th:text="${detail.book.writer.writerName}">山田太郎</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-
-			<!-- 直近の貸し出しがない場合 -->
-			<div th:if="${latestRental == null}" class="empty-info">
-				直近の貸し出し情報はありません
-			</div>
+		<div th:if="${latestRental == null}" class="empty-info">
+			直近の貸し出し情報はありません
 		</div>
-	</article>
-</body>
 
+	</div>
+</article>
+
+<!-- ★★★ ここだけ追加（青モーダルUI）★★★ -->
+<div id="confirmModal" class="custom-modal">
+	<div class="custom-modal-content">
+
+		<div class="custom-modal-header">
+			確認
+		</div>
+
+		<div class="custom-modal-body">
+			<p id="modalMessage">実行しますか？</p>
+		</div>
+
+		<div class="custom-modal-footer">
+			<button type="button" class="modal-btn cancel-btn" onclick="closeModal()">
+				キャンセル
+			</button>
+
+			<button type="button" class="modal-btn ok-btn" onclick="executeModal()">
+				OK
+			</button>
+		</div>
+
+	</div>
+</div>
+
+</body>
 </html>

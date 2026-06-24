@@ -5,6 +5,33 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>貸し出し一覧</title>
 	<link rel="stylesheet" href="/css/RentalshowStyle.css">
+	<script>
+		let targetForm = null;
+
+		function returnConfirm(event, form) {
+		    event.preventDefault();
+
+		    targetForm = form;
+
+		    const modal = document.getElementById("returnModal");
+		    modal.classList.add("show");
+
+		    return false;
+		}
+
+		function closeReturnModal() {
+		    document.getElementById("returnModal")
+		        .classList.remove("show");
+
+		    targetForm = null;
+		}
+
+		function executeReturn() {
+		    if (!targetForm) return;
+
+		    targetForm.submit();
+		}
+	</script>
 </head>
 <body>
 	<div class="layout">
@@ -62,7 +89,9 @@
 							<td>[[${rental.user.name}]]</td>
 							<td>[[${#temporals.format(rental.dropDate, 'yyyy-MM-dd')}]]</td>
 							<td>
-								<form th:action="@{/admin/rental/{rentalId}/return(rentalId=${rental.id})}" method="post" onsubmit="return confirm('返却処理を実行しますか？');">
+								<form th:action="@{/admin/rental/{rentalId}/return(rentalId=${rental.id})}"
+									method="post"
+									onsubmit="return returnConfirm(event,this);">
 									<button type="submit" class="btn-return">返却</button>
 								</form>
 							</td>
@@ -83,5 +112,38 @@
 			</div>
 		</div>
 	</div>
+	<!-- ==========================
+	     返却確認モーダル
+	     ========================== -->
+		 <div id="returnModal" class="custom-modal">
+		 	<div class="custom-modal-content">
+
+		 		<div class="custom-modal-header">
+		 			📚 返却確認
+		 		</div>
+
+		 		<div class="custom-modal-body">
+		 			<p>
+		 				返却処理を実行します。<br>
+		 				よろしいですか？
+		 			</p>
+		 		</div>
+
+		 		<div class="custom-modal-footer">
+		 			<button type="button"
+		 				class="modal-btn cancel-btn"
+		 				onclick="closeReturnModal()">
+		 				キャンセル
+		 			</button>
+
+		 			<button type="button"
+		 				class="modal-btn ok-btn"
+		 				onclick="executeReturn()">
+		 				返却する
+		 			</button>
+		 		</div>
+
+		 	</div>
+		 </div>
 </body>
 </html>
