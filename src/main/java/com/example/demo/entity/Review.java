@@ -60,7 +60,7 @@ public class Review {
 	}
 
 	public String getBookReview() {
-		return bookReview;
+		return bookReview.replaceAll("\n", " <br> ");
 	}
 
 	public void setBookReview(String bookReview) {
