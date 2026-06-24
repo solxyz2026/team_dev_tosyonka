@@ -13,7 +13,7 @@ public interface RentalRepository extends JpaRepository<Rental, Integer> {
 	List<Rental> findByUserIdAndDropDate(Integer userId, LocalDate tomorrow);
 
 	//返却日がないもの（貸し出し中のもの）だけを抽出する。貸し出しするときは再度nullにする必要がある。
-	List<Rental> findByReturnDateIsNull();
+	List<Rental> findByReturnDateIsNullAndRentaldetail_Book_DeleteJudgeFalse();
 
 	//返却期限切れの本を取得する
 	List<Rental> findByUserIdAndDropDateBeforeAndReturnDateIsNull(Integer userId, LocalDate today);

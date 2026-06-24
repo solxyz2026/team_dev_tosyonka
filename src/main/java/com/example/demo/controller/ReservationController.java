@@ -52,7 +52,7 @@ public class ReservationController {
 	private static final String SESSION_RESERVATION_CART = "reservationCart";
 
 	//予約カートに追加
-	 
+
 	@GetMapping("/user/reservation/{book_id}")
 	public String addToReservationCart(@PathVariable Integer book_id,
 			HttpSession session) {
@@ -94,7 +94,7 @@ public class ReservationController {
 	}
 
 	//カート削除
-	
+
 	@PostMapping("/user/reservation/{book_id}/delete")
 	public String deleteCart(@PathVariable Integer book_id,
 			HttpSession session) {
@@ -131,7 +131,7 @@ public class ReservationController {
 	}
 
 	//予約確定
-	 
+
 	@PostMapping("/user/reservations")
 	public String confirmReservation(HttpSession session, Model model) {
 
@@ -194,7 +194,7 @@ public class ReservationController {
 	}
 
 	//確定画面（前のView名に戻す）
-	
+
 	@GetMapping("/user/reservations/confirmed")
 	public String confirmed(Model model) {
 
@@ -220,10 +220,11 @@ public class ReservationController {
 		// キーワードがあれば名前で絞り込み
 		if (keyword != null && !keyword.isBlank()) {
 			reservationsList = reservationRepository
-					.findByUser_NameAndReservationdetails_DeleteJudgeFalseOrderByUser_IdAsc(keyword.trim());
+					.findByUser_NameAndReservationdetails_DeleteJudgeFalseAndReservationdetails_Book_DeleteJudgeFalseOrderByUser_IdAsc(
+							keyword.trim());
 		} else {
 			reservationsList = reservationRepository
-					.findDistinctByReservationdetails_DeleteJudgeFalseOrderByUser_IdAsc();
+					.findDistinctByReservationdetails_DeleteJudgeFalseAndReservationdetails_Book_DeleteJudgeFalseOrderByUser_IdAsc();
 		}
 		System.out.println(reservationsList.size());
 

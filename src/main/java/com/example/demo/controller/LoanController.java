@@ -11,13 +11,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Rental;
 import com.example.demo.repository.RentalRepository;
+import com.example.demo.repository.RentaldetailRepository;
 
 @RequestMapping("/admin")
 @Controller
 public class LoanController {
 
+	private final RentaldetailRepository rentaldetailRepository;
+
 	@Autowired
 	private RentalRepository rentalRepository;
+
+	LoanController(RentaldetailRepository rentaldetailRepository) {
+		this.rentaldetailRepository = rentaldetailRepository;
+	}
 
 	/**
 	 * GET /admin/rental - 貸し出し状況一覧表示（名前で絞り込み可能）
@@ -37,7 +44,7 @@ public class LoanController {
 			System.out.println("🔍 「" + keyword + "」で絞り込み");
 		} else {
 			// 入力なしの場合は貸し出し中の本を全件取得
-			rentalList = rentalRepository.findByReturnDateIsNull();
+			rentalList = rentalRepository.findByReturnDateIsNullAndRentaldetail_Book_DeleteJudgeFalse();
 		}
 
 		System.out.println("✅ 貸出中の本: " + rentalList.size() + "件");
