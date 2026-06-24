@@ -39,7 +39,7 @@ public class UserMenuController {
 	private final AnnouncementRepository announcementRepository;
 	private final ReservationRepository reservationRepository;
 	private final RentalRepository rentalRepository;
-	
+
 	@Autowired
 	private ReservationdetailRepository reservationdetailRepository;
 	// JSON変換用（Spring Boot標準のJackson）
@@ -73,11 +73,10 @@ public class UserMenuController {
 				.findByReservation_User_IdAndDeleteJudgeFalse(userId);
 		model.addAttribute("reservationsList", reservationsList);
 
-		
 		// ========================================
 		// 翌日返却日の本の取得（リマインダー用）
 		// ========================================
-		LocalDate today = LocalDate.now();
+		LocalDate today = LocalDate.now().plusDays(1);
 		List<Rental> rental = rentalRepository.findByUserIdAndDropDateBeforeAndReturnDateIsNull(userId, today);
 
 		// 返却本数
@@ -133,7 +132,7 @@ public class UserMenuController {
 		// ========================================
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日");
 		String formattedDate = today.format(dateFormatter);
-		String[] dayOfWeekJa = {"日", "月", "火", "水", "木", "金", "土"};
+		String[] dayOfWeekJa = { "日", "月", "火", "水", "木", "金", "土" };
 		String dayOfWeekName = dayOfWeekJa[today.getDayOfWeek().getValue() % 7];
 
 		model.addAttribute("todayDate", formattedDate);
