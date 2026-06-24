@@ -50,7 +50,7 @@ public class MyPageController {
 
 		// 予約内容の取得
 		List<Reservationdetail> reservationsList = reservationdetailRepository
-				.findByReservation_User_IdAndDeleteJudgeFalse(userId);
+				.findByReservation_User_IdAndDeleteJudgeFalseAndBook_DeleteJudgeFalse(userId);
 		model.addAttribute("reservationsList", reservationsList);
 
 		// 返却期限が切れた本の取得
@@ -59,7 +59,7 @@ public class MyPageController {
 		model.addAttribute("expiredList", expiredList);
 
 		// 貸し出し中の本を取得
-		
+
 		List<Rental> rentalList = rentalRepository.findByUserIdAndReturnDateIsNull(userId);
 		model.addAttribute("rentalList", rentalList);
 

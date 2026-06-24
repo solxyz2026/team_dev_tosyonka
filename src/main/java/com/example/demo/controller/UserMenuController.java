@@ -27,7 +27,7 @@ import com.example.demo.repository.ReservationdetailRepository;
 import tools.jackson.databind.ObjectMapper;
 
 //お知らせ、予約、返却リマインド、カレンダー期限表示
- 
+
 @Controller
 @RequestMapping("/user")
 public class UserMenuController {
@@ -57,17 +57,15 @@ public class UserMenuController {
 		int userId = account.getId();
 
 		// お知らせ内容の取得
-		
+
 		List<Announcement> newsList = announcementRepository.findAll();
 		model.addAttribute("newsList", newsList);
 
 		// 予約内容の取得
-		
+
 		List<Reservationdetail> reservationsList = reservationdetailRepository
-				.findByReservation_User_IdAndDeleteJudgeFalse(userId);
+				.findByReservation_User_IdAndDeleteJudgeFalseAndBook_DeleteJudgeFalse(userId);
 		model.addAttribute("reservationsList", reservationsList);
-
-
 
 		// ========================================
 		// 翌日返却日の本の取得（リマインダー用）
@@ -94,7 +92,7 @@ public class UserMenuController {
 		model.addAttribute("reminderBooks", reminderBooks);
 
 		// カレンダー用：返却期限の日付データを抽出
-		
+
 		List<Rental> rentalList = rentalRepository.findByUserIdAndReturnDateIsNull(userId);
 		Map<String, List<String>> deadlinesByMonth = new HashMap<>();
 
@@ -111,7 +109,7 @@ public class UserMenuController {
 		}
 
 		// MapをJSON文字列に変換してModelに追加
-		
+
 		String deadlinesJson = "{}";
 		try {
 			deadlinesJson = objectMapper.writeValueAsString(deadlinesByMonth);
@@ -121,7 +119,7 @@ public class UserMenuController {
 		model.addAttribute("deadlinesJson", deadlinesJson);
 
 		//現在の日付情報を追加
-	    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日");
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日");
 		String formattedDate = today.format(dateFormatter);
 		String[] dayOfWeekJa = { "日", "月", "火", "水", "木", "金", "土" };
 		String dayOfWeekName = dayOfWeekJa[today.getDayOfWeek().getValue() % 7];
@@ -130,7 +128,7 @@ public class UserMenuController {
 		model.addAttribute("todayDayOfWeek", dayOfWeekName);
 
 		// デバッグログ出力
-		
+
 		System.out.println("========== ユーザーメニュー情報 ==========");
 		System.out.println("  ユーザーID: " + userId);
 		System.out.println("  貸出中の本数: " + rentalList.size());
