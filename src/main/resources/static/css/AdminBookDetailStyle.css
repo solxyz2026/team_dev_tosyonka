@@ -259,3 +259,111 @@ table form {
 		width: 100%;
 	}
 }
+
+/* ==========================
+   削除確認モーダル
+   ========================== */
+
+.custom-modal {
+	display: none;
+	position: fixed;
+	inset: 0;
+	background: rgba(0,0,0,0.5);
+	z-index: 9999;
+
+	align-items: center;
+	justify-content: center;
+}
+
+.custom-modal.show {
+	display: flex;
+}
+
+.custom-modal-content {
+	width: 420px;
+	max-width: 90%;
+
+	background: white;
+	border-radius: 12px;
+
+	box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+
+	overflow: hidden;
+
+	animation: popup 0.25s ease;
+}
+
+@keyframes popup {
+	from{
+		transform: scale(0.8);
+		opacity:0;
+	}
+	to{
+		transform: scale(1);
+		opacity:1;
+	}
+}
+
+.custom-modal-header {
+	background: linear-gradient(
+		135deg,
+		#c62828,
+		#e53935
+	);
+
+	color: white;
+	font-size: 22px;
+	font-weight: bold;
+
+	padding: 18px;
+	text-align: center;
+}
+
+.custom-modal-body {
+	padding: 30px;
+	text-align: center;
+
+	font-size: 16px;
+	line-height: 1.8;
+	color: #333;
+}
+
+.custom-modal-footer {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+
+	padding: 20px;
+	border-top: 1px solid #ddd;
+}
+
+.modal-btn {
+	border: none;
+	border-radius: 8px;
+
+	padding: 12px 24px;
+	font-size: 15px;
+	font-weight: bold;
+
+	cursor: pointer;
+
+	transition: 0.2s;
+}
+
+.cancel-btn {
+	background: #eeeeee;
+	color: #333;
+}
+
+.cancel-btn:hover {
+	background: #d5d5d5;
+}
+
+.delete-btn {
+	background: #d32f2f;
+	color: white;
+}
+
+.delete-btn:hover {
+	background: #b71c1c;
+}

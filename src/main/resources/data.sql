@@ -174,7 +174,7 @@ VALUES
 INSERT INTO rentals
 (user_id, rental_date, drop_date, return_date)
 VALUES
-(1, '2026-06-01', '2026-06-23', NULL),
+(1, '2026-06-01', '2026-06-24', NULL),
 (1, '2026-06-02', '2026-06-16', NULL),
 (3, '2026-06-03', '2026-06-17', NULL),
 (4, '2026-06-04', '2026-06-18', NULL),
@@ -189,7 +189,6 @@ INSERT INTO rentaldetails
 (rental_id, book_id)
 VALUES
 (1, 2),
-(1, 4),
 (2, 6),
 (2, 8),
 (3, 10),
