@@ -52,7 +52,7 @@ public interface ReservationdetailRepository extends JpaRepository<Reservationde
 	boolean existsByBookIdAndReservation_ReservationDate(Integer bookId, LocalDate reservationDate);
 
 	Optional<Reservationdetail> findByBookIdAndDeleteJudgeFalse(Integer bookId);
-	
-	List<Reservationdetail> findByReservation_User_IdAndDeleteJudgeFalse(Integer userId);
+
+	List<Reservationdetail> findByReservation_User_IdAndDeleteJudgeFalseAndBook_DeleteJudgeFalse(Integer userId);
 
 }
