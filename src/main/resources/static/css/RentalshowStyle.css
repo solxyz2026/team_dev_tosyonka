@@ -294,3 +294,8 @@ table form button {
         font-size: 12px;
         font-weight: bold;
 }
+
+.completed {
+     text-decoration: line-through; /* 横線 */
+     color: gray; /* 任意で色変更 */
+ }
