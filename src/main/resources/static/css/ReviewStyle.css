@@ -207,8 +207,8 @@ button:active {
 .custom-modal-header {
 	background: linear-gradient(
 		135deg,
-		#1976d2,
-		#2196f3
+		#2E7D32,
+		#2E7D32
 	);
 
 	color: white;
@@ -264,10 +264,10 @@ button:active {
 }
 
 .ok-btn {
-	background: #2196f3;
+	background: #2E7D32;
 	color: white;
 }
 
 .ok-btn:hover {
-	background: #1976d2;
+	background: #1B5E20;
 }
