@@ -86,7 +86,7 @@
 								th:if="${detail.returnDate == null && !detail.book.deleteJudge}">
 								<td>[[${detail.book.title}]]</td>
 								<td>[[${rental.user.id}]]</td>
-								<td>[[${rental.user.name}]]</td>
+								<td th:classappend="${rental.user.deleteJudge} ? 'completed' : ''">[[${rental.user.name}]]</td>
 								<td>[[${#temporals.format(rental.dropDate, 'yyyy-MM-dd')}]]</td>
 								<td>
 									<!-- 本ごとの返却ボタン -->
