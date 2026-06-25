@@ -47,8 +47,10 @@
 				</thead>
 				<tbody>
 					<th:block th:each="rental : ${expiredList}">
-						<tr th:each="detail : ${rental.rentaldetail}">
-							<td th:text="${detail.book.title}">本のタイトル</td>
+					    <!-- 🔧 修正: detail.returnDate == null のみ表示（返却済みの本を除外） -->
+					    <tr th:each="detail : ${rental.rentaldetail}" 
+					        th:if="${detail.returnDate == null && !detail.book.deleteJudge}">
+					        <td th:text="${detail.book.title}">本のタイトル</td>
 							<td th:text="${#temporals.format(rental.rentalDate, 'yyyy-MM-dd')}">2026-01-01</td>
 							<td th:text="${#temporals.format(rental.dropDate, 'yyyy-MM-dd')}">2026-01-15</td>
 							<td><span class="badge badge-overdue">期限切れ</span></td>
@@ -71,7 +73,9 @@
 			</thead>
 			<tbody>
 				<th:block th:if="${rentalList != null && !rentalList.isEmpty()}" th:each="rental : ${rentalList}">
-					<tr th:each="detail : ${rental.rentaldetail}">
+					<!-- 🔧 修正: detail.returnDate == null のみ表示（返却済みの本を除外） -->
+					<tr th:each="detail : ${rental.rentaldetail}" 
+						th:if="${detail.returnDate == null && !detail.book.deleteJudge}">
 						<td th:text="${detail.book.title}">本のタイトル</td>
 						<td th:text="${#temporals.format(rental.rentalDate, 'yyyy-MM-dd')}">2026-01-01</td>
 						<td th:text="${#temporals.format(rental.dropDate, 'yyyy-MM-dd')}">2026-01-15</td>
@@ -124,10 +128,11 @@
 					<tr th:each="detail : ${rental.rentaldetail}">
 						<td th:text="${detail.book.title}">本のタイトル</td>
 						<td th:text="${#temporals.format(rental.rentalDate, 'yyyy-MM-dd')}">2026-01-01</td>
-						<td th:text="${rental.returnDate != null ? #temporals.format(rental.returnDate, 'yyyy-MM-dd') : '-'}">-</td>
+						<!-- 🔧 修正: detail.returnDate で判定（本ごとの返却日） -->
+						<td th:text="${detail.returnDate != null ? #temporals.format(detail.returnDate, 'yyyy-MM-dd') : '-'}">-</td>
 						<td>
-							<span th:if="${rental.returnDate != null}" class="badge badge-returned">返却済み</span>
-							<span th:if="${rental.returnDate == null}" class="badge badge-lending">貸出中</span>
+							<span th:if="${detail.returnDate != null}" class="badge badge-returned">返却済み</span>
+							<span th:if="${detail.returnDate == null}" class="badge badge-lending">貸出中</span>
 						</td>
 					</tr>
 				</th:block>

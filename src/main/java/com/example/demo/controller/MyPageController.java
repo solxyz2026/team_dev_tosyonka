@@ -58,9 +58,10 @@ public class MyPageController {
 		List<Rental> expiredList = rentalRepository.findByUserIdAndDropDateBeforeAndReturnDateIsNull(userId, today);
 		model.addAttribute("expiredList", expiredList);
 
-		// 貸し出し中の本を取得
-
-		List<Rental> rentalList = rentalRepository.findByUserIdAndReturnDateIsNull(userId);
+		// 🔧 修正: 貸し出し中の本を取得（Rentaldetail.returnDate をチェック）
+		// 修正前: findByUserIdAndReturnDateIsNull(userId)
+		// 修正後: findByUserIdAndUnreturnedBooks(userId)
+		List<Rental> rentalList = rentalRepository.findByUserIdAndUnreturnedBooks(userId);
 		model.addAttribute("rentalList", rentalList);
 
 		// 貸し出し履歴

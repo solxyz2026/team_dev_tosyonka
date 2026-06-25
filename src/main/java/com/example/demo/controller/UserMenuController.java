@@ -72,39 +72,56 @@ public class UserMenuController {
 		// ========================================
 		LocalDate today = LocalDate.now().plusDays(1);
 
-		List<Rental> rental = rentalRepository.findByUserIdAndDropDateBeforeAndReturnDateIsNull(userId, today);
-
-		// 返却本数
-		model.addAttribute("rentalSize", rental.size());
+		// 🔧 修正: 未返却の本を取得（Rentaldetail.returnDate をチェック）
+		List<Rental> rental = rentalRepository.findByUserIdAndUnreturnedBooks(userId);
 
 		// リマインド用データをリスト化
+		// 修正: 返却期限が明日までの本のみフィルタリング
 		List<String> reminderBooks = new ArrayList<>();
 		for (Rental rent : rental) {
-			List<Rentaldetail> rentalDetails = rent.getRentaldetail();
-			if (rentalDetails != null && !rentalDetails.isEmpty()) {
-				for (Rentaldetail detail : rentalDetails) {
-					if (detail.getBook() != null && detail.getBook().getTitle() != null) {
-						reminderBooks.add(detail.getBook().getTitle());
+			// 返却期限が明日までか確認
+			if (rent.getDropDate() != null && !rent.getDropDate().isAfter(today)) {
+				List<Rentaldetail> rentalDetails = rent.getRentaldetail();
+				if (rentalDetails != null && !rentalDetails.isEmpty()) {
+					for (Rentaldetail detail : rentalDetails) {
+						// 🔧 修正: 返却済みでない本のみ（detail.returnDate == null）
+						if (detail.getBook() != null 
+							&& detail.getBook().getTitle() != null 
+							&& detail.getReturnDate() == null) {
+							reminderBooks.add(detail.getBook().getTitle());
+						}
 					}
 				}
 			}
 		}
+		model.addAttribute("rentalSize", reminderBooks.size());  // 返却本数
 		model.addAttribute("reminderBooks", reminderBooks);
 
+		// ========================================
 		// カレンダー用：返却期限の日付データを抽出
-
-		List<Rental> rentalList = rentalRepository.findByUserIdAndReturnDateIsNull(userId);
+		// ========================================
+		
+		// 修正: 未返却の本を取得
+		List<Rental> rentalList = rentalRepository.findByUserIdAndUnreturnedBooks(userId);
 		Map<String, List<String>> deadlinesByMonth = new HashMap<>();
 
 		for (Rental rentalItem : rentalList) {
-			if (rentalItem.getDropDate() != null && rentalItem.getReturnDate() == null) {
-				LocalDate dropDate = rentalItem.getDropDate();
-				int day = dropDate.getDayOfMonth();
-				YearMonth yearMonth = YearMonth.from(dropDate);
-				String monthKey = yearMonth.toString(); // "2026-01" 形式
+			if (rentalItem.getDropDate() != null) {
+				List<Rentaldetail> rentalDetails = rentalItem.getRentaldetail();
+				if (rentalDetails != null && !rentalDetails.isEmpty()) {
+					for (Rentaldetail detail : rentalDetails) {
+						
+						if (detail.getReturnDate() == null) {
+							LocalDate dropDate = rentalItem.getDropDate();
+							int day = dropDate.getDayOfMonth();
+							YearMonth yearMonth = YearMonth.from(dropDate);
+							String monthKey = yearMonth.toString(); // "2026-01" 形式
 
-				deadlinesByMonth.computeIfAbsent(monthKey, k -> new ArrayList<>())
-						.add(String.valueOf(day));
+							deadlinesByMonth.computeIfAbsent(monthKey, k -> new ArrayList<>())
+									.add(String.valueOf(day));
+						}
+					}
+				}
 			}
 		}
 
@@ -131,9 +148,9 @@ public class UserMenuController {
 
 		System.out.println("========== ユーザーメニュー情報 ==========");
 		System.out.println("  ユーザーID: " + userId);
-		System.out.println("  貸出中の本数: " + rentalList.size());
-		System.out.println("  期限切れの本数: " + rental.size());
-		System.out.println("  リマインダー対象: " + reminderBooks);
+		System.out.println("  未返却の本数: " + rentalList.size());
+		System.out.println("  リマインダー対象: " + reminderBooks.size() + "冊");
+		System.out.println("  リマインド本: " + reminderBooks);
 		System.out.println("  カレンダー期限データ(Map): " + deadlinesByMonth);
 		System.out.println("  カレンダー期限データ(JSON): " + deadlinesJson);
 		System.out.println("==========================================");
