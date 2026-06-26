@@ -83,7 +83,7 @@ public class AdminBookController {
 			System.out.println("カテゴリ取得エラー: " + e.getMessage());
 			model.addAttribute("categories", new ArrayList<>());
 		}
-		return "AdminBookSearch";
+		return "AdminbookSearch";
 	}
 
 	@PostMapping("/search")
@@ -136,7 +136,7 @@ public class AdminBookController {
 
 		}
 
-		return "AdminBookSearch";
+		return "AdminbookSearch";
 	}
 
 	//本登録画面表示
