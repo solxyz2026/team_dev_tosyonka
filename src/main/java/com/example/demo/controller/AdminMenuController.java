@@ -320,19 +320,25 @@ public class AdminMenuController {
 				}
 			}
 			final int MAX_RENTAL = 4;
-			List<Rental> currentRentals = rentalRepository.findByUserIdAndReturnDateIsNull(userId);
+			List<Rental> allRentals = rentalRepository.findByUserId(userId);
 			int currentCount = 0;
-
-			for (Rental r : currentRentals) {
+			for (Rental r : allRentals) {
 			    if (r.getRentaldetail() != null) {
-			       
 			        long unreturnedCount = r.getRentaldetail().stream()
 			            .filter(detail -> detail.getReturnDate() == null)
 			            .count();
 			        currentCount += (int) unreturnedCount;
 			    }
 			}
+			int cartCount = rentalCart.size();
+			System.out.println("現在貸出中: " + currentCount + "冊 / カート: " + cartCount + "冊");
 
+			if (currentCount + cartCount > MAX_RENTAL) {
+			    session.setAttribute(SESSION_ERROR,
+			            "貸出は一人" + MAX_RENTAL + "冊までです（現在" + currentCount
+			            + "冊借りています。あと" + (MAX_RENTAL - currentCount) + "冊借りられます）");
+			    return "redirect:/admin/";
+			}
 			// =========================
 			// 貸出伝票作成
 			// =========================
