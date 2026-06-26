@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>としょんか - ログイン</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: linear-gradient(135deg, #E3F2FD 0%, #F1F8E9 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 60px 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 50px;
+        }
+
+        .title {
+            font-size: 42px;
+            font-weight: bold;
+            color: #1E2761;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .divider {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #0097D4, #2C5F2D);
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .role-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            min-height: 280px;
+        }
+
+        .admin-button {
+            background: linear-gradient(135deg, #0097D4, #0077B6);
+            box-shadow: 0 10px 30px rgba(0, 151, 212, 0.3);
+        }
+
+        .admin-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 151, 212, 0.4);
+            background: linear-gradient(135deg, #00a8e8, #0085c7);
+        }
+
+        .user-button {
+            background: linear-gradient(135deg, #1B5E20, #2E7D32);
+            box-shadow: 0 10px 30px rgba(43, 125, 50, 0.3);
+        }
+
+        .user-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(43, 125, 50, 0.4);
+            background: linear-gradient(135deg, #2d7a3a, #3a934a);
+        }
+
+        .button-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .button-text {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .button-description {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            .title {
+                font-size: 32px;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .role-button {
+                min-height: 200px;
+            }
+
+            .button-text {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">としょんか</div>
+            <div class="subtitle">図書館管理システム</div>
+            <div class="divider"></div>
+        </div>
+
+        <div class="button-group">
+            <!-- 管理者ログインボタン -->
+            <a href="/admin/login" class="role-button admin-button">
+                <div class="button-icon">👨‍💼</div>
+                <div class="button-text">管理者</div>
+                <div class="button-description">図書館スタッフ向け</div>
+            </a>
+
+            <!-- 利用者ログインボタン -->
+            <a href="/user/login" class="role-button user-button">
+                <div class="button-icon">👤</div>
+                <div class="button-text">利用者</div>
+                <div class="button-description">図書館利用者向け</div>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 としょんか図書館管理システム</p>
+        </div>
+    </div>
+</body>
+</html>
